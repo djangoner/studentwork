@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static i18n %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Site</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
+    <link rel="stylesheet" href="//unpkg.com/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
+    <!-- Extra head -->
+    {% block extrahead %}{% endblock %}
+</head>
+
+<body class="bg-light">
+
+    <!-- Menu -->
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-between">
+
+        <!-- Left -->
+        <a class="navbar-brand" href="/">
+            <img src="//via.placeholder.com/40" width="40" height="40" class="d-inline-block align-top" alt="">
+            EasySchool
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links -->
+
+        <div class="collapse navbar-collapse justify-content-between bg-white" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#">Главная</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Как это работает</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Заказать работу</a>
+                </li>
+            </ul>
+
+            <form class="form-inline" class="search-form">
+                <div class="input-group my-2 my-lg-0 w-100">
+                    <input class="form-control" type="search" placeholder="поиск по 100 000 учебным работам" name="search" id="search-input">
+                    <!-- <div class="input-group-addon">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" class="form-control">Search</button>
+                    </div> -->
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="sumbit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                      </div>                
+                </div>
+            </form>
+
+            {% if user.is_authenticated %}
+                <a href="" class="btn btn-primary"><i class="fa"></i>Кабинет</a>
+            {% else %}
+                <a href="" class="btn btn-primary"><i class="fa fa-user mr-1"></i>Войти</a>
+            {% endif %}
+        </div>
+
+        <!-- Right -->
+
+
+    </nav>
+
+    <!-- Main content -->
+    <div id="main-content">
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+
+    <footer class="footer bg-dark text-light py-3">
+        <div class="">
+            <div class="footer__links container">
+                <a href="" class="">Условия использования сервиса</a>
+                <a href="" class="">FAQ</a>
+                <a href="" class="">Поддержка</a>
+                <a href="" class="">Для правообладателей</a>
+                <a href="" class="">Карта сайта</a>
+                <a href="" class="">Заказать работу</a>
+            </div>
+
+            <hr>
+
+            <div class="footer__copyright container">
+                <span class="text-light" style="font-size: 14px" title="V{{VERSION}}">
+                    Copyright &copy; 2020
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="//unpkg.com/jquery@3.5.1"></script>
+    <script src="//unpkg.com/vue@3.0.5"></script>
+    <script src="//unpkg.com/bootstrap@4.6.0"></script>
+    <!-- Extra body -->
+    {% block extrabody %}{% endblock %}
+</body>
+
+</html>

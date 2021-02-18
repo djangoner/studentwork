@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static i18n %}
+
+{% block title %} Главная {% endblock %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-3 py-3 bg-white">
+        <h1 class="title text-center">Дисциплины</h1>
+
+        <div class="row block__disciplines my-3">
+            {% for group in disciplines_groups %}
+                {% with group=group %}
+                    {% include './blocks/discipline_group.html' %}
+                {% endwith %}
+            {% endfor %}
+            <div class="col col-12 col-md-6 col-lg-4 discipline-group">
+                <div class="line d-flex">
+                    <span class="items-count align-self-center text-center">
+                        <span class="d-block mx-auto">-</span>
+                    </span>
+                    <span class="discipline-name">Без группы</span>
+                </div>               
+                {% for sub in disciplines_nogroups.all %}
+                <div class="discipline-item">
+                    {% with discipline=sub%}
+                        {% include './blocks/discipline.html' %}
+                    {% endwith %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

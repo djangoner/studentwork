@@ -1,0 +1,95 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+nav {
+    height: 70px;
+    background-color: #e3f2fd;
+}
+nav .navbar-brand {
+    line-height: 40px;
+}
+.navbar-collapse{
+    padding: 1rem;
+    z-index: 99
+}
+html, body, #main-content{
+    min-height: 100vh;
+}
+
+footer.footer{
+    font-family: Sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.footer__links a{
+    padding: 10px 7px;
+    color: #fff;
+    white-space: nowrap;
+    display: inline-block;
+}
+.footer hr{
+    background-color: #e3f2fd;
+    margin: 0.6rem 0;
+}
+:root{
+    --primary: #0b69ce;
+}
+.bg-primary{background-color: var(--primary)!important;}
+
+#search-input{
+    width: auto!important;
+}
+
+@media (max-width: 800px) {
+    .footer__links a{
+        width: 100%;
+        display: block;
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+    .footer__links{
+        margin-bottom: 15px;
+    }
+}
+
+@media (min-width: 1100px){
+    #search-input{
+        width: 320px!important;
+    }
+}
+
+/* Disciplines */
+
+.block__disciplines .items-count{
+    color: #6c757d;
+    margin-right: 2rem;
+    padding: 2px;
+    min-width: 2rem;
+    width: auto;
+    /* background-color: #cfc; */
+}
+.discipline-group > .line > .items-count{
+    background-color: #cfc;
+}
+
+.discipline-group{
+    margin: 1rem 0;
+}
+
+.block__disciplines .discipline-group > .line .discipline-name{
+    font-size: 26px;
+    font-weight: bold;
+    color: #2b3140;
+}
+
+.block__disciplines .discipline-item .discipline-name{
+    font-size: 16px;
+    font-weight: 400;
+}
