@@ -3,10 +3,11 @@
 
 <head>
     {% load static i18n %}
+    <!-- Made by @djangoner (telegram) -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} | Site</title>
+    <title>{% block title %}{% endblock %} | EasySchool</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
@@ -65,9 +66,9 @@
             </form>
 
             {% if user.is_authenticated %}
-                <a href="" class="btn btn-primary"><i class="fa"></i>Кабинет</a>
+                <a href="{% url 'main:cabinet' %}" class="btn btn-primary"><i class="fa"></i>Кабинет</a>
             {% else %}
-                <a href="" class="btn btn-primary"><i class="fa fa-user mr-1"></i>Войти</a>
+                <a href="{% url 'users:login' %}" class="btn btn-primary"><i class="fa fa-user mr-1"></i>Войти</a>
             {% endif %}
         </div>
 

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,11 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'jc4@!6#ya+ek5jh!knnn!x1-m51l&d==57e74(kldl-$!380fk'
+DEBUG = True
+PRODUCTION = False
+
+##-- Production settings
+if os.environ.get("PRODUCTION", False):
+    DEBUG = False
+    PRODUCTION = True
+if "DEBUG" in os.environ:
+    DEBUG = os.environ['DEBUG']
+if "SECRET_KEY" in os.environ:
+    SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,9 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     ##-- Third-party
-
+    # 'django_filters',
     ##-- Custom apps
     'main.apps.MainConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +65,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CSRF_TRUSTED_ORIGINS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDINTIALS = True
 
 ROOT_URLCONF = 'student.urls'
 
@@ -83,7 +100,25 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+if DEBUG:
+    pass
+elif PRODUCTION:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+    DATABASES = {
+        "default": {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("PG_TABLE", '1001cyprus'),
+            "USER": os.environ.get("PG_USER", "postgres"),
+            "PASSWORD": os.environ.get("PG_PASSWORD", "12345"),
+            "HOST": os.environ.get("PG_HOST", "localhost"),
+            "PORT": os.environ.get("PG_PORT", "5432"),
+        }
+    }
+    CONN_MAX_AGE = 60
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -103,6 +138,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'users.User'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -113,6 +154,10 @@ LANGUAGES = [
     ('ru', 'Русский'),
 ]
 
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
 TIME_ZONE = 'Etc/GMT-2'
 
 USE_I18N = True
@@ -121,6 +166,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -133,3 +181,74 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+if not DEBUG or PRODUCTION:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    # EMAIL_SERVER = os.environ.get("EMAIL_SERVER")
+    EMAIL_HOST = os.environ.get("EMAIL_HOST")
+    EMAIL_PORT = os.environ.get("EMAIL_PORT")
+    EMAIL_USE_TLS = os.environ.get("EMAIL_TLS", False)
+    EMAIL_USE_SSL = os.environ.get("EMAIL_SSL", False)
+    EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+    ##
+    SERVER_EMAIL = EMAIL_HOST_USER
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    EMAIL_SUBJECT_PREFIX = '[1001Cyprus] ' if PRODUCTION and not DEBUG else '[1001Cyprus (Debug)] '
+
+ADMINS = [
+        ('Programmer and site administrator', 'djpy@1001cyprus.com'),
+    ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        # Include the default Django email handler for errors
+        # This is what you'd get without configuring logging at all.
+        'mail_admins': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'level': 'ERROR',
+             # But the emails are plain text by default - HTML is nicer
+            'include_html': True,
+        },
+        # Log to a text file that can be rotated by logrotate
+        'logfile': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'level': 'DEBUG',
+            'filename': os.path.join(BASE_DIR, 'django.log'),
+            # 'maxBytes': '1024*5', #5kb
+            # 'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        # Again, default Django configuration to email unhandled exceptions
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        # Might as well log any errors anywhere else in Django
+        'django': {
+            'handlers': ['logfile', 'console'],
+            'level': 'INFO' if DEBUG else 'ERROR',
+            'propagate': False,
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'datefmt' : "%d/%b/%Y %H:%M:%S",
+            'style':'{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    }
+}

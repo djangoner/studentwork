@@ -5,11 +5,11 @@ html, body{
     height: 100vh;
 }
 
-nav {
+nav.navbar {
     height: 70px;
     background-color: #e3f2fd;
 }
-nav .navbar-brand {
+nav.navbar .navbar-brand {
     line-height: 40px;
 }
 .navbar-collapse{
@@ -92,4 +92,8 @@ footer.footer{
 .block__disciplines .discipline-item .discipline-name{
     font-size: 16px;
     font-weight: 400;
+}
+
+.stats .col:first-child{
+    font-weight: bold;
 }

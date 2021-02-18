@@ -1,0 +1,364 @@
+INFO 18/Feb/2021 16:09:48 autoreload 71143 4393098752 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 16:09:56 log 71143 123145502838784 Internal Server Error: /cabinet
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/base.py", line 72, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'users'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/main/views.py", line 16, in cabinet
+    return render(request, "cabinet/cabinet.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/defaulttags.py", line 446, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/base.py", line 83, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'users' is not a registered namespace
+ERROR 18/Feb/2021 16:09:56 basehttp 71143 123145502838784 "GET /cabinet HTTP/1.1" 500 150986
+INFO 18/Feb/2021 16:10:32 autoreload 71143 4393098752 /Users/va.efimov/Desktop/Python/Django/student/student/urls.py changed, reloading.
+INFO 18/Feb/2021 16:10:35 autoreload 71188 4633845248 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:10:44 autoreload 71188 4633845248 /Users/va.efimov/Desktop/Python/Django/student/student/urls.py changed, reloading.
+INFO 18/Feb/2021 16:10:45 autoreload 71203 4550983168 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 16:10:48 log 71203 123145524772864 Internal Server Error: /cabinet
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/main/views.py", line 16, in cabinet
+    return render(request, "cabinet/cabinet.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/defaulttags.py", line 446, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/base.py", line 87, in reverse
+    return iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs))
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/resolvers.py", line 685, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'logout' not found. 'logout' is not a valid view function or pattern name.
+ERROR 18/Feb/2021 16:10:48 log 71203 123145530028032 Internal Server Error: /cabinet
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/main/views.py", line 16, in cabinet
+    return render(request, "cabinet/cabinet.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/defaulttags.py", line 446, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/base.py", line 87, in reverse
+    return iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs))
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/urls/resolvers.py", line 685, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'logout' not found. 'logout' is not a valid view function or pattern name.
+ERROR 18/Feb/2021 16:10:49 basehttp 71203 123145530028032 "GET /cabinet HTTP/1.1" 500 149964
+INFO 18/Feb/2021 16:11:04 autoreload 71203 4550983168 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:11:05 autoreload 71224 4348149248 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:11:14 autoreload 71224 4348149248 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:11:16 autoreload 71245 4626890240 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:12:23 autoreload 71245 4626890240 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:12:26 autoreload 71335 4549893632 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:12:48 autoreload 71335 4549893632 /Users/va.efimov/Desktop/Python/Django/student/users/urls.py changed, reloading.
+INFO 18/Feb/2021 16:12:49 autoreload 71421 4620865024 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:12:51 basehttp 71421 123145327165440 "GET /cabinet HTTP/1.1" 200 5844
+INFO 18/Feb/2021 16:12:51 basehttp 71421 123145327165440 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 16:12:54 basehttp 71421 123145327165440 "GET /auth/logout HTTP/1.1" 302 0
+INFO 18/Feb/2021 16:12:54 basehttp 71421 123145327165440 "GET / HTTP/1.1" 200 5862
+INFO 18/Feb/2021 16:12:58 basehttp 71421 123145327165440 "GET / HTTP/1.1" 200 5862
+INFO 18/Feb/2021 16:13:13 autoreload 71421 4620865024 /Users/va.efimov/Desktop/Python/Django/student/users/urls.py changed, reloading.
+INFO 18/Feb/2021 16:13:15 autoreload 71456 4456705536 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:13:30 autoreload 71456 4456705536 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:13:31 autoreload 71498 4555992576 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:13:46 autoreload 71498 4555992576 /Users/va.efimov/Desktop/Python/Django/student/users/urls.py changed, reloading.
+INFO 18/Feb/2021 16:13:47 autoreload 71516 4374932992 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:15:00 basehttp 71516 123145512308736 "GET / HTTP/1.1" 200 5873
+ERROR 18/Feb/2021 16:15:04 log 71516 123145512308736 Internal Server Error: /auth/login
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/users/views.py", line 10, in login_page
+    return render(request, "login.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: login.html
+ERROR 18/Feb/2021 16:15:04 basehttp 71516 123145512308736 "GET /auth/login HTTP/1.1" 500 71477
+INFO 18/Feb/2021 16:15:20 autoreload 71516 4374932992 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:15:21 autoreload 71585 4552457728 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 16:15:23 log 71585 123145580380160 Internal Server Error: /auth/login
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/users/views.py", line 10, in login_page
+    return render(request, "users:login.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users:login.html
+ERROR 18/Feb/2021 16:15:23 basehttp 71585 123145580380160 "GET /auth/login HTTP/1.1" 500 71710
+INFO 18/Feb/2021 16:16:01 autoreload 71585 4552457728 /Users/va.efimov/Desktop/Python/Django/student/student/settings.py changed, reloading.
+INFO 18/Feb/2021 16:16:03 autoreload 71623 4640239104 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:16:17 autoreload 71623 4640239104 /Users/va.efimov/Desktop/Python/Django/student/users/apps.py changed, reloading.
+INFO 18/Feb/2021 16:16:18 autoreload 71699 4512353792 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:17:06 autoreload 71699 4512353792 /Users/va.efimov/Desktop/Python/Django/student/student/settings.py changed, reloading.
+INFO 18/Feb/2021 16:17:08 autoreload 71716 4528885248 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:17:44 autoreload 71716 4528885248 /Users/va.efimov/Desktop/Python/Django/student/student/settings.py changed, reloading.
+INFO 18/Feb/2021 16:17:45 autoreload 71734 4613840384 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:17:48 autoreload 71734 4613840384 /Users/va.efimov/Desktop/Python/Django/student/users/models.py changed, reloading.
+INFO 18/Feb/2021 16:17:49 autoreload 71742 4475399680 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:18:41 autoreload 71797 4700577280 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:19:17 autoreload 71797 4700577280 /Users/va.efimov/Desktop/Python/Django/student/main/models.py changed, reloading.
+INFO 18/Feb/2021 16:19:18 autoreload 71867 4484922880 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:19:26 autoreload 71867 4484922880 /Users/va.efimov/Desktop/Python/Django/student/main/models.py changed, reloading.
+INFO 18/Feb/2021 16:19:27 autoreload 71895 4705254912 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:19:44 autoreload 71895 4705254912 /Users/va.efimov/Desktop/Python/Django/student/main/models.py changed, reloading.
+INFO 18/Feb/2021 16:19:45 autoreload 71922 4560539136 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:20:05 autoreload 71951 4566457856 Watching for file changes with StatReloader
+WARNING 18/Feb/2021 16:20:08 basehttp 71951 123145481084928 "GET /admin/auth/user/1/change/ HTTP/1.1" 404 4600
+INFO 18/Feb/2021 16:20:15 basehttp 71951 123145481084928 "GET /admin/ HTTP/1.1" 302 0
+INFO 18/Feb/2021 16:20:15 basehttp 71951 123145481084928 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2283
+INFO 18/Feb/2021 16:24:34 basehttp 71951 123145481084928 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 2549
+INFO 18/Feb/2021 16:25:01 basehttp 71951 123145481084928 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 18/Feb/2021 16:25:01 basehttp 71951 123145481084928 "GET /admin/ HTTP/1.1" 200 4361
+INFO 18/Feb/2021 16:25:06 basehttp 71951 123145481084928 "GET /admin/main/discipline/ HTTP/1.1" 200 7774
+INFO 18/Feb/2021 16:25:06 basehttp 71951 123145481084928 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:25:13 basehttp 71951 123145481084928 "GET /admin/auth/group/ HTTP/1.1" 200 5675
+INFO 18/Feb/2021 16:25:13 basehttp 71951 123145481084928 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:25:19 basehttp 71951 123145481084928 "GET /admin/auth/group/add/ HTTP/1.1" 200 9647
+INFO 18/Feb/2021 16:25:19 basehttp 71951 123145481084928 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:25:32 basehttp 71951 123145481084928 "POST /admin/auth/group/add/ HTTP/1.1" 302 0
+INFO 18/Feb/2021 16:25:32 basehttp 71951 123145481084928 "GET /admin/auth/group/ HTTP/1.1" 200 7170
+INFO 18/Feb/2021 16:25:33 basehttp 71951 123145481084928 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:26:48 autoreload 71951 4566457856 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:26:49 autoreload 72402 4457770496 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:26:52 basehttp 72402 123145562599424 "GET /admin/auth/group/ HTTP/1.1" 200 7532
+INFO 18/Feb/2021 16:26:52 basehttp 72402 123145562599424 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:26:57 basehttp 72402 123145562599424 "GET /admin/users/user/ HTTP/1.1" 200 8886
+INFO 18/Feb/2021 16:26:57 basehttp 72402 123145562599424 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:27:31 autoreload 72402 4457770496 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:27:33 autoreload 72469 4327599616 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:29:11 autoreload 72469 4327599616 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:29:12 autoreload 72647 4523163136 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 16:29:16 log 72647 123145359265792 Internal Server Error: /admin/users/user/1/change/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 709, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/forms/models.py", line 555, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/forms/models.py", line 268, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (permissions) specified for User
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 1656, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 1569, in _changeform_view
+    request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/contrib/admin/options.py", line 713, in get_form
+    % (e, self.__class__.__name__)
+django.core.exceptions.FieldError: Unknown field(s) (permissions) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
+ERROR 18/Feb/2021 16:29:17 basehttp 72647 123145359265792 "GET /admin/users/user/1/change/ HTTP/1.1" 500 127882
+INFO 18/Feb/2021 16:30:35 autoreload 72647 4523163136 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:30:37 autoreload 72680 4459208192 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:30:39 autoreload 72680 4459208192 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:30:40 autoreload 72691 4522114560 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:31:04 autoreload 72691 4522114560 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:31:06 autoreload 72746 4584263168 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:31:12 autoreload 72746 4584263168 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:31:14 autoreload 72759 4435820032 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:31:19 autoreload 72759 4435820032 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:31:20 autoreload 72804 4571196928 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:31:21 basehttp 72804 123145406717952 "GET /admin/users/user/1/change/ HTTP/1.1" 200 18531
+INFO 18/Feb/2021 16:31:21 basehttp 72804 123145406717952 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:33:27 autoreload 72804 4571196928 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:33:29 autoreload 72921 4565315072 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:33:35 basehttp 72921 123145441439744 "GET /admin/users/user/1/change/ HTTP/1.1" 200 19258
+INFO 18/Feb/2021 16:33:35 basehttp 72921 123145441439744 "GET /admin/jsi18n/ HTTP/1.1" 200 14892
+INFO 18/Feb/2021 16:34:05 autoreload 72921 4565315072 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:34:06 autoreload 72959 4682804736 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 16:34:27 log 72959 123145535799296 Internal Server Error: /auth/login
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/users/views.py", line 10, in login_page
+    return render(request, "users:login.html")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users:login.html
+ERROR 18/Feb/2021 16:34:27 basehttp 72959 123145535799296 "GET /auth/login HTTP/1.1" 500 72374
+INFO 18/Feb/2021 16:34:47 autoreload 72959 4682804736 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 16:34:49 autoreload 73022 4665290240 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:35:10 autoreload 73022 4665290240 /Users/va.efimov/Desktop/Python/Django/student/users/admin.py changed, reloading.
+INFO 18/Feb/2021 16:35:11 autoreload 73052 4579986944 Watching for file changes with StatReloader
+INFO 18/Feb/2021 16:35:19 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 4054
+INFO 18/Feb/2021 16:35:19 basehttp 73052 123145335656448 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 16:39:06 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5157
+INFO 18/Feb/2021 16:39:41 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5284
+INFO 18/Feb/2021 16:41:46 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5218
+INFO 18/Feb/2021 16:42:32 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5230
+INFO 18/Feb/2021 16:44:24 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5250
+INFO 18/Feb/2021 16:44:25 basehttp 73052 123145335656448 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 16:44:45 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5262
+INFO 18/Feb/2021 16:45:11 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5346
+INFO 18/Feb/2021 16:45:33 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5367
+INFO 18/Feb/2021 16:46:04 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5406
+INFO 18/Feb/2021 16:46:42 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5418
+INFO 18/Feb/2021 16:47:02 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5445
+INFO 18/Feb/2021 16:47:28 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5455
+INFO 18/Feb/2021 16:51:12 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5589
+INFO 18/Feb/2021 16:51:45 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5621
+INFO 18/Feb/2021 16:53:32 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5710
+INFO 18/Feb/2021 16:53:33 basehttp 73052 123145335656448 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 16:55:05 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5754
+INFO 18/Feb/2021 16:55:20 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5757
+INFO 18/Feb/2021 16:56:09 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5802
+INFO 18/Feb/2021 16:56:18 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5809
+INFO 18/Feb/2021 16:56:28 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5811
+INFO 18/Feb/2021 16:57:37 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5829
+INFO 18/Feb/2021 16:58:40 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5781
+INFO 18/Feb/2021 16:59:22 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 5980
+WARNING 18/Feb/2021 16:59:38 log 73052 123145335656448 Forbidden (CSRF token missing or incorrect.): /auth/login
+WARNING 18/Feb/2021 16:59:38 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 403 2555
+INFO 18/Feb/2021 17:00:03 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6118
+INFO 18/Feb/2021 17:01:42 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6640
+INFO 18/Feb/2021 17:01:54 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6661
+INFO 18/Feb/2021 17:02:22 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6671
+INFO 18/Feb/2021 17:02:51 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6750
+INFO 18/Feb/2021 17:03:04 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6755
+INFO 18/Feb/2021 17:03:07 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6755
+INFO 18/Feb/2021 17:03:15 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6755
+INFO 18/Feb/2021 17:03:15 basehttp 73052 123145335656448 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 17:03:33 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6771
+INFO 18/Feb/2021 17:03:56 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6861
+INFO 18/Feb/2021 17:04:06 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6866
+INFO 18/Feb/2021 17:04:25 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6907
+INFO 18/Feb/2021 17:04:43 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6899
+INFO 18/Feb/2021 17:05:28 basehttp 73052 123145335656448 "POST /auth/login HTTP/1.1" 200 6899
+INFO 18/Feb/2021 17:05:46 basehttp 73052 123145335656448 "GET /cabinet HTTP/1.1" 200 5881
+INFO 18/Feb/2021 17:05:50 basehttp 73052 123145335656448 "GET /auth/logout HTTP/1.1" 302 0
+INFO 18/Feb/2021 17:05:50 basehttp 73052 123145335656448 "GET / HTTP/1.1" 200 5916
+INFO 18/Feb/2021 17:05:52 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6911
+INFO 18/Feb/2021 17:05:56 basehttp 73052 123145335656448 "GET /auth/login HTTP/1.1" 200 6911

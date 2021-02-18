@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
-from django.contrib.auth.models import User
 
 
 _ = lambda tx: tx
@@ -88,5 +87,5 @@ class Document(models.Model):
     uploaded        = models.DateTimeField(_('Загружен'), editable=False, auto_now_add=True)
     approved        = models.BooleanField(_('Проверен'), default=None, null=True, blank=True,
                                     help_text=_('Статус проверки загруженного документа модератором'))
-    author          = models.ForeignKey(User, models.CASCADE, null=True, blank=True,
+    author          = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, null=True, blank=True,
                                     verbose_name=_('Автор'))
