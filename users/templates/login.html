@@ -5,7 +5,7 @@
 
 {% block extrahead %}
 <style>
-/* a.nav-link{
+a.nav-link{
     background-color: initial!important;
     color: var(--primary)!important;
 }
@@ -15,24 +15,23 @@ a.nav-link.active{
 * {
   box-sizing: border-box;
 }
-.nav-pills{
-    position: relative;
+.nav-link{
+    border-bottom: 2px;
+    padding-bottom: 10px;
 }
-hr {
-    height: .25rem;
-    width: 50%;
-    margin: 0;
-    background: #ff6347;
-    border: none;
-    transition: .3s ease-in-out;
-    position: absolute;
-    bottom: 0;
-} */
+.nav-link.active{
+    text-decoration: none;
+    cursor: default;
+    border-bottom: 2px solid tomato;
+    padding-bottom: 10px;
+    transition: ease .25s;
+}
 
 .main-container{
     max-width: 500px;
     box-shadow: 0px 0px 5px 0px;
 }
+
 </style>
 {% endblock %}
 
@@ -50,7 +49,7 @@ hr {
                 aria-controls="register" aria-selected="false">Зарегистрироваться</a>
         </li>
         <!-- TODO: pretty slider -->
-        <!-- <hr> -->
+        <hr>
     </ul>
     <div class="tab-content" id="pills-tabContent">
         <!-- Errors -->
@@ -127,9 +126,12 @@ hr {
         <a href="">Забыли пароль?</a>
     </div>
     <script>
+        document.querySelector('#pills-tab').style.visibility="none"
         window.addEventListener('load', ()=>{
-            $('a[data-toggle="pill"]').on('show.bs.tab', function (e) {
-                 location.hash = $(e.target).attr('href')
+            var pills = $('a[data-toggle="pill"]')
+
+            pills.on('show.bs.tab', function (e) {
+                location.hash = $(e.target).attr('href')
             });
             var activeTab = location.hash
             if (activeTab) {

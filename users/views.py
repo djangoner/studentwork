@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout, get_user_model
+from django.contrib.auth import login, authenticate, logout, get_user_model, password_validation
+from django.http import HttpResponseRedirect
 
 User = get_user_model()
 
@@ -18,12 +19,21 @@ def login_page(request):
             form = forms.RegisterForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                #
-                user = User(**data) # Pass data to new user
-                user.set_password(data['password'])
-                user.save()
-                #
-                return redirect("?registered#login")
+                any_email = User.objects.filter(email=data['email'])
+                if any_email.count() >= 1:
+                    form.add_error('email', 'Пользователь с такой электронной почтой уже существует!')
+                else:
+                    try:
+                        password_validation.validate_password(data['password'], form)
+                    except forms.forms.ValidationError as error:
+                        form.add_error('password', error)
+                    else:
+                        #
+                        user = User(**data) # Pass data to new user
+                        user.set_password(data['password'])
+                        user.save()
+                        #
+                        return HttpResponseRedirect("?registered#login")
 
         else:
             # If Login mode
