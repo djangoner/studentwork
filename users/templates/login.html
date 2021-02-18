@@ -53,6 +53,17 @@ hr {
         <!-- <hr> -->
     </ul>
     <div class="tab-content" id="pills-tabContent">
+        <!-- Errors -->
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
 
         <!-- Login -->
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
@@ -62,12 +73,12 @@ hr {
 
                 <div class="mb-3">
                     <label>Электронная почта</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control" value="{% firstof form.email.value '' %}" placeholder="john@gmail.com">
                 </div>
 
                 <div class="mb-3">
                     <label>Пароль</label>
-                    <input type="password" name="password" class="form-control">
+                    <input type="password" name="password" class="form-control" placeholder="********">
                 </div>
 
                 <div class="text-center">
