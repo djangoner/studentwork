@@ -40,14 +40,14 @@ hr {
 {% block body %}
 <div class="container mt-3 py-2 bg-white main-container">
 
-    <ul class="row nav nav-pills mb-3 text-center" id="pills-tab" role="tablist">
-        <li class="col nav-item nav-link">
-            <a class="nav-link active" id="pills-login-tab" data-toggle="pill" href="#pills-login" role="tab"
-                aria-controls="pills-login" aria-selected="true">Войти</a>
+    <ul class="nav nav-pills nav-fill mb-3 text-center" id="pills-tab" role="tablist">
+        <li class="nav-item nav-link">
+            <a class="nav-link active" id="login-tab" data-toggle="pill" href="#login" role="tab"
+                aria-controls="login" aria-selected="true">Войти</a>
         </li>
-        <li class="col nav-item nav-link">
-            <a class="nav-link" id="pills-register-tab" data-toggle="pill" href="#pills-register" role="tab"
-                aria-controls="pills-register" aria-selected="false">Зарегистрироваться</a>
+        <li class="nav-item nav-link">
+            <a class="nav-link" id="register-tab" data-toggle="pill" href="#register" role="tab"
+                aria-controls="register" aria-selected="false">Зарегистрироваться</a>
         </li>
         <!-- TODO: pretty slider -->
         <!-- <hr> -->
@@ -66,19 +66,19 @@ hr {
         {% endif %}
 
         <!-- Login -->
-        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
             <h2 class="text-center mt-2 mb-4">Войти</h2>
             <form action="" method="POST">
                 {% csrf_token %}
 
                 <div class="mb-3">
                     <label>Электронная почта</label>
-                    <input type="email" name="email" class="form-control" value="{% firstof form.email.value '' %}" placeholder="john@gmail.com">
+                    <input type="email" name="email" class="form-control" value="{% firstof form.email.value '' %}" placeholder="john@gmail.com" required>
                 </div>
 
                 <div class="mb-3">
                     <label>Пароль</label>
-                    <input type="password" name="password" class="form-control" placeholder="********">
+                    <input type="password" name="password" class="form-control" placeholder="********" required>
                 </div>
 
                 <div class="text-center">
@@ -88,10 +88,35 @@ hr {
         </div>
 
         <!-- Register -->
-        <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
+        <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
             <h2 class="text-center mt-2 mb-4">Зарегистрироваться</h2>
             <form action="" method="post">
                 {% csrf_token %}
+                <input type="hidden" name="register" value="1">
+
+                <div class="mb-3">
+                    <label>Электронная почта</label>
+                    <input type="email" name="email" class="form-control" value="{% firstof form.email.value '' %}" placeholder="john@gmail.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Имя пользователя</label>
+                    <input type="text" name="username" class="form-control" value="{% firstof form.username.value '' %}" placeholder="john" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Ваше имя</label>
+                    <input type="text" name="first_name" class="form-control" value="{% firstof form.first_name.value '' %}" placeholder="john@gmail.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Пароль</label>
+                    <input type="password" name="password" class="form-control" placeholder="********" required>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" value="Войти" class="btn btn-success mt-3 mb-2 px-3 py-2">
+                </div>
             </form>
         </div>
     </div>
@@ -100,6 +125,19 @@ hr {
 
     <div class="text-center mb-2">
         <a href="">Забыли пароль?</a>
-    </div>    
+    </div>
+    <script>
+        window.addEventListener('load', ()=>{
+            $('a[data-toggle="pill"]').on('show.bs.tab', function (e) {
+                 location.hash = $(e.target).attr('href')
+            });
+            var activeTab = location.hash
+            if (activeTab) {
+                console.debug("Active tab:", activeTab)
+                tab = $('#pills-tab a[href="' + activeTab + '"]')
+                tab.tab('show');
+            }
+        })
+    </script>
 </div>
 {% endblock %}

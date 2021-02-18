@@ -778,3 +778,66 @@ INFO 18/Feb/2021 18:14:58 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1"
 INFO 18/Feb/2021 18:14:59 basehttp 78280 123145323044864 "GET /auth/change_password HTTP/1.1" 200 5505
 INFO 18/Feb/2021 18:15:04 basehttp 78280 123145323044864 "POST /auth/change_password HTTP/1.1" 200 6240
 INFO 18/Feb/2021 18:15:07 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1" 200 5914
+INFO 18/Feb/2021 18:16:06 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1" 200 6076
+INFO 18/Feb/2021 18:16:16 basehttp 78280 123145323044864 "GET / HTTP/1.1" 200 5916
+INFO 18/Feb/2021 18:16:18 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 7005
+INFO 18/Feb/2021 18:16:27 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 302 0
+INFO 18/Feb/2021 18:16:27 basehttp 78280 123145323044864 "GET / HTTP/1.1" 200 5917
+INFO 18/Feb/2021 18:16:29 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1" 200 6086
+INFO 18/Feb/2021 18:17:28 basehttp 78280 123145323044864 "GET / HTTP/1.1" 200 5917
+INFO 18/Feb/2021 18:17:33 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1" 200 6086
+INFO 18/Feb/2021 18:17:38 basehttp 78280 123145323044864 "GET /cabinet HTTP/1.1" 200 6086
+INFO 18/Feb/2021 18:17:39 basehttp 78280 123145323044864 "GET /auth/logout HTTP/1.1" 302 0
+INFO 18/Feb/2021 18:17:39 basehttp 78280 123145323044864 "GET / HTTP/1.1" 200 5916
+INFO 18/Feb/2021 18:17:41 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 7005
+INFO 18/Feb/2021 18:19:09 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 8140
+INFO 18/Feb/2021 18:19:29 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 8140
+INFO 18/Feb/2021 18:19:31 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 8140
+INFO 18/Feb/2021 18:19:34 basehttp 78280 123145323044864 "GET /auth/login HTTP/1.1" 200 8140
+INFO 18/Feb/2021 18:19:56 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8522
+INFO 18/Feb/2021 18:22:46 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8811
+INFO 18/Feb/2021 18:22:46 basehttp 78280 123145323044864 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 18:23:10 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8812
+INFO 18/Feb/2021 18:23:38 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8812
+INFO 18/Feb/2021 18:23:48 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8812
+INFO 18/Feb/2021 18:24:25 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 8966
+INFO 18/Feb/2021 18:24:45 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9022
+INFO 18/Feb/2021 19:14:25 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9019
+INFO 18/Feb/2021 19:14:26 basehttp 78280 123145323044864 "GET /static/css/styles.css HTTP/1.1" 304 0
+INFO 18/Feb/2021 19:16:03 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9019
+INFO 18/Feb/2021 19:16:35 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9049
+INFO 18/Feb/2021 19:16:43 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9049
+INFO 18/Feb/2021 19:16:47 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9049
+INFO 18/Feb/2021 19:16:51 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9049
+INFO 18/Feb/2021 19:17:13 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9025
+INFO 18/Feb/2021 19:17:28 basehttp 78280 123145323044864 "POST /auth/login HTTP/1.1" 200 9025
+INFO 18/Feb/2021 19:18:00 autoreload 78280 4552285696 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 19:18:02 autoreload 79120 4537196032 Watching for file changes with StatReloader
+INFO 18/Feb/2021 19:18:35 autoreload 79120 4537196032 /Users/va.efimov/Desktop/Python/Django/student/users/forms.py changed, reloading.
+INFO 18/Feb/2021 19:18:36 autoreload 79184 4421828096 Watching for file changes with StatReloader
+INFO 18/Feb/2021 19:20:16 autoreload 79184 4421828096 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 19:20:18 autoreload 79293 4438175232 Watching for file changes with StatReloader
+INFO 18/Feb/2021 19:20:32 autoreload 79293 4438175232 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 19:20:34 autoreload 79317 4746329600 Watching for file changes with StatReloader
+INFO 18/Feb/2021 19:20:39 basehttp 79317 123145480572928 "POST /auth/login HTTP/1.1" 200 8703
+INFO 18/Feb/2021 19:23:03 autoreload 79317 4746329600 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 19:23:05 autoreload 79467 4626943488 Watching for file changes with StatReloader
+ERROR 18/Feb/2021 19:23:47 log 79467 123145319964672 Internal Server Error: /auth/login
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/va.efimov/Desktop/Python/Django/student/users/views.py", line 26, in login_page
+    return redirect('users:login') + "?registered#login"
+TypeError: unsupported operand type(s) for +: 'HttpResponseRedirect' and 'str'
+ERROR 18/Feb/2021 19:23:47 basehttp 79467 123145319964672 "POST /auth/login HTTP/1.1" 500 60211
+INFO 18/Feb/2021 19:24:25 autoreload 79467 4626943488 /Users/va.efimov/Desktop/Python/Django/student/users/views.py changed, reloading.
+INFO 18/Feb/2021 19:24:27 autoreload 79540 4519685632 Watching for file changes with StatReloader
+INFO 18/Feb/2021 19:24:28 basehttp 79540 123145497456640 "POST /auth/login HTTP/1.1" 200 9049
+INFO 18/Feb/2021 19:24:41 basehttp 79540 123145497456640 "POST /auth/login HTTP/1.1" 302 0
+INFO 18/Feb/2021 19:24:41 basehttp 79540 123145497456640 "GET / HTTP/1.1" 200 5917
+WARNING 18/Feb/2021 19:24:44 basehttp 79540 123145497456640 "GET /favicon.ico HTTP/1.1" 404 2839
+INFO 18/Feb/2021 19:24:52 basehttp 79540 123145497456640 "GET /cabinet HTTP/1.1" 200 6088
+INFO 18/Feb/2021 19:24:58 basehttp 79540 123145497456640 "GET / HTTP/1.1" 200 5917
+INFO 18/Feb/2021 19:24:59 basehttp 79540 123145497456640 "GET / HTTP/1.1" 200 5917

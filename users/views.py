@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, get_user_model
+
+User = get_user_model()
+
 
 from . import models, forms
 
@@ -8,18 +11,33 @@ def logout_page(request):
     return redirect('main:index')
 
 def login_page(request):
+    register = request.POST.get('register')
+    #
     if request.POST:
-        form = forms.LoginForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            user = authenticate(request, username=data['email'], password=data['password'])
-            if user:
-                login(request, user)
+        if register:
+            form = forms.RegisterForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
                 #
-                next_url = request.GET.get("next")
-                return redirect(next_url if next_url else "main:index")
-            else:
-                form.add_error('email', forms.forms.ValidationError('Неверное имя пользователя или пароль'))
+                user = User(**data) # Pass data to new user
+                user.set_password(data['password'])
+                user.save()
+                #
+                return redirect("?registered#login")
+
+        else:
+            # If Login mode
+            form = forms.LoginForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                user = authenticate(request, username=data['email'], password=data['password'])
+                if user:
+                    login(request, user)
+                    #
+                    next_url = request.GET.get("next")
+                    return redirect(next_url if next_url else "main:index") # Redirect to next if have
+                else:
+                    form.add_error('email', forms.forms.ValidationError('Неверное имя пользователя или пароль'))
     else:
         form = forms.LoginForm()
 
