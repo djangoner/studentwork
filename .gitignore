@@ -1,0 +1,7 @@
+*.json
+*.sqlite3
+*.db
+*.pyc
+__pycache__
+migrations
+media
