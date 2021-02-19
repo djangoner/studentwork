@@ -12,6 +12,12 @@ def logout_page(request):
     return redirect('main:index')
 
 def login_page(request):
+    def next_redirect():
+        return redirect(next_url if next_url else "main:index") # Redirect to next if have
+    #
+    next_url = request.GET.get("next")
+    if request.user.is_authenticated:
+        return next_redirect()
     register = request.POST.get('register')
     #
     if request.POST:
@@ -44,8 +50,7 @@ def login_page(request):
                 if user:
                     login(request, user)
                     #
-                    next_url = request.GET.get("next")
-                    return redirect(next_url if next_url else "main:index") # Redirect to next if have
+                    return next_redirect()
                 else:
                     form.add_error('email', forms.forms.ValidationError('Неверное имя пользователя или пароль'))
     else:

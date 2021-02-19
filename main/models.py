@@ -3,14 +3,17 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 from django.shortcuts import reverse
+import os.path
 
 
 _ = lambda tx: tx
 
 FILE_TYPES = [
     ('pdf', 'PDF'),
-    ('word', 'Word'),
+    ('doc', 'Doc'),
+    ('docx', 'Docx'),
     ('fb2', 'fb2'),
+    ('djvu', 'Djvu'),
 ]
 
 DOCUMENT_TYPES = [
@@ -53,7 +56,7 @@ class Discipline(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-    
+
     def get_absolute_url(self):
         return reverse('main:discipline', args=[self.slug])
 
@@ -76,6 +79,13 @@ class Document(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('main:document', args=[self.id])
+
+    @property
+    def file_download_url(self):
+        return reverse("main:secure_document", args=[os.path.basename(self.file.name)])
+
     title           = models.CharField(_('Заголовок'), max_length=50)
     type            = models.CharField(_('Тип работы'), choices=DOCUMENT_TYPES, max_length=20)
     created_year    = models.IntegerField(_('Год создания'), choices=year_choices(), default=current_year)
@@ -84,7 +94,7 @@ class Document(models.Model):
     discipline      = models.ForeignKey('Discipline', on_delete=models.SET_NULL, null=True, blank=True, related_name="documents",
                                     verbose_name=_('Дисциплина'))
 
-    file            = models.FileField(upload_to='documents', verbose_name=_('Файл'), null=True, blank=True,
+    file            = models.FileField(upload_to='secure/documents', verbose_name=_('Файл'), null=True, blank=True,
                                     validators=[FileExtensionValidator(allowed_extensions=[ext for ext, tx in FILE_TYPES])])
 
     file_type       = models.CharField(_('Тип файла'), choices=FILE_TYPES,
