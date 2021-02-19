@@ -15,11 +15,18 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 
 urlpatterns = [
     path("auth/logout", views.logout_page, name="logout"),
-    path("auth/login", views.login_page, name="login"),
+    path("login", views.login_page, name="login"),
     path("auth/change_password", views.change_password, name="change_password"),
-]
+
+]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# if settings.DEBUG:
+# urlpatterns += 

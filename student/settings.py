@@ -45,46 +45,73 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    ##-- Admin
+    'djangocms_admin_style',
+    ##-- Custom apps
+    'main.apps.MainConfig',
+    'users.apps.UsersConfig',
+    ##-- Built-in
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ##-- Third-party
+    ##-- CMS + Third-party
     # 'django_filters',
-    ##-- Custom apps
-    'main.apps.MainConfig',
-    'users.apps.UsersConfig',
+    'sekizai',
+    'django.contrib.sites',
+    'cms',
+    'menus',
+    'filer',
+    'easy_thumbnails',
+    'mptt',
+    'djangocms_link',
+    'djangocms_picture',
+    'djangocms_snippet',
+    'djangocms_text_ckeditor',
+    'treebeard',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    #-- For CMS
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+    'cms.middleware.utils.ApphookReloadMiddleware',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDINTIALS = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 ROOT_URLCONF = 'student.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai', # For CMS
+                'cms.context_processors.cms_settings',
             ],
         },
     },
@@ -149,7 +176,7 @@ INTERNAL_IPS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
 
 LANGUAGES = [
     ('ru', 'Русский'),
@@ -171,6 +198,33 @@ USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+SITE_ID = int(os.environ.get('SITE_ID', "1"))
+
+THUMBNAIL_HIGH_RESOLUTION = True
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters'
+)
+
+CMS_TEMPLATES = (
+    ('cms_base.html', 'Base'),
+)
+
+DJANGOCMS_SNIPPET_SEARCH = True
+DJANGOCMS_SNIPPET_CACHE = False # default value is True
+
+DJANGOCMS_SNIPPET_THEME = 'github'
+DJANGOCMS_SNIPPET_MODE = 'html'
+
+CKEDITOR_SETTINGS = {
+    'language': '{{ language }}',
+    'toolbar': 'CMS',
+    'skin': 'moono-lisa',
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -179,6 +233,7 @@ STATIC_ROOT = BASE_DIR / 'static_all'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -215,7 +270,8 @@ LOGGING = {
         },
         # Log to a text file that can be rotated by logrotate
         'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024,  # 3 MB
             'level': 'DEBUG',
             'filename': os.path.join(BASE_DIR, 'django.log'),
             # 'maxBytes': '1024*5', #5kb

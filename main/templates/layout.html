@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    {% load static i18n %}
+    {% load static i18n cms_tags sekizai_tags %}
     <!-- Made by @djangoner (telegram) -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,11 +21,13 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
     <!-- Extra head -->
+    {% render_block "css" %}
     {% block extrahead %}{% endblock %}
 </head>
 
 <body class="bg-light">
-
+    {% cms_toolbar %}
+    
     <!-- Menu -->
 
 
@@ -117,6 +119,7 @@
     <script src="//unpkg.com/vue@3.0.5"></script>
     <script src="//unpkg.com/bootstrap@4.6.0"></script>
     <!-- Extra body -->
+    {% render_block "js" %}
     {% block extrabody %}{% endblock %}
 </body>
 
