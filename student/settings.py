@@ -91,7 +91,7 @@ MIDDLEWARE = [
     'cms.middleware.utils.ApphookReloadMiddleware',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['*', "easyschool.1001cyprus.com"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDINTIALS = True
 X_FRAME_OPTIONS = 'SAMEORIGIN'
