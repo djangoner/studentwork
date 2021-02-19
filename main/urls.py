@@ -20,7 +20,9 @@ from . import views
 
 urlpatterns = [
     path("", views.index_page, name="index"),
-    
+    path("catalog/<str:discipline>", views.catalog_page, name="discipline"),
+    path("catalog", views.catalog_page, name="catalog"),
+
     #-- Cabinet
     path("cabinet", views.cabinet, name="cabinet")
 ]

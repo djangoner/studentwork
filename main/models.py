@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
+from django.shortcuts import reverse
 
 
 _ = lambda tx: tx
@@ -48,16 +49,23 @@ class Discipline(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('main:discipline', args=[self.slug])
+
+    @property
+    def visible_documents(self):
+        return self.documents.filter(approved=True)
 
     title = models.CharField(_('Название'), max_length=50)
     slug  = models.SlugField(_('Slug'), max_length=20, blank=True, null=True,
                     help_text=_("Это id который будет в URL страцы дисциплины. Должен быть на английском, без спецсимволов и пробелов."))
-    parent  = models.ForeignKey('Discipline', models.SET_NULL, null=True, blank=True, related_name='subdisciplines',
-                    verbose_name=_('Главная дисциплина'), help_text="Дисциплина будет под-дисциплиной по отношению к выбранной")
+    # parent  = models.ForeignKey('Discipline', models.SET_NULL, null=True, blank=True, related_name='subdisciplines',
+    #                 verbose_name=_('Главная дисциплина'), help_text="Дисциплина будет под-дисциплиной по отношению к выбранной")
 
 
 class Document(models.Model):

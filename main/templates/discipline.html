@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} {{discipline.title}} {% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_class %}bg-white{% endblock %}
+{% block body %}
+    <div class="container mt-3 bg-white py-3 documents-container">
+
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'main:catalog' %}">Каталог</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Дисциплина "{{discipline}}"</li>
+            </ol>
+          </nav>
+
+        <!-- Content -->
+        <h2 class="text-center mb-4">Дисциплина "{{discipline}}" <span class="h6 text-muted">{{discipline.visible_documents.count}}</span></h2>
+
+        {% include 'blocks/documents_list.html' with docs=page%}
+    </div>
+{% endblock %}

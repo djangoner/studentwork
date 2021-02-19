@@ -25,7 +25,7 @@
     {% block extrahead %}{% endblock %}
 </head>
 
-<body class="bg-light">
+<body class="{%block body_class%}bg-light{%endblock%}">
     {% cms_toolbar %}
     
     <!-- Menu -->
@@ -52,11 +52,11 @@
                     <a class="nav-link" href="#">Главная</a>
                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Как это работает</a>
+                    <a class="nav-link" href="/faq">Как это работает</a>
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Заказать работу</a>
+                    <a class="nav-link" href="#order-work">Заказать работу</a>
                 </li>
             </ul>
 
@@ -75,7 +75,10 @@
             </form>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'main:cabinet' %}" class="btn btn-primary"><i class="fa fa-user mr-1"></i>Кабинет</a>
+                <a href="{% url 'main:cabinet' %}" class="btn btn-primary"><i class="fa fa-user mr-1"></i>
+                    Кабинет
+                    <!-- <span class="badge badge-light" title="У вас новые сообщения!">9</span> -->
+                </a>
             {% else %}
                 <a href="{% url 'users:login' %}" class="btn btn-primary"><i class="fa fa-user mr-1"></i>Войти</a>
             {% endif %}
@@ -96,12 +99,12 @@
     <footer class="footer bg-dark text-light py-3">
         <div class="">
             <div class="footer__links container">
-                <a href="" class="">Условия использования сервиса</a>
-                <a href="" class="">FAQ</a>
-                <a href="" class="">Поддержка</a>
-                <a href="" class="">Для правообладателей</a>
-                <a href="" class="">Карта сайта</a>
-                <a href="" class="">Заказать работу</a>
+                <a href="/use-terms" class="">Условия использования сервиса</a>
+                <a href="/faq" class="">FAQ</a>
+                <a href="#support" class="">Поддержка</a>
+                <a href="/for-copyright-holders" class="">Для правообладателей</a>
+                <a href="/sitemap" class="">Карта сайта</a>
+                <a href="#order-work" class="">Заказать работу</a>
             </div>
 
             <hr>

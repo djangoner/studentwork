@@ -1,0 +1,28 @@
+<div class="card mb-3 document-item {%if doc.is_owned%}owned{%endif%}">
+    <div class="card-body">
+        <a href="{{doc.get_absolute_url}}" class="no-underline">
+            <h4 class="card-title">
+                {{doc.title}} {%if doc.file_type%}<span class="h6 badge badge-primary">{{doc.file_type|default:'doc'|upper}}</span>{%endif%}
+            </h4>
+        </a>
+
+        <a href="{{doc.get_absolute_url}}"><span class="text-muted small info-top">
+            Раздел: {{doc.discipline}}
+        </span></a>
+
+        <p class="card-text {%if doc.annotation|length >= 300%}long{%endif%}">
+            {% if doc.annotation %}
+            {{doc.annotation}}
+            {% endif %}
+        </p>
+        <div class="infos">
+            <span class="text-muted small info-bottom">Размер: 3 МБ</span>
+            <span class="text-muted small info-bottom">Год создания {{doc.created_year}}</span>
+            {% if document.document_pages %}
+                <span class="text-muted small info-bottom">Страниц {{doc.document_pages}}</span>
+            {% endif %}
+            <span class="text-muted small info-bottom">Добавлен {{doc.uploaded}}</span>
+        </div>
+        <a href="{{doc.get_absolute_url}}" class="btn btn-primary mt-1">Подробнее</a>
+    </div>
+</div>

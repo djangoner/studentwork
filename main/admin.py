@@ -2,23 +2,23 @@ from django.contrib import admin
 
 from . import models
 
-class DisciplineInline(admin.TabularInline):
-    model = models.Discipline
-    extra = 0
+# class DisciplineInline(admin.TabularInline):
+#     model = models.Discipline
+#     extra = 0
 
 @admin.register(models.Discipline)
 class DisciplineAdmin(admin.ModelAdmin):
-    list_display = ('title', 'parent')
+    list_display = ('title', 'slug')
     search_fields = ('title', )
     readonly_fields = ('slug', )
     fieldsets = (
         ('Общая информация', {
-            'fields': (('title', 'slug'), 'parent')
+            'fields': (('title', 'slug'))
             }),
     )
-    inlines = [
-        DisciplineInline
-    ]
+    # inlines = [
+    #     DisciplineInline
+    # ]
 
 @admin.register(models.Document)
 class DocumentAdmin(admin.ModelAdmin):

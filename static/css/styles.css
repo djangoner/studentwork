@@ -1,3 +1,5 @@
+/* Main styles */
+
 html, body{
     margin: 0;
     padding: 0;
@@ -64,12 +66,19 @@ footer.footer{
         width: 320px!important;
     }
 }
+.no-underline{
+    text-decoration: none!important;
+}
+
+
 
 /* Disciplines */
 
+
+
 .block__disciplines .items-count{
     color: #6c757d;
-    margin-right: 2rem;
+    margin-right: 0.5rem;
     padding: 2px;
     min-width: 2rem;
     width: auto;
@@ -82,7 +91,9 @@ footer.footer{
 .discipline-group{
     margin: 1rem 0;
 }
-
+.block__disciplines .discipline-name{
+    vertical-align: middle;
+}
 .block__disciplines .discipline-group > .line .discipline-name{
     font-size: 26px;
     font-weight: bold;
@@ -96,4 +107,47 @@ footer.footer{
 
 .stats .col:first-child{
     font-weight: bold;
+}
+
+/* Documents */
+
+.document-item{
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    transition: .3s ease;
+    cursor: default;
+    /* background: #f1fbff!important; */
+    /* background: #fcfcfc!important; */
+}
+.document-item:hover{
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+}
+.document-item .card-title{
+    margin-bottom: 0;
+    color: var(--dark)!important;
+    text-decoration: none!important;
+}
+.document-item .info-top{
+    margin-bottom: 0.2rem;
+}
+.document-item .infos span{
+    margin-right: 0.6rem;
+}
+.document-item h4 > .badge{
+    font-size: 12px;
+}
+.document-item .card-text{
+    position: relative;
+}
+.document-item .card-text.long:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top,
+    rgba(255,255,255, 1) 20%, 
+    rgba(255,255,255, 0) 80%
+ );
 }
