@@ -133,7 +133,7 @@ footer.footer{
     color: var(--dark)!important;
     text-decoration: none!important;
 }
-.document-item .info-top{
+.document-item .info-top, .document-item .info-bottom{
     margin-bottom: 0.2rem;
 }
 .document-item .infos span{

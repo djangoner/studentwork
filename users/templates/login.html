@@ -125,21 +125,25 @@ a.nav-link.active{
     <div class="text-center mb-2">
         <a href="">Забыли пароль?</a>
     </div>
-    <script>
-        document.querySelector('#pills-tab').style.visibility="none"
-        window.addEventListener('load', ()=>{
-            var pills = $('a[data-toggle="pill"]')
-
-            pills.on('show.bs.tab', function (e) {
-                location.hash = $(e.target).attr('href')
-            });
-            var activeTab = location.hash
-            if (activeTab) {
-                console.debug("Active tab:", activeTab)
-                tab = $('#pills-tab a[href="' + activeTab + '"]')
-                tab.tab('show');
-            }
-        })
-    </script>
 </div>
+{% endblock %}
+
+{% block extrabody %}
+<!-- Remember last tab -->
+
+<script>
+    $(document).ready(()=>{
+        var pills = $('a[data-toggle="tab"]')
+
+        pills.on('show.bs.tab', function (e) {
+            location.hash = $(e.target).attr('href')
+        });
+        var activeTab = location.hash
+        if (activeTab) {
+            console.debug("Active tab:", activeTab)
+            tab = $('#pills-tab a[href="' + activeTab + '"]')
+            tab.tab('show');
+        }
+    })
+</script>
 {% endblock %}

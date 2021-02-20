@@ -13,16 +13,30 @@
 
 
 {% block body %}
-    <div class="container main-container mt-3 py-3 bg-white">
+    <div class="container main-container mt-3 py-3 bg-white document-item">
+
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'main:catalog' %}">Каталог</a></li>
+                {% if doc.discipline %}
+                    <li class="breadcrumb-item"><a href="{{doc.discipline.get_absolute_url}}">Дисциплина "{{doc.discipline}}"</a> </li>
+                {% endif %}
+                <li class="breadcrumb-item active" aria-current="page">Документ "{{doc}}"</li>
+            </ol>
+          </nav>
+
+
         <!-- Title and info -->
         <h2 class="text-left mb-3">{{doc.title}}</h2>
         <div class="infos">
-            <span class="text-muted small info-bottom">Размер: 3 МБ</span>
-            <span class="text-muted small info-bottom">Год создания {{doc.created_year}}</span>
+            <span class="text-muted small info-top">Размер: {{doc.get_file_size}}</span>
+            <span class="text-muted small info-top">Год создания {{doc.created_year}}</span>
             {% if document.document_pages %}
-                <span class="text-muted small info-bottom">Страниц {{doc.document_pages}}</span>
+                <span class="text-muted small info-top">Страниц {{doc.document_pages}}</span>
             {% endif %}
-            <span class="text-muted small info-bottom">Добавлен {{doc.uploaded}}</span>
+            <span class="text-muted small info-top">Добавлен {{doc.uploaded}}</span>
         </div>
 
         <!-- Image and description -->
@@ -30,9 +44,13 @@
             <img src="//via.placeholder.com/300x400" alt="" class="img-fluid d-block mx-auto">
         </div>
 
+        
         <div class="text-desc mt-5">
-            <p>{{doc.annotation | default:"Нет аннотации!"}}</p>
+            <hr>
+            <p class="py-4 pl-2">{{doc.annotation | default:"Нет аннотации!"}}</p>
         </div>
+
+        <hr>
 
         <!-- Buy -->
 

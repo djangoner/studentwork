@@ -2,9 +2,16 @@
     <div class="card-body">
         <a href="{{doc.get_absolute_url}}" class="no-underline">
             <h4 class="card-title">
-                {{doc.title}} {%if doc.file_type%}<span class="h6 badge badge-primary">{{doc.file_type|default:'doc'|upper}}</span>{%endif%}
-                {% if doc in request.user.buyed_documents.all %}<span class="h6 badge badge-success">Сохранено</span>{%endif%}
-                {% if doc.author == request.user %}<span class="h6 badge badge-success">Ваш файл</span>{%endif%}
+                <span class="mr-2">{{doc.title}}</span>
+                {%if doc.file_type%}<span class="h6 badge badge-primary">{{doc.file_type|default:'doc'|upper}}</span>{%endif%}
+                {% if doc in request.user.buyed_documents.all %}<span class="h6 badge badge-primary">Сохранено</span>{%endif%}
+                {% if doc.author == request.user %}<span class="h6 badge badge-success">Ваш файл</span>
+                    <!-- Approving state -->
+                    {% if doc.approved == None %}<span class="h6 badge badge-warning">На модерации</span>
+                    {% elif doc.approved == True %}<span class="h6 badge badge-success">Проверен модератором</span>
+                    {% elif doc.approved == False %}<span class="h6 badge badge-danger">Отклонен модератором</span>
+                    {%endif%}
+                {%endif%}
             </h4>
         </a>
 
@@ -18,7 +25,7 @@
             {% endif %}
         </p>
         <div class="infos">
-            <span class="text-muted small info-bottom">Размер: 3 МБ</span>
+            <span class="text-muted small info-bottom">Размер: {{doc.get_file_size}}</span>
             <span class="text-muted small info-bottom">Год создания {{doc.created_year}}</span>
             {% if document.document_pages %}
                 <span class="text-muted small info-bottom">Страниц {{doc.document_pages}}</span>

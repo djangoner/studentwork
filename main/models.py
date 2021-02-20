@@ -78,6 +78,7 @@ class Document(models.Model):
     class Meta:
         verbose_name         = _('Документ')
         verbose_name_plural  = _('Документы')
+        ordering             = ['-uploaded']
 
     def __str__(self):
         return self.title
@@ -89,14 +90,25 @@ class Document(models.Model):
     def file_download_url(self):
         return reverse("main:secure_document", args=[os.path.basename(self.file.name)])
 
+    def get_file_size(self):
+        if self.file_size:
+            return f"{round(self.file_size, 2)} МБ."
+        else:
+            return "-"
+
     def save(self, *args, **kwargs):
         if self.file:
-            self.file_type = os.path.splitext(self.file.path)[-1][1:] # Split ext and remove dot
+            self.file_type = self.file.path.split(".")[-1] # Split ext and remove dot
             try:
                 self.document_pages = pages_count.pages_count(self.file.path)
             except Exception as err:
                 logging.exception("Pages counting error of document %s" % self.file.path, exc_info=err)
-                self.document_pages = 0
+                self.document_pages = None
+            try:
+                self.file_size = os.path.getsize(self.file.path) / (1024 ** 2) # In MB
+            except:
+                self.file_size = None
+            print(self.file_size)
         super().save(*args, **kwargs)
 
     title           = models.CharField(_('Заголовок'), max_length=50)
@@ -112,6 +124,8 @@ class Document(models.Model):
 
     file_type       = models.CharField(_('Тип файла'), choices=FILE_TYPES,
                                      max_length=10, null=True, blank=True)
+
+    file_size       = models.DecimalField(_('Размер файла'), null=True, blank=True, max_digits=5, decimal_places=2)
 
     document_pages  = models.IntegerField(_('Кол-во страниц'), null=True, blank=True)
 

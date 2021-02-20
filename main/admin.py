@@ -26,12 +26,12 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ('file_type', 'approved', 'language')
     search_fields = ('title', 'annotation', 'file', 'author')
 
-    readonly_fields = ('file_type', 'document_pages', 'uploaded', 'author')
+    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author')
     fieldsets = (
         ('Общая информация', {
             'fields': ('title', 'annotation', 'type', 'discipline', 'language')
             }),
         ('Файл', {
-            'fields': ('file', 'file_type', 'document_pages', 'approved', 'uploaded', 'author')
+            'fields': ('file', 'file_type', 'file_size', 'document_pages', 'approved', 'uploaded', 'author')
             }),
     )

@@ -50,25 +50,28 @@
 
         <div class="tab-pane" id="files" role="tabpanel" aria-labelledby="files-tab">
             <h2 class="text-center mb-5 mt-2">Ваши файлы</h2>
-            {% include 'blocks/documents_list.html'%}
+            {% include 'blocks/documents_list.html' with page_link_after="#files"%}
         </div>
     </div>
-
-    <script>
-        document.querySelector('#pills-tab').style.visibility="none"
-        window.addEventListener('load', ()=>{
-            var pills = $('a[data-toggle="tab"]')
-
-            pills.on('show.bs.tab', function (e) {
-                location.hash = $(e.target).attr('href')
-            });
-            var activeTab = location.hash
-            if (activeTab) {
-                console.debug("Active tab:", activeTab)
-                tab = $('#pills-tab a[href="' + activeTab + '"]')
-                tab.tab('show');
-            }
-        })
-    </script>
 </div>
+{% endblock %}
+
+{% block extrabody %}
+<!-- Remember last tab -->
+
+<script>
+    $(document).ready(()=>{
+        var pills = $('a[data-toggle="tab"]')
+
+        pills.on('show.bs.tab', function (e) {
+            location.hash = $(e.target).attr('href')
+        });
+        var activeTab = location.hash
+        if (activeTab) {
+            // console.debug("Active tab:", activeTab)
+            tab = $('#pills-tab a[href="' + activeTab + '"]')
+            tab.tab('show');
+        }
+    })
+</script>
 {% endblock %}
