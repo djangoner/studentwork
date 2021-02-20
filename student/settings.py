@@ -225,6 +225,8 @@ CKEDITOR_SETTINGS = {
     'skin': 'moono-lisa',
 }
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
