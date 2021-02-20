@@ -29,7 +29,7 @@ def paginate(request, objects):
         page = paginator.page(1)
     except:
         page = paginator.page(1)
-    
+
     return page
 
 
