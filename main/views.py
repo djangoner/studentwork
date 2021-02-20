@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404, reverse
-from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden
-from django.contrib import messages
 import logging
 import os
+from itertools import chain
+from django.shortcuts import render, get_object_or_404, reverse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden
+from django.contrib import messages
 
 from . import models
 
@@ -18,6 +19,18 @@ def login_required(func):
         return func(request, *args, **kwargs)
 
     return wrapper
+
+def paginate(request, objects):
+    paginator = Paginator(objects, per_page=20)
+    page_num = request.GET.get('page', '1')
+    try:
+        page = paginator.page(page_num)
+    except (PageNotAnInteger, EmptyPage):
+        page = paginator.page(1)
+    except:
+        page = paginator.page(1)
+    
+    return page
 
 
 def index_page(request):
@@ -42,18 +55,10 @@ def catalog_page(request, discipline= None):
         discipline_search = None
         objects = models.Document.objects.all()
     #
-    paginator = Paginator(objects, per_page=100)
-    page_num = request.GET.get('page', '1')
-    if page_num.isdigit(): # Validate that page is digit
-        page_num = int(page_num)
-    else:
-        page_num = 1
-    #
-    page = paginator.page(page_num)
 
     context = {
         "discipline": discipline_search if discipline else discipline,
-        "page": page
+        "page": paginate(request, objects)
     }
     template = "catalog_discipline.html" if discipline else "catalog.html"
     return render(request, template, context=context)
@@ -82,7 +87,7 @@ def document_download(request, id):
     # If not owning buy
     if not owning:
         if request.user.balance < price:
-            messages.add_message(request, messages.WARNING, "Недостаточно баллов для загрузки файла!")
+            messages.add_message(request, messages.WARNING, "Недостаточно баллов для загрузки файла! <a href='/faq'>Как пополнить баланс</a>")
             return HttpResponseRedirect(document.get_absolute_url())
         logging.info(f"Processing payment: user ({user}), price ({price}), balance({user.balance} => {user.balance - price})")
         user.balance = user.balance - price
@@ -121,4 +126,11 @@ def secure_document(request, path):
 
 @login_required
 def cabinet(request):
-    return render(request, "cabinet/cabinet.html")
+    docs_buyed   = request.user.buyed_documents.all()
+    docs_uploaded= models.Document.objects.filter(author=request.user)
+    docs = list(chain(docs_uploaded, docs_buyed))
+    #
+    context = {
+        "page": paginate(request, docs),
+    }
+    return render(request, "cabinet/cabinet.html", context=context)

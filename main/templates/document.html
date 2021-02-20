@@ -5,7 +5,7 @@
 
 {% block extrahead %}
 <style>
-    #main-content .alert{
+    .main-container .alert{
         display: inline-block;
     }
 </style>
@@ -13,7 +13,7 @@
 
 
 {% block body %}
-    <div class="container mt-3 py-3 bg-white">
+    <div class="container main-container mt-3 py-3 bg-white">
         <!-- Title and info -->
         <h2 class="text-left mb-3">{{doc.title}}</h2>
         <div class="infos">
@@ -30,13 +30,13 @@
             <img src="//via.placeholder.com/300x400" alt="" class="img-fluid d-block mx-auto">
         </div>
 
-        <div class="text-desc mt-4">
+        <div class="text-desc mt-5">
             <p>{{doc.annotation | default:"Нет аннотации!"}}</p>
         </div>
 
         <!-- Buy -->
 
-        <div class="buy-container">
+        <div class="buy-container text-center mt-5">
             {% if not doc.file %}
                 <div class="alert alert-danger">
                     <h4 class="alert-heading">Нет файла для загрузки</h4>

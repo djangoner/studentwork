@@ -10,11 +10,11 @@
 {% block body %}
 <div class="container my-md-3 py-3 bg-white">
     <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-                aria-controls="nav-profile" aria-selected="true">Профиль</a>
-            <a class="nav-item nav-link" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
-                aria-controls="nav-files" aria-selected="false">Мои файлы</a>
+        <div class="nav nav-tabs" id="pills-tab" role="tablist">
+            <a class="nav-item nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                aria-controls="profile" aria-selected="true">Профиль</a>
+            <a class="nav-item nav-link" id="files-tab" data-toggle="tab" href="#files" role="tab"
+                aria-controls="files" aria-selected="false">Мои файлы</a>
         </div>
     </nav>
     <!-- Tab contents -->
@@ -22,7 +22,7 @@
     <div class="tab-content" id="nav-tabContent">
 
         <!-- Tab profile -->
-        <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <h2 class="text-center mb-5 mt-2">Профиль "{% firstof user.first_name user.username user.email%}"</h2>
 
             <div class="stats" style="max-width:400px;">
@@ -48,9 +48,27 @@
 
         <!-- Tab files -->
 
-        <div class="tab-pane" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+        <div class="tab-pane" id="files" role="tabpanel" aria-labelledby="files-tab">
             <h2 class="text-center mb-5 mt-2">Ваши файлы</h2>
+            {% include 'blocks/documents_list.html'%}
         </div>
     </div>
+
+    <script>
+        document.querySelector('#pills-tab').style.visibility="none"
+        window.addEventListener('load', ()=>{
+            var pills = $('a[data-toggle="tab"]')
+
+            pills.on('show.bs.tab', function (e) {
+                location.hash = $(e.target).attr('href')
+            });
+            var activeTab = location.hash
+            if (activeTab) {
+                console.debug("Active tab:", activeTab)
+                tab = $('#pills-tab a[href="' + activeTab + '"]')
+                tab.tab('show');
+            }
+        })
+    </script>
 </div>
 {% endblock %}

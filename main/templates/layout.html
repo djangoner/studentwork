@@ -89,10 +89,10 @@
 
     </nav>
 
-    {% include 'blocks/messages.html' %}
-
+    
     <!-- Main content -->
     <div id="main-content">
+        {% include 'blocks/messages.html' %}
         {% block body %}{% endblock %}
     </div>
 

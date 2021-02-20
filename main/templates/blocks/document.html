@@ -3,6 +3,8 @@
         <a href="{{doc.get_absolute_url}}" class="no-underline">
             <h4 class="card-title">
                 {{doc.title}} {%if doc.file_type%}<span class="h6 badge badge-primary">{{doc.file_type|default:'doc'|upper}}</span>{%endif%}
+                {% if doc in request.user.buyed_documents.all %}<span class="h6 badge badge-success">Сохранено</span>{%endif%}
+                {% if doc.author == request.user %}<span class="h6 badge badge-success">Ваш файл</span>{%endif%}
             </h4>
         </a>
 
