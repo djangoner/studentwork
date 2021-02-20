@@ -23,6 +23,7 @@ urlpatterns = [
     path("catalog/<str:discipline>", views.catalog_page, name="discipline"),
     path("catalog", views.catalog_page, name="catalog"),
     path("file/<int:id>", views.document_page, name="document"),
+    path("file/<int:id>/download", views.document_download, name="document_download"),
 
     #-- Cabinet
     path("cabinet", views.cabinet, name="cabinet"),

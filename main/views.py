@@ -36,8 +36,10 @@ def index_page(request):
 
 def catalog_page(request, discipline= None):
     if discipline:
-        objects = get_object_or_404(models.Discipline, slug=discipline).visible_documents # Only visible
+        discipline_search = get_object_or_404(models.Discipline, slug=discipline)
+        objects = discipline_search.visible_documents # Only visible
     else:
+        discipline_search = None
         objects = models.Document.objects.all()
     #
     paginator = Paginator(objects, per_page=100)
@@ -50,7 +52,7 @@ def catalog_page(request, discipline= None):
     page = paginator.page(page_num)
 
     context = {
-        "discipline": discipline,
+        "discipline": discipline_search if discipline else discipline,
         "page": page
     }
     template = "catalog_discipline.html" if discipline else "catalog.html"
@@ -58,29 +60,48 @@ def catalog_page(request, discipline= None):
 
 def document_page(request, id):
     document = get_object_or_404(models.Document, pk=id)
-    buy_confirm = "buy_confirm" in request.GET
+
+    context = {
+        "doc": document,
+        # "price": price,
+        # "can_buy": can_buy,
+        "file_link": reverse("main:document_download", args=[document.id]),
+    }
+    return render(request, "document.html", context=context)
+
+
+def document_download(request, id):
+    document = get_object_or_404(models.Document, pk=id)
     price = BASE_PRICE
     owning = document in request.user.buyed_documents.all()
+    user = request.user
     #
-    if buy_confirm and request.user.is_authenticated and not owning:
-        user = request.user
+    if not request.user.is_authenticated: # If not logged in return to document
+        return HttpResponseRedirect(document.get_absolute_url() )
+
+    # If not owning buy
+    if not owning:
+        if request.user.balance < price:
+            messages.add_message(request, messages.WARNING, "Недостаточно баллов для загрузки файла!")
+            return HttpResponseRedirect(document.get_absolute_url())
         logging.info(f"Processing payment: user ({user}), price ({price}), balance({user.balance} => {user.balance - price})")
         user.balance = user.balance - price
         user.buyed_documents.add(document)
         user.save()
         logging.info(f"Payment of user {user} processed.")
-        messages.add_message(request, messages.SUCCESS, "Работа успешно куплена!")
-        return HttpResponseRedirect("?#buyed")
+        # messages.add_message(request, messages.SUCCESS, "Работа успешно куплена!")
+        # return HttpResponseRedirect("?#buyed")
+    else:
+        logging.info(f"User {user} is already owning file")
     #
-    can_buy = (request.user.balance >= BASE_PRICE) if request.user.is_authenticated else None
-
+    # can_buy = (request.user.balance >= BASE_PRICE) if request.user.is_authenticated else None
     context = {
-        "doc": document,
+        "document": document,
         "price": price,
-        "can_buy": can_buy,
-        "file_link": document.file_download_url if owning else "",
+        "download_link": document.file_download_url,
     }
-    return render(request, "document.html", context=context)
+    return render(request, "document_download.html", context=context)
+
 
 def secure_document(request, path):
     base_path = "media/secure/documents"

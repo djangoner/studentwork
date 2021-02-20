@@ -41,19 +41,24 @@
                 <div class="alert alert-danger">
                     <h4 class="alert-heading">Нет файла для загрузки</h4>
                 </div>
-            {% elif can_buy == None%}
+            {% elif not user.is_authenticated%}
                 <div class="alert alert-warning">
                     <h4 class="alert-heading">Войдите в аккаунт для загрузки</h4>
                     <a href="{% url 'users:login' %}?next={{request.path}}#buy" class="btn btn-success mt-3">Войти</a>
                 </div>
-            {% elif doc in user.buyed_documents.all %}
+            <!-- {# elif doc in user.buyed_documents.all #}
                 <div class="alert alert-success">
                     <h4 class="alert-heading">Вы можете скачать файл</h4>
                     <p>Файл уже был куплен.</p>
                     <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3" download>Скачать</a>
-                </div>
+                </div> -->
             {% else %}
-                <div class="alert alert-success" id="buy">
+                <div class="alert alert-success text-center">
+                    <h4 class="alert-heading">Вы можете скачать файл</h4>
+                    <!-- <p>Файл уже был куплен.</p> -->
+                    <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3">Скачать</a>
+                </div>
+                <!-- <div class="alert alert-success" id="buy">
                     <h4 class="alert-heading">
                         Вы можете купить эту работу
                     </h4>
@@ -62,7 +67,7 @@
                     <div class="btns">
                         <a href="?buy_confirm" class="btn btn-success btn-shadow mt-3">Купить!</a>
                     </div>
-                </div>
+                </div> -->
             {% endif %}
         </div>        
     </div>
