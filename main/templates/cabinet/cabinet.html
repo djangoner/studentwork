@@ -32,24 +32,33 @@
                 </div>
                 <div class="row">
                     <div class="col">Загружено работ</div>
-                    <div class="col"><b>0</b></div>
+                    <div class="col"><b>{{docs_uploaded}}</b></div>
                 </div>
                 <div class="row">
-                    <div class="col">Скачано работ</div>
-                    <div class="col"><b>0</b></div>
+                    <div class="col">Сохранено работ</div>
+                    <div class="col"><b>{{docs_saved}}</b></div>
                 </div>
             </div>
 
             <div class="btns mt-5">
-                <a href="{% url 'users:logout'%}" class="btn btn-danger">Выйти из аккаунта</a>
-                <a href="{% url 'users:change_password' %}" class="btn btn-warning" id="btn-changepass">Сменить пароль</a>
+                <div class="my-5">
+                    <a href="#" class="btn btn-success">Пополнить баланс</a>
+                    <a href="/faq#topup" class="mr-2"><i class="fa fa-question"></i> Как пополнить баланс бесплатно</a>
+                </div>
+                <div class="my-4">
+                    <a href="{% url 'users:logout'%}" class="btn btn-danger">Выйти из аккаунта</a>
+                    <a href="{% url 'users:change_password' %}" class="btn btn-warning" id="btn-changepass">Сменить пароль</a>
+                </div>
             </div>
         </div>
 
         <!-- Tab files -->
 
         <div class="tab-pane" id="files" role="tabpanel" aria-labelledby="files-tab">
-            <h2 class="text-center mb-5 mt-2">Ваши файлы</h2>
+            <div class="mb-5">
+                <h2 class="text-center mb-3 mt-2">Ваши файлы</h2>
+                <a href="{% url 'main:document_upload' %}" class="btn btn-primary">Загрузить документ</a> <a href="/faq#topup" class="ml-2"><i class="fa fa-question mr-2"></i>Помощь</a>
+            </div>
             {% include 'blocks/documents_list.html' with page_link_after="#files"%}
         </div>
     </div>

@@ -27,6 +27,7 @@ urlpatterns = [
 
     #-- Cabinet
     path("cabinet", views.cabinet, name="cabinet"),
+    path("cabinet/document_upload", views.document_upload, name="document_upload"),
 
     ##
     path("secure_media/document/<path:path>", views.secure_document, name="secure_document"),

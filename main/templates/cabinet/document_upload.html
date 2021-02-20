@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% load static i18n custom_tags %}
+
+{% block title %} Загрузка документа {% endblock %}
+
+{% block extrahead %}
+<style>
+    form span.required{
+        color: red;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container main-container mt-3 py-3">
+        <h2 class="text-center mb-3 mt-3">Загрузка документа</h2>
+        {% if can_upload %}
+            <div class="mb-5 mt-3">
+                <p class="m-0"> Для загрузки документа заполните форму ниже.</p>
+                <p class="m-0"> После проверки модераторами вы получите 10 монет на баланс. </p>
+                <p class="m-0"> Помните, что максимальный размер файла - 10 МБ. </p>
+            </div>
+            {% if form.errors %}
+                <div class="errors-container">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{field.label}}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Form -->
+            <form action="" method="post" class="mb-5" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label class="label font-weight-bold">{{field.label}} {% if field.field.required %} <span class="required">*</span>{% endif %}</label>
+                        {% if field.field.widget.input_type == "file" %}
+                            {{field|add_classes:'form-control-file'}}
+                        {% else %}
+                            {{field|add_classes:'form-control'}}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <div class="text-center my-5">
+                    <input type="submit" value="Отправить" class="btn btn-success">
+                </div>
+            </form>
+        {% else %}
+            <div class="text-center my-5">
+                <div class="alert alert-warning d-inline-block">
+                    <h4 class="alert-heading">У вас много документов на модерации!</h4>
+                    <p>Пожалуйста, подождите пока они будут проверены.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+{% endblock %}

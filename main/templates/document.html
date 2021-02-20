@@ -39,6 +39,16 @@
             <span class="text-muted small info-top">Добавлен {{doc.uploaded}}</span>
         </div>
 
+        <!-- If it's file owner and document on moderation -->
+        {% if doc.approved == None and doc.author == user %}
+            <div class="text-center my-4">
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Этот документ на модерации!</h4>
+                    <p>Другие пользователи не видят его.</p>
+                </div>
+            </div>
+        {% endif%}
+
         <!-- Image and description -->
         <div class="mx-auto my-3">
             <img src="//via.placeholder.com/300x400" alt="" class="img-fluid d-block mx-auto">

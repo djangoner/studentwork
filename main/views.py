@@ -1,12 +1,12 @@
 import logging
 import os
 from itertools import chain
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden
 from django.contrib import messages
 
-from . import models
+from . import models, forms
 
 BASE_PRICE = 10
 
@@ -78,7 +78,8 @@ def document_page(request, id):
 def document_download(request, id):
     document = get_object_or_404(models.Document, pk=id)
     price = BASE_PRICE
-    owning = document in request.user.buyed_documents.all()
+    # Owning if document buyed or current user is author
+    owning = document in request.user.buyed_documents.all() or request.user == document.author
     user = request.user
     #
     if not request.user.is_authenticated: # If not logged in return to document
@@ -108,6 +109,33 @@ def document_download(request, id):
     return render(request, "document_download.html", context=context)
 
 
+def document_upload(request):
+    #
+    docs_on_moderation = models.Document.objects.filter(author=request.user, approved=None).count()
+    can_upload = docs_on_moderation < 5
+    #
+    if request.POST and can_upload:
+        form = forms.DocumentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            #
+            doc = form.save(commit=False)
+            doc.approved = None
+            doc.author = request.user
+            #
+            doc.save()
+            messages.add_message(request, messages.SUCCESS, "Документ отправлен на модерацию")
+            return HttpResponseRedirect(reverse("main:cabinet") + "#files")
+    else:
+        form = forms.DocumentUploadForm()
+    #
+    context = {
+        "form": form,
+        "can_upload": can_upload
+    }
+    return render(request, "cabinet/document_upload.html", context=context)
+
+
 def secure_document(request, path):
     base_path = "media/secure/documents"
     file      = os.path.join(base_path, path)
@@ -132,5 +160,7 @@ def cabinet(request):
     #
     context = {
         "page": paginate(request, docs),
+        "docs_saved": docs_buyed.count(),
+        "docs_uploaded": docs_uploaded.count()
     }
     return render(request, "cabinet/cabinet.html", context=context)
