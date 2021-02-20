@@ -1,9 +1,12 @@
 import datetime
+import logging
+import os.path
 from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 from django.shortcuts import reverse
-import os.path
+
+from . import pages_count
 
 
 _ = lambda tx: tx
@@ -86,6 +89,16 @@ class Document(models.Model):
     def file_download_url(self):
         return reverse("main:secure_document", args=[os.path.basename(self.file.name)])
 
+    def save(self, *args, **kwargs):
+        if self.file:
+            self.file_type = os.path.splitext(self.file.path)[-1][1:] # Split ext and remove dot
+            try:
+                self.document_pages = pages_count.pages_count(self.file.path)
+            except Exception as err:
+                logging.exception("Pages counting error of document %s" % self.file.path, exc_info=err)
+                self.document_pages = 0
+        super().save(*args, **kwargs)
+
     title           = models.CharField(_('Заголовок'), max_length=50)
     type            = models.CharField(_('Тип работы'), choices=DOCUMENT_TYPES, max_length=20)
     created_year    = models.IntegerField(_('Год создания'), choices=year_choices(), default=current_year)
@@ -103,7 +116,7 @@ class Document(models.Model):
     document_pages  = models.IntegerField(_('Кол-во страниц'), null=True, blank=True)
 
     uploaded        = models.DateTimeField(_('Загружен'), editable=False, auto_now_add=True)
-    approved        = models.BooleanField(_('Проверен'), default=None, null=True, blank=True,
+    approved        = models.BooleanField(_('Проверен'), default=True, null=True, blank=True,
                                     help_text=_('Статус проверки загруженного документа модератором'))
     author          = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, null=True, blank=True,
                                     verbose_name=_('Автор'))
