@@ -7,3 +7,4 @@ djangocms-text-ckeditor==4.0.0
 djangocms-link==3.0.0
 djangocms-picture==3.0.0
 djangocms-snippet==3.0.0
+django-treebeard==4.4
