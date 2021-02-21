@@ -31,6 +31,12 @@ DOCUMENT_TYPES = [
     ('recomend', 'Методические рекомендации'),
 ]
 
+APPROVED_CHOICES = [
+    (True, 'Проверен'),
+    (False, 'Отклонен'),
+    (None, 'Не проверен'),
+]
+
 def year_choices():
     return [(r,r) for r in range(1990, datetime.date.today().year+1)]
 
@@ -131,7 +137,7 @@ class Document(models.Model):
     document_pages  = models.IntegerField(_('Кол-во страниц'), null=True, blank=True)
 
     uploaded        = models.DateTimeField(_('Загружен'), editable=False, auto_now_add=True)
-    approved        = models.BooleanField(_('Проверен'), default=True, null=True, blank=True,
+    approved        = models.BooleanField(_('Статус проверки'), default=True, null=True, blank=True, choices=APPROVED_CHOICES,
                                     help_text=_('Статус проверки загруженного документа модератором'))
     author          = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, null=True, blank=True,
                                     verbose_name=_('Автор'))

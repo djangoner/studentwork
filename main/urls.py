@@ -31,4 +31,5 @@ urlpatterns = [
 
     ##
     path("secure_media/document/<path:path>", views.secure_document, name="secure_document"),
+    path("media/secure/documents/<path:path>", views.secure_document, name="secure_document2"),
 ]
