@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% load static i18n custom_tags %}
+{% load static i18n cms_tags custom_tags %}
 
 {% block title %} Загрузка документа {% endblock %}
 
@@ -17,10 +17,14 @@
     <div class="container main-container mt-3 py-3">
         <h2 class="text-center mb-3 mt-3">Загрузка документа</h2>
         {% if can_upload %}
-            <div class="mb-5 mt-3">
-                <p class="m-0"> Для загрузки документа заполните форму ниже.</p>
-                <p class="m-0"> После проверки модераторами вы получите 10 монет на баланс. </p>
-                <p class="m-0"> Помните, что максимальный размер файла - 10 МБ. </p>
+            <div class="mb-5 mt-5">
+                <ul class="alert alert-info p-4 d-block-inline w-fit-content ml-2">
+                    <h4 class="alert-heading mt-2 mb-4">Информация:</h4>
+                    <li class="m-0"> Для загрузки документа заполните форму ниже.</li>
+                    <li class="m-0"> После проверки модераторами вы получите 10 монет на баланс. </li>
+                    <li class="m-0"> Помните, что максимальный размер файла - 10 МБ. </li>
+                </ul>
+                {% placeholder "info" %}
             </div>
             {% if form.errors %}
                 <div class="errors-container">

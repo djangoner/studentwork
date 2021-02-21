@@ -80,6 +80,9 @@ footer.footer{
 .main-container, #main-content > .container{
     box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.15);
 }
+.w-fit-content{
+    width: fit-content!important;
+}
 
 
 /* Disciplines */
