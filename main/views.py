@@ -158,10 +158,13 @@ def cabinet(request):
     docs_buyed   = request.user.buyed_documents.all()
     docs_uploaded= models.Document.objects.filter(author=request.user)
     docs = list(chain(docs_uploaded, docs_buyed))
+    can_download_files = int(request.user.balance / BASE_PRICE)
     #
     context = {
         "page": paginate(request, docs),
         "docs_saved": docs_buyed.count(),
-        "docs_uploaded": docs_uploaded.count()
+        "docs_uploaded": docs_uploaded.count(),
+        "BASE_PRICE": BASE_PRICE,
+        "can_download_files": can_download_files,
     }
     return render(request, "cabinet/cabinet.html", context=context)

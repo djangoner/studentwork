@@ -25,7 +25,7 @@
         <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <h2 class="text-center mb-5 mt-2">Профиль "{% firstof user.first_name user.username user.email%}"</h2>
 
-            <div class="stats" style="max-width:400px;">
+            <div class="stats" style="max-width:450px;">
                 <div class="row">
                     <div class="col">Email:</div>
                     <div class="col"><b>{{user.email}}</b></div>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="row">
                     <div class="col">Баланс</div>
-                    <div class="col"><b>{{user.balance}} балл(ов)</b></div>
+                    <div class="col"><b>{{user.balance}} балл(ов)</b>, <b>~ {{can_download_files}} файл(ов)</b></div>
                 </div>
                 <div class="row">
                     <div class="col">Загружено работ</div>
