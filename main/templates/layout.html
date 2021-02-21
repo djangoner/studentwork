@@ -51,13 +51,15 @@
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="#">Главная</a>
                 </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/faq">Как это работает</a>
-                </li>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#order-work">Заказать работу</a>
-                </li>
+                {% static_placeholder "top_menu" or %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/faq">Как это работает</a>
+                    </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#order-work">Заказать работу</a>
+                    </li>
+                {% endstatic_placeholder%}
             </ul>
 
             <form class="form-inline" class="search-form">
@@ -101,21 +103,23 @@
     <footer class="footer bg-dark text-light py-3">
         <div class="">
             <div class="footer__links container">
-                {# static_placeholder "footer_links" or #}
+                {% static_placeholder "footer_links" or %}
                     <a href="/use-terms" class="">Условия использования сервиса</a>
                     <a href="/faq" class="">FAQ</a>
                     <a href="#support" class="">Поддержка</a>
                     <a href="/for-copyright-holders" class="">Для правообладателей</a>
                     <a href="/sitemap" class="">Карта сайта</a>
                     <a href="#order-work" class="">Заказать работу</a>
-                {# endstatic_placeholder #}
+                {% endstatic_placeholder %}
             </div>
 
             <hr>
 
             <div class="footer__copyright container">
                 <span class="text-light" style="font-size: 14px" title="V{{VERSION}}">
+                    {% static_placeholder "footer_text" or %}
                     Copyright &copy; 2021
+                    {% endstatic_placeholder %}
                 </span>
             </div>
         </div>

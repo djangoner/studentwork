@@ -36,6 +36,9 @@ footer.footer{
     white-space: nowrap;
     display: inline-block;
 }
+.footer__links a:nth-child(1){
+    padding-left: 0;
+}
 .footer hr{
     background-color: #e3f2fd;
     margin: 0.6rem 0;

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import ugettext_lazy as _
 import os
 import dotenv
 
@@ -226,6 +227,29 @@ CKEDITOR_SETTINGS = {
 }
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
+
+CMS_PLACEHOLDER_CONF = {
+    'top_menu': {
+        'name': _('Верхнее меню'),
+        'plugins': ['TopMenuPlugin'],
+    },
+    'footer_links': {
+        'name': _('Ссылки футера'),
+        'plugins': ['LinkPlugin'],
+    },
+    'footer_text':{
+        'name': _('Текст футера'),
+        'plugins': ['TextPlugin', 'LinkPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'TextPlugin',
+                'values': {
+                    'body': 'Copyright &copy; 2021'
+                }
+            }
+        ]
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

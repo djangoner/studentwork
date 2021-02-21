@@ -136,7 +136,14 @@ class Document(models.Model):
     author          = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, null=True, blank=True,
                                     verbose_name=_('Автор'))
 
+#########################
+###--- Plugins
 
+# class TopMenu(models.Model):
+
+
+
+##########################
 ###--- SIGNALS
 
 @receiver(models.signals.post_delete, sender=Document)
