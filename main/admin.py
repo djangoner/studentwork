@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 
 from . import models
 
@@ -26,7 +27,7 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ('file_type', 'approved', 'language')
     search_fields = ('title', 'annotation', 'file', 'author')
 
-    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author')
+    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved')
     fieldsets = (
         ('Общая информация', {
             'fields': ('title', 'annotation', 'type', 'discipline', 'language')
@@ -35,3 +36,22 @@ class DocumentAdmin(admin.ModelAdmin):
             'fields': ('file', 'file_type', 'file_size', 'document_pages', 'approved', 'uploaded', 'author')
             }),
     )
+    change_form_template = "admin/change_document.html"
+
+    def response_change(self, request, obj):
+        if "_document_accept" in request.POST:
+            obj.approved = True
+            obj.save()
+            self.message_user(request, "Вы проверили документ, бонус автору будет отправлен,")
+            return HttpResponseRedirect(".")
+        elif "_document_recheck" in request.POST:
+            obj.approved = None
+            obj.save()
+            self.message_user(request, "Вы пометили документ для модерации.")
+            return HttpResponseRedirect(".")
+        elif "_document_decline" in request.POST:
+            obj.approved = False
+            obj.save()
+            self.message_user(request, "Вы отклонили документ, он будет удален.")
+            return HttpResponseRedirect(".")
+        return super().response_change(request, obj)

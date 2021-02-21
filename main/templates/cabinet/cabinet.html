@@ -27,6 +27,14 @@
 
             <div class="stats" style="max-width:400px;">
                 <div class="row">
+                    <div class="col">Email:</div>
+                    <div class="col"><b>{{user.email}}</b></div>
+                </div>
+                <div class="row">
+                    <div class="col">Email подтвержден:</div>
+                    <div class="col"><b>{%if user.email_confirmed%}<span class="text-success">Да</span>{%else%}<span class="text-warning">Нет</span>{%endif%}</b></div>
+                </div>
+                <div class="row">
                     <div class="col">Баланс</div>
                     <div class="col"><b>{{user.balance}} балл(ов)</b></div>
                 </div>

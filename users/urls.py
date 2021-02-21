@@ -15,6 +15,7 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 from django.conf import settings
 
 from . import views
@@ -23,8 +24,8 @@ urlpatterns = [
     path("auth/logout", views.logout_page, name="logout"),
     path("login", views.login_page, name="login"),
     path("auth/change_password", views.change_password, name="change_password"),
+    path("auth/email_confirm", views.email_confirm, name="email_confirm"),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,50})/$',
+        views.activate, name='activate'),
 
 ]
-
-# if settings.DEBUG:
-# urlpatterns += 

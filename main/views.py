@@ -8,7 +8,7 @@ from django.contrib import messages
 
 from . import models, forms
 
-BASE_PRICE = 10
+BASE_PRICE = models.BASE_PRICE
 
 def login_required(func):
     def wrapper(request, *args, **kwargs):

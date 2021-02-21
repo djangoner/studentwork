@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} Активация аккаунта {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-3 py-3">
+        {% if activated %}
+            {% if already_activated %}
+                <h2 class="text-center my-4">Email уже подтвержден</h2>
+            {% else %}
+                <h2 class="text-center my-4">Email успешно подтвержден</h2>
+            {% endif %}
+            <div class="btns text-center">
+                <a href="/" class="btn btn-primary">На главную</a>
+            </div>
+        {% else %}
+            <h2 class="text-center my-4">Ошибка подтверждения Email</h2>
+            <div class="btns text-center">
+                <a href="/" class="btn btn-primary">На главную</a>
+                <a href="/login" class="btn btn-primary">На страницу входа</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+{% endblock %}

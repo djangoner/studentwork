@@ -100,17 +100,22 @@ a.nav-link.active{
 
                 <div class="mb-3">
                     <label>Имя пользователя</label>
-                    <input type="text" name="username" class="form-control" value="{% firstof form.username.value '' %}" placeholder="john" required>
+                    <input type="text" name="username" class="form-control" value="{% firstof form.username.value '' %}" placeholder="johnuser123" required>
                 </div>
 
                 <div class="mb-3">
                     <label>Ваше имя</label>
-                    <input type="text" name="first_name" class="form-control" value="{% firstof form.first_name.value '' %}" placeholder="john@gmail.com" required>
+                    <input type="text" name="first_name" class="form-control" value="{% firstof form.first_name.value '' %}" placeholder="John" required>
                 </div>
 
                 <div class="mb-3">
                     <label>Пароль</label>
                     <input type="password" name="password" class="form-control" placeholder="********" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Повторите пароль</label>
+                    <input type="password" name="password2" class="form-control" placeholder="********" required>
                 </div>
 
                 <div class="text-center">
@@ -133,7 +138,7 @@ a.nav-link.active{
 
 <script>
     $(document).ready(()=>{
-        var pills = $('a[data-toggle="tab"]')
+        var pills = $('a[data-toggle="pill"]')
 
         pills.on('show.bs.tab', function (e) {
             location.hash = $(e.target).attr('href')

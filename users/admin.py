@@ -6,7 +6,7 @@ from . import models
 @admin.register(models.User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'email', 'last_login', 'balance')
-    list_filter = ('is_active', 'is_superuser', 'is_staff')
+    list_filter = ('is_active', 'is_superuser', 'is_staff', 'email_confirmed')
     search_fields = ('username', 'first_name', 'last_name', 'email')
 
     fieldsets = (

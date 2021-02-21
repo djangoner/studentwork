@@ -264,7 +264,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-if not DEBUG or PRODUCTION:
+if not DEBUG or PRODUCTION or "EMAIL_HOST" in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     # EMAIL_SERVER = os.environ.get("EMAIL_SERVER")
     EMAIL_HOST = os.environ.get("EMAIL_HOST")

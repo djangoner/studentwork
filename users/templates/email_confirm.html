@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %}  {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-3 py-3">
+        
+        <!-- Errors -->
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Main -->
+        {% if user.email_confirmed%}
+            <h2 class="text-center my-5">Email уже подтвержден</h2>
+            <div class="bnts">
+                <a href="/" class="btn btn-primary">На главную</a>
+            </div>
+        {% elif "incorrect" in request.GET%}
+            <h2 class="text-center my-5">Изменить Email</h2>
+            <form action="" method="post" style="max-width:500px" class="mx-auto my-3">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label>Старый Email</label>
+                    <span class="h5">{{email}}</span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Новый Email:</label>
+                    <input type="email" name="email" placeholder="email@gmail.com" class="form-control">
+                    <div class="text-center">
+                        <input type="submit" value="Изменить Email" class="btn btn-success my-3">
+                    </div>
+                </div>
+            </form>
+        {% elif email and user %}
+            <h2 class="text-center my-5">Подтверждение Email</h2>
+            <h4 class="text-center">Откройте письмо, которое пришло на ваш Email <span class="text-primary">{{email}}</span></h4>
+            <h5 class="text-center">
+                <a href="?incorrect">Неверный email?</a>
+                <span class="mx-2">|</span>
+                <a href="?resend">Повторная отправка</a>
+            </h5>
+        {% else %}
+            <h2 class="text-center my-5">Ошибка подтверждения Email</h2>
+            <h3 class="text-center">Обратитесь в техподдержку</h3>
+            <h4 class="text-center">E:{{email}};U:{{user.id}};UC:{{user.email_confirmed}}</h4>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+{% endblock %}

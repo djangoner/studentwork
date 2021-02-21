@@ -10,6 +10,8 @@ from django.dispatch import receiver
 
 from . import pages_count
 
+BASE_PRICE = 10
+
 
 _ = lambda tx: tx
 
@@ -32,7 +34,7 @@ DOCUMENT_TYPES = [
 ]
 
 APPROVED_CHOICES = [
-    (True, 'Проверен'),
+    (True, 'Принят'),
     (False, 'Отклонен'),
     (None, 'Не проверен'),
 ]
@@ -104,6 +106,7 @@ class Document(models.Model):
             return "-"
 
     def save(self, *args, **kwargs):
+        # Handle file
         if self.file:
             self.file_type = self.file.path.split(".")[-1] # Split ext and remove dot
             try:
@@ -151,6 +154,29 @@ class Document(models.Model):
 
 ##########################
 ###--- SIGNALS
+
+@receiver(models.signals.pre_save, sender=Document)
+def document_approving_state(sender, instance, **kwargs):
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        print("Document created")
+    else:
+        if not obj.approved == instance.approved: # Field has changed
+            old = obj.approved
+            new = instance.approved
+            author = obj.author
+            #
+            logging.info(f"Approving changed {old} => {new}")
+            if new == True:# From any => approved
+                author.balance += BASE_PRICE
+                author.save()
+                logging.info(f"Author balance is +{BASE_PRICE} !")
+            elif old == True:# From approved => any
+                author.balance += -BASE_PRICE
+                author.save()
+                logging.info(f"Author balance is -{BASE_PRICE} !")
+
 
 @receiver(models.signals.post_delete, sender=Document)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
