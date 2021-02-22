@@ -3,7 +3,9 @@
 {% block submit_buttons_bottom %}
 {{ block.super }}
 <div class="submit-row">
-    <a href="{% url 'admin:users_user_change' original.author.id %}">Просмотр автора</a>
+    {% if original.author %}
+        <a href="{% url 'admin:users_user_change' original.author.id %}">Просмотр автора</a>
+    {% endif %}
     <input type="submit" value="Принять документ" name="_document_accept" class="btn-success"
         title="Статус проверки будет 'принят', будет начислен бонус автору" {% if original.approved == True %}disabled{% endif %}>
     <input type="submit" value="Пересмотреть документ" name="_document_recheck" class="btn-success"
