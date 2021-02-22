@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login, authenticate, logout, get_user_model, password_validation
 from django.http import HttpResponseRedirect
@@ -5,7 +6,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages
 from . import models, forms
-from .tokens import account_activation_token
+from .tokens import account_activation_token, password_reset_generator
 
 User = get_user_model()
 
@@ -86,7 +87,9 @@ def change_password(request):
             else:
                 request.user.set_password(data["password"])
                 request.user.save()
-                context['changed'] = True
+                messages.add_message(request, messages.SUCCESS, "Пароль успешно изменен. Вам требуется войти в аккаунт с новым паролем.")
+                return redirect('main:cabinet')
+                # context['changed'] = True
     else:
         form = forms.ChangePasswordForm()
 
@@ -106,7 +109,7 @@ def email_confirm(request):
         try:
             user.send_confirmation_email()
         except:
-            messages.add_message(request, messages.ERROR, "Не удалось отправить письмо, проверьте Email адрес")
+            messages.add_message(request, messages.ERROR, "Не удалось отправить письмо, проверьте правильно ли указан Email адрес")
         else:
             messages.add_message(request, messages.INFO, "Письмо успешно отправлено")
         return HttpResponseRedirect("?")
@@ -159,3 +162,56 @@ def activate(request, uidb64, token):
         "already_activated": already_activated
     }
     return render(request, "account_activated.html", context=context)
+
+
+def password_reset_page(request):
+    if request.POST:
+        form = forms.EmailChangeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            email = data['email']
+            #
+            matching_users = models.User.objects.filter(email=email)
+            if matching_users.count() < 1:
+                messages.add_message(request, messages.WARNING, "Указанный Email не привязан к пользователю")
+            else:
+                try:
+                    matching_users.first().send_password_reset_email()
+                except Exception as err:
+                    logging.exception("Password reset email err", exc_info=err)
+                    messages.add_message(request, messages.WARNING, "Не удалось отправить письмо на указанный Email")
+                else:
+                    messages.add_message(request, messages.SUCCESS, "Письмо успешно отправлено, проверьте ваш Email")
+        else:
+            messages.add_message(request, messages.WARNING, "Не валидный Email адресс")
+    return render(request, "password_reset_page.html")
+
+
+def password_reset_form(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = models.User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    ##
+    if not user:
+        messages.add_message(request, messages.INFO, 'Ссылка сброса пароля была недействительна')
+        return redirect('users:main')
+    if request.POST:
+        form = forms.ChangePasswordForm(request.POST)
+        if form.is_valid() and user:
+            data = form.cleaned_data
+            if data["password"] != data["password2"]:
+                form.add_error('password', forms.forms.ValidationError('Пароли не совпадают'))
+            else:
+                user.set_password(data["password"])
+                user.save()
+                messages.add_message(request, messages.SUCCESS, "Пароль успешно изменен")
+                return redirect("users:login")
+    else:
+        form = forms.ChangePasswordForm()
+    context = {
+        'user': user,
+        'form': form,
+    }
+    return render(request, "change_password.html", context=context)
