@@ -165,13 +165,15 @@ def search_results(request):
     per_page  = 10
     #-- Args check
     query = request.GET.get("search")
-    if not query:
-        return HttpResponse("no_query", status=422)
+    # if query is None:
+        # return redirect("main:index")
+        # return HttpResponse("no_query", status=422)
 
     try:
         page  = int(request.GET.get("page", "1"))
     except ValueError:
-        return HttpResponse("invalid_page_number", status=422)
+        page = 1
+        # return HttpResponse("invalid_page_number", status=422)
     #-- Call search engine
     try:
         search = search_engine.search_queryset(query, per_page=per_page, page=page, max_pages = max_pages).filter(approved=True)
