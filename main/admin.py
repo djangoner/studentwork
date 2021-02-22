@@ -26,7 +26,7 @@ class DocumentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.author: # Set author if not set
             obj.author = request.user
-        super(MyAdminView, self).save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
     list_display = ('title', 'author', 'uploaded', 'approved')
     list_filter = ('file_type', 'approved', 'language')
     search_fields = ('title', 'annotation', 'file', 'author')

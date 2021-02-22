@@ -232,10 +232,76 @@ CMS_PLACEHOLDER_CONF = {
     'top_menu': {
         'name': _('Верхнее меню'),
         'plugins': ['TopMenuPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'TopMenuPlugin',
+                'values': {},
+                'children': [
+                    {
+                        'plugin_type': 'LinkPlugin',
+                        'values': {
+                            'name': 'Как это работает',
+                            'external_link': '/faq#how-works'
+                        }
+                    },
+                    {
+                        'plugin_type': 'LinkPlugin',
+                        'values': {
+                            'name': 'Заказать работу',
+                            'external_link': '#order-work'
+                        }
+                    },
+                ]
+            }
+        ]
     },
     'footer_links': {
         'name': _('Ссылки футера'),
         'plugins': ['LinkPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Условия использования',
+                    'external_link': '/use-terms'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'FAQ',
+                    'external_link': '/faq'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Поддержка',
+                    'external_link': '#support'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Для правообладателей',
+                    'external_link': '/for-copyright-holders'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Карта сайта',
+                    'external_link': '/sitemap'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Заказать работу',
+                    'external_link': '#order-work'
+                }
+            },
+        ]
     },
     'footer_text':{
         'name': _('Текст футера'),
