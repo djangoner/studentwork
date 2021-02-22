@@ -30,8 +30,7 @@
     
     <!-- Menu -->
 
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-between {%if iframe%}hide{%endif%}">
 
         <!-- Left -->
         <a class="navbar-brand" href="/">
@@ -62,7 +61,7 @@
                 {% endstatic_placeholder%}
             </ul>
 
-            <form class="form-inline" class="search-form">
+            <form class="form-inline search-form" action="{% url 'main:search' %}" method="GET">
                 <div class="input-group my-2 my-lg-0 w-100">
                     <input class="form-control" type="search" placeholder="поиск по 100 000 учебным работам" name="search" id="search-input">
                     <!-- <div class="input-group-addon">
@@ -72,7 +71,7 @@
                         <button class="btn btn-outline-success" type="sumbit">
                             <i class="fa fa-search"></i>
                         </button>
-                      </div>                
+                    </div>        
                 </div>
             </form>
 
@@ -100,7 +99,7 @@
 
     <!-- Footer -->
 
-    <footer class="footer bg-dark text-light py-3">
+    <footer class="footer bg-dark text-light py-3 {%if iframe%}hide{%endif%}">
         <div class="">
             <div class="footer__links container">
                 {% static_placeholder "footer_links" or %}
@@ -127,7 +126,8 @@
 
     <!-- Scripts -->
     <script src="//unpkg.com/jquery@3.5.1"></script>
-    <script src="//unpkg.com/vue@3.0.5"></script>
+    <script src="//unpkg.com/vue@2.6.12"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
     <script src="//unpkg.com/bootstrap@4.6.0"></script>
     <!-- Extra body -->
     {% render_block "js" %}

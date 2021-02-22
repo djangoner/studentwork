@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} Поиск {% endblock %}
+
+{% block extrahead %}
+<style>
+    .loading-indicator h5{line-height: 80px;}
+</style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container main-container mt-3 py-3">
+        <div class="loading-indicator d-flex w-fit-content mx-auto my-5">
+            <div class="ring mr-2">
+                    <div class="lds-dual-ring"></div>
+            </div>
+            <h5 class="text-center">Загрузка...</h5>
+        </div>
+        <div class="err-container hide">
+            <h4 class="text-center my-4">Ошибка!</h4>
+            <p class="text-center err-desc"></p>
+            <h4 class="text-center"><a href="" class="btn btn-warning">Перезагрузить страницу</a></h4>
+        </div>
+        <div class="results"></div>
+        <!-- <div class="docs-container">
+            {docs}
+            <docs v-for="(doc, idx) in docs">
+        </div> -->
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+    <script src="{% static 'js/search.js'%}"></script>
+{% endblock %}

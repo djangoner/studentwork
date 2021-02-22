@@ -20,8 +20,11 @@ from . import views
 
 urlpatterns = [
     path("", views.index_page, name="index"),
+    path("catalog/search", views.search_page, name="search"),
+    path("catalog/search/results", views.search_results, name="search_results"),
     path("catalog/<str:discipline>", views.catalog_page, name="discipline"),
     path("catalog", views.catalog_page, name="catalog"),
+
     path("file/<int:id>", views.document_page, name="document"),
     path("file/<int:id>/download", views.document_download, name="document_download"),
 
@@ -32,4 +35,5 @@ urlpatterns = [
     ##
     path("secure_media/document/<path:path>", views.secure_document, name="secure_document"),
     path("media/secure/documents/<path:path>", views.secure_document, name="secure_document2"),
+    # path("api/search", views.api_search, name="api_search"),
 ]

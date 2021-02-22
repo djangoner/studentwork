@@ -1,12 +1,17 @@
 import logging
 import os
+import json
 from itertools import chain
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden, \
+            HttpResponseNotFound, JsonResponse
 from django.contrib import messages
+from django.forms.models import model_to_dict
+from django.core import serializers
+from django.db.models import Q
 
-from . import models, forms
+from . import models, forms, search_engine
 
 BASE_PRICE = models.BASE_PRICE
 
@@ -150,6 +155,44 @@ def secure_document(request, path):
         return FileResponse(open(file, "rb"), as_attachment=True)
     #
     return HttpResponseForbidden("access_denied")
+
+def search_page(request):
+    return render(request, "search_page.html")
+
+
+def search_results(request):
+    max_pages = 10
+    per_page  = 10
+    #-- Args check
+    query = request.GET.get("search")
+    if not query:
+        return HttpResponse("no_query", status=422)
+
+    try:
+        page  = int(request.GET.get("page", "1"))
+    except ValueError:
+        return HttpResponse("invalid_page_number", status=422)
+    #-- Call search engine
+    try:
+        search = search_engine.search_queryset(query, per_page=per_page, page=page, max_pages = max_pages).filter(approved=True)
+    except Exception as e:
+        logging.exception("SearchEngine search exception ", exc_info=e)
+        search = False
+
+    light_search = False
+    if search == False:
+        search = models.Document.objects.filter(Q(title__icontains=query) | Q(annotation__icontains=query)).filter(approved=True)[per_page * (page-1):per_page * page]
+        light_search = True
+    ##
+    print("Search results:", search)
+    context = {
+        'iframe': True,
+        'docs': search,
+        'page': paginate(request, search),
+        'light_search': light_search,
+        'search_query': query,
+    }
+    return render(request, "search_results.html", context=context)
 
 #-- Cabinet and users
 
