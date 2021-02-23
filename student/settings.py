@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     ##-- Custom apps
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
+    'chat.apps.ChatConfig',
+    'channels',
     ##-- Built-in
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,6 +121,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'student.wsgi.application'
+ASGI_APPLICATION = "student.asgi.application"
 
 
 # Database
@@ -147,6 +150,12 @@ if PRODUCTION:
         }
     }
     CONN_MAX_AGE = 60
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
