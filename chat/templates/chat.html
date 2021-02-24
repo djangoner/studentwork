@@ -51,7 +51,7 @@
     padding: 0;
 }
 .dialog-container{
-    overflow: scroll;
+    overflow: auto;
     max-height: 90vh;
 }
 .messages-container{
@@ -92,6 +92,9 @@
 .container-auto{
     width: 100%;
 }
+.unread-count{
+    float: right;
+}
 /* .loading-indicator h5{line-height: 80px;} */
 </style>
 {% endblock %}
@@ -100,6 +103,7 @@
 {% block body %}
     <div class="container-auto row v-cloak" id="app">
         <div class="sidebar col-12 col-md-4 col-xl-3">
+            <a href="/" class="btn btn-primary w-100 mb-2">< на главную</a>
             <chat-users 
                 :chats="chats"
                 :is_admin="is_admin"

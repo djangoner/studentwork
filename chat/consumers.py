@@ -16,11 +16,12 @@ from . import models
 log = logging.getLogger("Channels consumers")
 
 
-def chat2json(chat):
+def chat2json(chat, is_admin):
     return {
         "first_name": chat.user.first_name,
         "username": chat.user.username,
         "last_message": chat.get_last_message(),
+        "unread_count": chat.get_unread_count(is_admin=is_admin),
         "id": chat.id,
     }
 
@@ -29,11 +30,13 @@ def msg2json(msg):
         "text": msg.text,
         "author": msg.author,
         "id": msg.id,
+        "chat_id": msg.chat.id,
         # "created": msg.created,
     }
 
 def chat_history(chat, offset=0, limit=25):
-    if limit > 100: limit = 100
+    if limit > 100:
+        limit = 100
     return list(map(msg2json, chat.messages.all()[offset:offset+limit:-1]))
 
 def save_last_online(user):
@@ -78,9 +81,10 @@ class ChatConsumer(WebsocketConsumer):
             chat = models.Chat.objects.get(user=self.user)
         except models.Chat.DoesNotExist:
             chat = models.Chat.objects.create(user=self.user)
+            self.handle_new_chat(chat)
 
         self.group_name = self.group_admin if is_admin else f"chat-{chat.id}"
-        print("\n", "Connected as:", self.group_name, self.user, "\n")
+        log.debug("Connected new as: {self.group_name} ({self.user})")
         async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)
         #
         # if not self.user.IsActive:
@@ -89,8 +93,7 @@ class ChatConsumer(WebsocketConsumer):
         #
         chats = []
         if is_admin:
-            non_current = lambda chat: chat.user.id != self.user.id
-            chats = list(map(chat2json, filter(non_current, models.Chat.objects.all()[:25])))
+            chats = [chat2json(chat, is_admin) for chat in models.Chat.objects.all()[:25] if chat.user.id != self.user.id]
         else:
             chats = [
                 {
@@ -135,15 +138,15 @@ class ChatConsumer(WebsocketConsumer):
 
         data = json.loads(text_data)
         type = data.get('type')
-        print("Received from client: ", data)
+        log.debug(f"Received from client: {data}")
 
         if type == "send_message":
             chat_id = data["chat_id"]
             text    = data["text"]
             chat = find_chat(chat_id)
-            print("Message chat:", chat)
+            # print("Message chat:", chat)
             if chat:
-                print("Message sended!")
+                # print("Message sended!")
                 msg = models.ChatMessage.objects.create(chat=chat, author="user" if chat.user == self.user else "admin", text=text)
                 msg.save()
                 self.handle_new_message(msg)
@@ -158,8 +161,18 @@ class ChatConsumer(WebsocketConsumer):
                     "request_info": data,
                 }, "chat_data")
 
+        elif type == "chat_readed":
+            chat_id = data["chat_id"]
+            chat = find_chat(chat_id)
+            if chat:
+                print("Chat marked as readed:", chat_id)
+                chat.mark_readed(is_admin=self.is_admin)
+                # self.send_data({
+                #     "result": "ok",
+                # }, "cb_readed")
+
         else:
-            print("Unrecognized data type: ", type, "\n", data)
+            log.debug("Unrecognized data type: ", type, "\n", data)
         # async_to_sync(self.channel_layer.group_send)(
         #     self.group_name,
         #     {
@@ -172,6 +185,9 @@ class ChatConsumer(WebsocketConsumer):
 
     def new_message(self, event):
         self.send_data({"message":event["message"]}, "new_message")
+
+    def new_chat(self, event):
+        self.send_data({"chat":event["chat"]}, "new_chat")
 
     ###-- Actions
     def send_data(self, data, type):
@@ -188,5 +204,14 @@ class ChatConsumer(WebsocketConsumer):
                 "message": msg2json(msg)
             }
         async_to_sync(self.channel_layer.group_send)(self.group_name_f.format(msg.chat.id), dt)
+        # if not self.is_admin:
+        async_to_sync(self.channel_layer.group_send)(self.group_admin, dt)
+
+    def handle_new_chat(self, chat):
+        dt = {
+                'type': 'new_chat',
+                "chat": chat2json(chat, self.is_admin)
+            }
+        async_to_sync(self.channel_layer.group_send)(self.group_name_f.format(chat.id), dt)
         # if not self.is_admin:
         async_to_sync(self.channel_layer.group_send)(self.group_admin, dt)

@@ -33,5 +33,17 @@ class Chat(models.Model):
         if last_msg:
             return last_msg.text
 
+    def get_unread(self, is_admin=False):
+        if is_admin:
+            return self.messages.filter(~models.Q(author="admin"), readed=False)
+        else:
+            return self.messages.filter(~models.Q(author="user"), readed=False)
+
+    def get_unread_count(self, is_admin=False):
+        return self.get_unread(is_admin=is_admin).count()
+
+    def mark_readed(self, is_admin=False):
+        return self.get_unread(is_admin=is_admin).update(readed=True)
+
     user            = models.ForeignKey(User, models.CASCADE, verbose_name="Пользователь")
     created_at      = models.DateTimeField('Создан', auto_now_add=True, null=True)

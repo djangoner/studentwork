@@ -53,15 +53,26 @@ function connect(){
         // Handle messages from server
         if (type == "new_message") {
             console.log("MSG:", data)
-            app.dialog.messages.push(data.message)
+            var msg = data.message
+            app.dialog.messages.push(msg)
             // Find in users list
-            usr = app.chats.filter((c)=>{return c.id===app.dialog.id})[0]
+            usr = app.chats.filter((c)=>{return c.id===msg.chat_id})[0]
             if (usr){
                 usr.last_message = data['message'].text
+                console.log("New message, unread!")
+                markReaded()
+                if (app.dialog.id && usr.id != app.dialog.id ){ // If chat is not selected
+                    app.dialog.unread_count += 1
+                    usr.unread_count += 1
+                }
             }
             Vue.nextTick(()=>{
                 scrollLastMessage()
             })
+        } else if (type == "new_chat") {
+            console.log("New chat:", data)
+            app.chats.push(data.chat)
+            // Find in users list
         
         } else if (type == "connection_info") {
             console.log(data)
@@ -77,14 +88,14 @@ function connect(){
             } else {
                 if (TOKEN != token){
                     console.log("Server restart detected! Reloading page!")
-                    console.reload(true)
+                    location.reload(true)
                 }
             }
 
         } else if (type == "chat_data") {
             res = data["result"]
             app.dialog_loading = false;
-            app.dialog_loading_more = true;
+            app.dialog_loading_more = false;
             if (res == "ok"){
                 console.log("OK, received chat history", data)
                 if (data.request_info.offset > 0){ // If requested next page
@@ -101,6 +112,8 @@ function connect(){
                     })
                 } else { // If first request
                     app.dialog.messages = data.history
+                    app.dialog.unread_count = 0
+                    markReaded()
                     // Scroll to last
                     Vue.nextTick(()=>{
                         scrollLastMessage()
@@ -141,6 +154,21 @@ function socketInit(){
 
 function socketSend(data){
     window.socket.send(JSON.stringify(data))
+}
+
+function markReaded(){
+    if (!app.dialog.id){
+        return
+    }
+    usr = app.chats.filter((c)=>{return c.id===app.dialog.id})[0]
+    if (usr){
+        usr.unread_count = 0
+    }
+    console.debug("Set as readed, chat_id:", app.dialog.id)
+    socketSend({
+        type: 'chat_readed',
+        chat_id: app.dialog.id,
+    })
 }
 
 function sendMessage(e){
@@ -186,6 +214,7 @@ var appConfig = {
                 messages: [],
                 user: {},
                 scrolled_first: false,
+                unread_count: 0,
             },
             current_user: {
                 'first_name': 'Current user',
@@ -209,6 +238,7 @@ var appConfig = {
             this.dialog.user = user
             this.dialog.id = user.id
             this.dialog.messages = []
+            this.dialog.unread_count = 0
             this.dialog.scrolled_first = false
         },
         loadOldMessages(){
