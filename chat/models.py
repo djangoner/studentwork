@@ -9,6 +9,9 @@ FROM_WHO = [
     ('system', 'Система'),
 ]
 
+def is_admin(user):
+    return user.is_superuser
+
 class ChatMessage(models.Model):
     class Meta:
         ordering = ['-created']
@@ -25,6 +28,9 @@ class ChatMessage(models.Model):
 
 
 class Chat(models.Model):
+    class Meta:
+        ordering = ['last_message_sended']
+
     def __str__(self):
         return f"Чат с {self.user}"
 
@@ -47,3 +53,4 @@ class Chat(models.Model):
 
     user            = models.ForeignKey(User, models.CASCADE, verbose_name="Пользователь")
     created_at      = models.DateTimeField('Создан', auto_now_add=True, null=True)
+    last_message_sended= models.DateTimeField('Последнее отправленное сообщение', null=True)

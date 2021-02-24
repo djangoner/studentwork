@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="text-center my-3">Чаты <span v-if="is_admin"><i class="fa fa-gears" title="Вы администритор"></i></span></h5>
+    <h5 class="text-center my-3">Чаты <span v-if="is_admin" class="small text-muted">(Admin)</span></h5>
     <div class="err text-center small alert-danger py-2" v-if="connected == false">
       <h6 class="m-0">Нет соединения с сервером!</h6>
     </div>

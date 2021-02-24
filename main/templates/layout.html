@@ -75,14 +75,20 @@
                 </div>
             </form>
 
-            {% if user.is_authenticated %}
-                <a href="{% url 'main:cabinet' %}" class="btn btn-primary btn-shadow"><i class="fa fa-user mr-1"></i>
-                    Кабинет
-                    <!-- <span class="badge badge-light" title="У вас новые сообщения!">9</span> -->
-                </a>
-            {% else %}
-                <a href="{% url 'users:login' %}" class="btn btn-primary btn-shadow"><i class="fa fa-user mr-1"></i>Войти</a>
-            {% endif %}
+            <div class="right-links">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'main:cabinet' %}" class="btn btn-primary btn-shadow"><i class="fa fa-user mr-1"></i>
+                        Кабинет
+                    </a>
+                    {% if unread_messages %}
+                        <span class="badge badge-light bg-warning ml-1" title="У вас новые сообщения!">
+                            <a href="{% url 'chat:chat' %}"><i class="fa fa-envelope mr-1"></i>{{unread_messages}}</a>
+                        </span>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'users:login' %}" class="btn btn-primary btn-shadow"><i class="fa fa-user mr-1"></i>Войти</a>
+                {% endif %}
+            </div>
         </div>
 
         <!-- Right -->

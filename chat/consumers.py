@@ -63,7 +63,7 @@ class ChatConsumer(WebsocketConsumer):
 
     @property
     def is_admin(self):
-        return self.user.is_superuser
+        return models.is_admin(self.user)
 
     def connect(self):
         self.user = self.scope["user"]
@@ -126,7 +126,10 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         def find_chat(chat_id):
             try:
-                chat = models.Chat.objects.get(pk=chat_id)
+                chats = models.Chat.objects
+                if not self.is_admin:
+                    chats = chats.filter(user=self.user)
+                chat = chats.get(pk=chat_id)
             except models.Chat.DoesNotExist:
                 self.send_data({
                     "result": "error",
@@ -172,7 +175,7 @@ class ChatConsumer(WebsocketConsumer):
                 # }, "cb_readed")
 
         else:
-            log.debug("Unrecognized data type: ", type, "\n", data)
+            log.debug(f"Unrecognized data type: {type}\n{data}")
         # async_to_sync(self.channel_layer.group_send)(
         #     self.group_name,
         #     {

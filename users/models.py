@@ -18,6 +18,7 @@ class User(AbstractUser):
         verbose_name = _("Пользователь")
         verbose_name_plural = _("Пользователи")
 
+
     def send_confirmation_email(self, request = None):
         user = self
         current_site = get_current_site(request) if request else Site.objects.get(pk=settings.SITE_ID)

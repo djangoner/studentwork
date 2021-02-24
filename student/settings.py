@@ -115,6 +115,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'sekizai.context_processors.sekizai', # For CMS
                 'cms.context_processors.cms_settings',
+                # Custom
+                'chat.context_processors.unread_messages',
             ],
         },
     },
