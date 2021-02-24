@@ -89,7 +89,10 @@
     padding: 15px 5px;
     background: #f8f9fa;
 }
-.loading-indicator h5{line-height: 80px;}
+.container-auto{
+    width: 100%;
+}
+/* .loading-indicator h5{line-height: 80px;} */
 </style>
 {% endblock %}
 
@@ -101,7 +104,7 @@
                 :chats="chats"
                 :is_admin="is_admin"
                 :loading="chats_loading"
-                
+                :connected="connected"
                 @select_dialog="selectDialog"
                 >
             </chat-users>
@@ -112,7 +115,9 @@
                 :dialog="dialog"
                 :current_user="current_user"
                 :loading="dialog_loading"
+                :loading_more="dialog_loading_more"
                 :is_admin="is_admin"
+                @load_old="loadOldMessages"
                 >
 
             </chat-dialog>

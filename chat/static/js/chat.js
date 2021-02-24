@@ -23,9 +23,13 @@ const options = {
   // Sockets
   
 function scrollLastMessage(){
-    $(".messages-container .message").last()[0].scrollIntoView()
+    var last = $(".messages-container .message").last()[0]
+    if (last){
+        last.scrollIntoView()
+    }
 }
 var errors = 0;
+var TOKEN = null;
 function connect(){
     var protocol = (location.protocol == "http:") ? 'ws://' : "wss://"
     // console.log(protocol)
@@ -39,7 +43,7 @@ function connect(){
     socket.onopen = function(){
         errors = 0
         console.log("Socket opened")
-        // app.connected = true;
+        app.connected = true;
     }
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data)
@@ -66,18 +70,42 @@ function connect(){
             app.chats_loading = false
             app.is_admin = data.is_admin
             app.current_user = data.you
-            console.log(app.chats)
+            // console.log(app.chats)
+            token = data.token
+            if (!TOKEN){
+                TOKEN = token
+            } else {
+                if (TOKEN != token){
+                    console.log("Server restart detected! Reloading page!")
+                    console.reload(true)
+                }
+            }
 
         } else if (type == "chat_data") {
             res = data["result"]
             app.dialog_loading = false;
+            app.dialog_loading_more = true;
             if (res == "ok"){
-                console.log("OK, received chat history", data["history"])
-                app.dialog.messages = data["history"]
-                // Scroll to last
-                Vue.nextTick(()=>{
-                    scrollLastMessage()
-                })
+                console.log("OK, received chat history", data)
+                if (data.request_info.offset > 0){ // If requested next page
+                    // Mark as first block if returned empty history or less than requested limit
+                    if (data.history.length < 1 || data.history.length < data.request_info.limit){
+                        app.dialog.scrolled_first = true
+                    }
+                    var old = app.dialog.messages
+                    var last_viewed_id = $(".messages-container .message").first().attr('id')
+                    app.dialog.messages = Array.prototype.concat(data.history, old)
+                    Vue.nextTick(()=>{
+                        console.log(last_viewed_id)
+                        $("#"+last_viewed_id)[0].scrollIntoView({block: 'start', behavior: 'instant'})
+                    })
+                } else { // If first request
+                    app.dialog.messages = data.history
+                    // Scroll to last
+                    Vue.nextTick(()=>{
+                        scrollLastMessage()
+                    })
+                }
             } else {
                 console.log("ERR:", data["error"])
             }
@@ -98,8 +126,8 @@ function connect(){
         // Show error and reset texts and counters
         // if (errors <= 2){ // 2 times
         // }
-        // app.connected = false;
-        setTimeout(function(){connect()}, 3000)
+        app.connected = false;
+        setTimeout(function(){connect()}, 5000)
     }
     socket.onerror = function(err){
         console.log("Socket err:", errors, err)
@@ -116,10 +144,16 @@ function socketSend(data){
 }
 
 function sendMessage(e){
-    e.preventDefault();
+    if (e){
+        e.preventDefault();
+    }
     var input = $(e.target).find('textarea') // Find input
     //
-    var text = input.val()
+    var text = input.val() || e.target.val()
+    if (!text){
+        console.log("Text empty!")
+        return
+    }
     input.val('') // Clear input
     socketSend({
         type: 'send_message',
@@ -128,10 +162,12 @@ function sendMessage(e){
     })
 }
 
-function requestChat(chat_id){
+function requestChat(chat_id, offset=0, limit=25){
     socketSend({
         type: 'request_chat',
         chat_id: chat_id,
+        offset: offset,
+        limit: limit
     })
 }
 
@@ -144,10 +180,12 @@ var appConfig = {
             chats: [],
             chats_loading: true,
             dialog_loading: false,
-            connected: false,
+            dialog_loading_more: false,
+            connected: null,
             dialog:{
                 messages: [],
                 user: {},
+                scrolled_first: false,
             },
             current_user: {
                 'first_name': 'Current user',
@@ -171,18 +209,40 @@ var appConfig = {
             this.dialog.user = user
             this.dialog.id = user.id
             this.dialog.messages = []
+            this.dialog.scrolled_first = false
+        },
+        loadOldMessages(){
+            if (this.dialog.scrolled_first){
+                this.dialog_loading_more = false;
+                return
+            }
+            var offset = this.dialog.messages.length
+            var limit  = 25
+            console.debug("Loading old messages...", " offset:", offset, " limit:", limit)
+            this.dialog_loading_more = true;
+            requestChat(this.dialog.id, offset=offset, limit=limit)
         }
     },
 }
 const pre_app = Vue.createApp(appConfig)
 pre_app.component('loading-indicator', {
     template: `
-<div class="loading-indicator d-flex w-fit-content mx-auto my-5">
+<div class="loading-indicator d-flex w-fit-content mx-auto my" :class="'my-' + my">
     <div class="ring mr-2">
             <div class="lds-dual-ring"></div>
     </div>
-    <h5 class="text-center">Загрузка...</h5>
-</div>`
+    <h5 class="text-center" :style="{'line-height': size+'px'}">Загрузка...</h5>
+</div>`,
+    props: {
+        size: {
+            type: String,
+            default: "80",
+        },
+        my: {
+            type: String,
+            default: '5',
+        },
+    }
 })
 const app = pre_app.mount('#app')
 socketInit()

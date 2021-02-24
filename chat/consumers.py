@@ -15,12 +15,6 @@ from . import models
 
 log = logging.getLogger("Channels consumers")
 
-def model2json(model, user):# Model is .models.Record
-    user_id = user.id
-    data = {
-        "empty": 1,
-    }
-    return data
 
 def chat2json(chat):
     return {
@@ -34,11 +28,13 @@ def msg2json(msg):
     return {
         "text": msg.text,
         "author": msg.author,
+        "id": msg.id,
         # "created": msg.created,
     }
 
-def chat_history(chat):
-    return list(map(msg2json, chat.messages.all()[:25:-1]))
+def chat_history(chat, offset=0, limit=25):
+    if limit > 100: limit = 100
+    return list(map(msg2json, chat.messages.all()[offset:offset+limit:-1]))
 
 def save_last_online(user):
     pass
@@ -158,7 +154,8 @@ class ChatConsumer(WebsocketConsumer):
             if chat:
                 self.send_data({
                     "result": "ok",
-                    "history": chat_history(chat),
+                    "history": chat_history(chat, offset=data.get('offset', 0), limit=data.get('limit', 0)),
+                    "request_info": data,
                 }, "chat_data")
 
         else:

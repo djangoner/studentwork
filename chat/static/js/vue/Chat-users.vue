@@ -1,9 +1,9 @@
 <template>
   <div>
     <h5 class="text-center my-3">Чаты <span v-if="is_admin"><i class="fa fa-gears" title="Вы администритор"></i></span></h5>
-    <!-- <div class="err text-center small text-danger">
-      Нет соединения с сервером!
-    </div> -->
+    <div class="err text-center small alert-danger py-2" v-if="connected == false">
+      <h6 class="m-0">Нет соединения с сервером!</h6>
+    </div>
     <div class="users-list">
       <div :class="['user-card', user.selected? 'active':'']" v-for="(user, idx) in chats" :key="idx" @click="onDialog(user)">
         <div class="card-title">
@@ -31,10 +31,10 @@ module.exports = {
     };
   },
   props: {
-    chats: [],
+    chats: Array,
     is_admin: null,
     loading: false,
-    // connected: true,
+    connected: false,
   },
   methods: {
     onDialog(user){
