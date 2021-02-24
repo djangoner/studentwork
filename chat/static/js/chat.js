@@ -58,12 +58,12 @@ function connect(){
             // Find in users list
             usr = app.chats.filter((c)=>{return c.id===msg.chat_id})[0]
             if (usr){
-                usr.last_message = data['message'].text
+                usr.last_message = data['message']
                 console.log("New message, unread!")
                 markReaded()
+                usr.unread_count += 1
                 if (app.dialog.id && usr.id != app.dialog.id ){ // If chat is not selected
                     app.dialog.unread_count += 1
-                    usr.unread_count += 1
                 }
             }
             Vue.nextTick(()=>{
@@ -73,6 +73,11 @@ function connect(){
             console.log("New chat:", data)
             app.chats.push(data.chat)
             // Find in users list
+
+        } else if (type == "search_suggestions") { // Search suggestions
+            // console.log(data)
+            app.search_suggestions = data.results
+
         
         } else if (type == "connection_info") {
             console.log(data)
@@ -199,6 +204,13 @@ function requestChat(chat_id, offset=0, limit=25){
     })
 }
 
+function requestSuggestions(search){
+    socketSend({
+        type: 'search_users',
+        search: search,
+    })
+}
+
 
 var appConfig = {
     el: '#app',
@@ -210,6 +222,8 @@ var appConfig = {
             dialog_loading: false,
             dialog_loading_more: false,
             connected: null,
+            search_users: "",
+            search_suggestions: [],
             dialog:{
                 messages: [],
                 user: {},
@@ -220,13 +234,22 @@ var appConfig = {
                 'first_name': 'Current user',
                 'last_name': 'The best',
                 'username': '@current',
-            }
+            },
         }
     },
     components:{
         //httpVueLoader('/static/js/vue/Chat-users.vue')
         'chat-users': Vue.defineAsyncComponent( () => loadModule('/static/js/vue/Chat-users.vue', options) ),
         'chat-dialog': Vue.defineAsyncComponent( () => loadModule('/static/js/vue/Chat-dialog.vue', options) ),
+    },
+    computed:{
+        chatsList(){
+            if (this.search_users.length > 0){
+                return this.search_suggestions
+            } else {
+                return this.chats
+            }
+        }
     },
     methods: {
         selectDialog(user){
@@ -251,9 +274,26 @@ var appConfig = {
             console.debug("Loading old messages...", " offset:", offset, " limit:", limit)
             this.dialog_loading_more = true;
             requestChat(this.dialog.id, offset=offset, limit=limit)
-        }
+        },
+        searching(text){
+            if (searchTimer){
+                clearTimeout(searchTimer)
+            }
+            if (text){
+                searchTimer = setTimeout(()=>{
+                    this.search_users = text
+                    requestSuggestions(text)
+                }, 100)
+            } else {
+                this.search_users = ""
+                // console.log("Search empty")
+                app.search_suggestions = []
+            }
+        },
     },
 }
+var searchTimer = null;
+
 const pre_app = Vue.createApp(appConfig)
 pre_app.component('loading-indicator', {
     template: `

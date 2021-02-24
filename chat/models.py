@@ -37,7 +37,7 @@ class Chat(models.Model):
     def get_last_message(self):
         last_msg = self.messages.first()
         if last_msg:
-            return last_msg.text
+            return last_msg
 
     def get_unread(self, is_admin=False):
         if is_admin:

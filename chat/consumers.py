@@ -12,15 +12,21 @@ from channels.generic.websocket import WebsocketConsumer, AsyncJsonWebsocketCons
 # from django.utils import timezone
 
 from . import models
+from django.db.models import Q
 
 log = logging.getLogger("Channels consumers")
 
 
 def chat2json(chat, is_admin):
+    last_msg = chat.get_last_message()
+    if last_msg:
+        last_message = msg2json(last_msg)
+    else:
+        last_message = {}
     return {
         "first_name": chat.user.first_name,
         "username": chat.user.username,
-        "last_message": chat.get_last_message(),
+        "last_message": last_message,
         "unread_count": chat.get_unread_count(is_admin=is_admin),
         "id": chat.id,
     }
@@ -108,7 +114,7 @@ class ChatConsumer(WebsocketConsumer):
             "token": LAUNCH_TOKEN,
             "chats": chats,
             "is_admin": self.is_admin,
-            "you": user2dict(self.user),
+            "you": {'first_name': 'Admin', 'last_name': 'Admin', 'username': 'admin'},
         }
         self.send_data(D, "connection_info")
         save_last_online(self.user) # Save last online
@@ -168,11 +174,25 @@ class ChatConsumer(WebsocketConsumer):
             chat_id = data["chat_id"]
             chat = find_chat(chat_id)
             if chat:
-                print("Chat marked as readed:", chat_id)
                 chat.mark_readed(is_admin=self.is_admin)
                 # self.send_data({
                 #     "result": "ok",
                 # }, "cb_readed")
+        elif type == "search_users":
+            if not self.is_admin:
+                self.send_data({
+                    "result": "error",
+                    "error": "access_denied",
+                }, "cb")
+                return
+            #
+            q = data["search"]
+            results = models.Chat.objects.filter(Q(user__first_name__icontains=q) | Q(user__username__icontains=q) | Q(user__email__icontains=q))[:15]
+
+            self.send_data({
+                "result": "ok",
+                "results":[ chat2json(c, is_admin=True) for c in results]
+            }, "search_suggestions")
 
         else:
             log.debug(f"Unrecognized data type: {type}\n{data}")

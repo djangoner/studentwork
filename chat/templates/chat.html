@@ -107,10 +107,12 @@
         <div class="sidebar col-12 col-md-4 col-xl-3">
             <a href="/" class="btn btn-primary w-100 mb-2">< на главную</a>
             <chat-users 
-                :chats="chats"
+                :chats="chatsList"
                 :is_admin="is_admin"
                 :loading="chats_loading"
                 :connected="connected"
+                :current_user="current_user"
+                @searching="searching"
                 @select_dialog="selectDialog"
                 >
             </chat-users>
