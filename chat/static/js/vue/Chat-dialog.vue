@@ -12,7 +12,7 @@
           <!-- Message content -->
           <div class="message-author">{{ message_user(message).first_name }}</div>
           <div class="message-content">{{ message.text }}</div>
-          <!-- <div class="message-meta small text-muted">{{ messages.created }}</div> -->
+          <div class="message-meta small text-muted">{{ readableDate(message.created) }}</div>
         </div>
       </div>
         <form action="" id="message-send-form" onsubmit="sendMessage(event);false" class="send-message">
@@ -32,7 +32,7 @@
     <!-- On empty -->
     <div class="other">
       <div class="empty-container" v-if="!dialog.user.id">
-        <h3 class="text-center my-5">Выберите диалог для показа сообщений</h3>
+        <h3 class="text-center my-5">Выберите диалог для просмотра сообщений</h3>
       </div>
       <!-- Loading indicator -->
       <div v-if="loading">
@@ -90,9 +90,21 @@ module.exports = {
         }
       }, 100)
     },
-  sendMessage(event){
-    sendMessage(event)
-  }
+    sendMessage(event){
+      sendMessage(event)
+    },
+
+    readableDate(date){
+      var options = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      };
+      return new Date(date*1000).toLocaleString('ru', options)
+    },
   },
 };
 // Scrollspy

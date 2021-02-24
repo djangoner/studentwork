@@ -40,7 +40,7 @@ module.exports = {
     is_admin: null,
     loading: false,
     connected: false,
-    current_user: String,
+    current_user: Object,
   },
 
   computed: {

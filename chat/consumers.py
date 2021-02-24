@@ -37,7 +37,7 @@ def msg2json(msg):
         "author": msg.author,
         "id": msg.id,
         "chat_id": msg.chat.id,
-        # "created": msg.created,
+        "created": msg.created.timestamp(),
     }
 
 def chat_history(chat, offset=0, limit=25):
