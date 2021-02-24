@@ -69,6 +69,11 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope["user"]
         # Check other login
+        if not self.user.is_authenticated: # If not authorized
+            self.accept() # Accept and
+            self.send_data({}, "logout") # send logout signal
+            self.send({"close": True}) # and close socket
+            return
         self.accept()
         self.upd_online(1)
         is_admin = self.is_admin
@@ -88,7 +93,8 @@ class ChatConsumer(WebsocketConsumer):
         #
         chats = []
         if is_admin:
-            chats = list(map(chat2json, models.Chat.objects.all()[:25]))
+            non_current = lambda chat: chat.user.id != self.user.id
+            chats = list(map(chat2json, filter(non_current, models.Chat.objects.all()[:25])))
         else:
             chats = [
                 {

@@ -25,7 +25,7 @@ const options = {
 function scrollLastMessage(){
     $(".messages-container .message").last()[0].scrollIntoView()
 }
-
+var errors = 0;
 function connect(){
     var protocol = (location.protocol == "http:") ? 'ws://' : "wss://"
     // console.log(protocol)
@@ -39,6 +39,7 @@ function connect(){
     socket.onopen = function(){
         errors = 0
         console.log("Socket opened")
+        // app.connected = true;
     }
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data)
@@ -62,12 +63,14 @@ function connect(){
             console.log(data)
             app.chats.length = 0
             app.chats = data.chats
+            app.chats_loading = false
             app.is_admin = data.is_admin
             app.current_user = data.you
             console.log(app.chats)
 
         } else if (type == "chat_data") {
             res = data["result"]
+            app.dialog_loading = false;
             if (res == "ok"){
                 console.log("OK, received chat history", data["history"])
                 app.dialog.messages = data["history"]
@@ -80,7 +83,7 @@ function connect(){
             }
 
         } else if (type == "logout") {
-            location.href = "/logout"
+            location.href = "/auth/logout"
 
         } else if (type == "reload") {
             location.reload(true)
@@ -95,6 +98,7 @@ function connect(){
         // Show error and reset texts and counters
         // if (errors <= 2){ // 2 times
         // }
+        // app.connected = false;
         setTimeout(function(){connect()}, 3000)
     }
     socket.onerror = function(err){
@@ -138,6 +142,9 @@ var appConfig = {
         return {
             is_admin: null,
             chats: [],
+            chats_loading: true,
+            dialog_loading: false,
+            connected: false,
             dialog:{
                 messages: [],
                 user: {},
@@ -146,7 +153,7 @@ var appConfig = {
                 'first_name': 'Current user',
                 'last_name': 'The best',
                 'username': '@current',
-            },
+            }
         }
     },
     components:{
@@ -157,12 +164,25 @@ var appConfig = {
     methods: {
         selectDialog(user){
             console.log("Requesting dialog:", user)
+            // setTimeout(()=>{
+                // }, 3000)
             requestChat(user.id)
+            this.dialog_loading = true
             this.dialog.user = user
             this.dialog.id = user.id
             this.dialog.messages = []
         }
     },
 }
-const app = Vue.createApp(appConfig).mount('#app')
+const pre_app = Vue.createApp(appConfig)
+pre_app.component('loading-indicator', {
+    template: `
+<div class="loading-indicator d-flex w-fit-content mx-auto my-5">
+    <div class="ring mr-2">
+            <div class="lds-dual-ring"></div>
+    </div>
+    <h5 class="text-center">Загрузка...</h5>
+</div>`
+})
+const app = pre_app.mount('#app')
 socketInit()

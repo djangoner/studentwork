@@ -1,6 +1,9 @@
 <template>
   <div>
     <h5 class="text-center my-3">Чаты <span v-if="is_admin"><i class="fa fa-gears" title="Вы администритор"></i></span></h5>
+    <!-- <div class="err text-center small text-danger">
+      Нет соединения с сервером!
+    </div> -->
     <div class="users-list">
       <div :class="['user-card', user.selected? 'active':'']" v-for="(user, idx) in chats" :key="idx" @click="onDialog(user)">
         <div class="card-title">
@@ -10,6 +13,9 @@
               <span v-else>Нет сообщений!</span>
               </span>
           </div>
+      </div>
+      <div v-if="chats.length<1 && loading">
+        <loading-indicator>
       </div>
     </div>
   </div>
@@ -27,6 +33,8 @@ module.exports = {
   props: {
     chats: [],
     is_admin: null,
+    loading: false,
+    // connected: true,
   },
   methods: {
     onDialog(user){
