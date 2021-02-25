@@ -12,7 +12,10 @@
         <div class="card-title">
             <span class="username">{{ user.first_name }}: </span>
             <span class="last-message">
-              <span v-if="user.last_message !== null">{{ short(user.last_message).text }}</span>
+              <span v-if="user.last_message !== null">
+                <span v-if="user.last_message.is_attachment">Файл</span>
+                <span v-else>{{ short(user.last_message).text }}</span>
+                </span>
               <span v-else>Нет сообщений!</span>
               </span>
             <span class="unread-count badge bg-light" v-if="user.unread_count>0">{{ user.unread_count }}</span>
