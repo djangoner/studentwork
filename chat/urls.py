@@ -20,5 +20,5 @@ from . import views
 
 urlpatterns = [
     path('chat', views.chat_page, name="chat"),
-    path('chat/send_file', views.send_file, name="chat"),
+    path('chat/send_file', views.send_file, name="chat_send_file"),
 ]
