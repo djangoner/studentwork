@@ -68,9 +68,9 @@ function connect(){
                 usr.last_message = data['message']
                 console.log("New message, unread!")
                 markReaded()
-                usr.unread_count += 1
-                if (app.dialog.id && usr.id != app.dialog.id ){ // If chat is not selected
+                if (!app.dialog.id || (app.dialog.id && usr.id != app.dialog.id )){ // If chat is not selected
                     app.dialog.unread_count += 1
+                    usr.unread_count += 1
                 }
             }
             Vue.nextTick(()=>{
