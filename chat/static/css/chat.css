@@ -79,7 +79,7 @@
     color: purple;
 }
 .send-message{
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -118,6 +118,9 @@
     .chat-content .btn-back{
         position: absolute;
         top: 0;
+    }
+    .send-message{
+        position: fixed;
     }
 
 }
