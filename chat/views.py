@@ -23,9 +23,11 @@ def send_file(request):
         data = form.cleaned_data
         try:
             chat = models.Chat.objects.get(pk=chat_id)
-            if not(models.is_admin(request.user) or request.user == chat.author):
+            if not(models.is_admin(request.user) or request.user == chat.user):
+                print("Not in chat")
                 raise ValueError('not_in_chat')
         except Exception as e:
+            print("Chat id invalid:", e)
             return HttpResponse('chat_id_invalid', status=422)
         #
         msg = form.save(commit=False)

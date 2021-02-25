@@ -18,6 +18,15 @@ const options = {
     },
   }
 
+function dialogShow(){
+    $('.chat-content').animate({left: "0%"}, 'fast')
+}
+
+function dialogHide(){
+    $('.chat-content').animate({left: "100%"}, 'fast')
+}
+$('.chat-content').css('left', '100%')
+
   
   const { loadModule } = window['vue3-sfc-loader'];
   // Sockets
@@ -239,6 +248,7 @@ function sendMessage(e){
         }).fail((dt)=>{
             showAlert('Ошибка отправки файла', 'danger')
         })
+        file.value = ""; // Reset selected file
         return;
     };
     socketSend(dt)
@@ -303,6 +313,7 @@ var appConfig = {
     methods: {
         selectDialog(user){
             console.log("Requesting dialog:", user)
+            dialogShow()
             // setTimeout(()=>{
                 // }, 3000)
             requestChat(user.id)

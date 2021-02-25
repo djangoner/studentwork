@@ -20,23 +20,24 @@
 
 
 {% block body %}
-    <div class="container-auto row v-cloak" id="app">
-        <div class="sidebar col-12 col-md-4 col-xl-3">
-            <a href="/" class="btn btn-sm btn-primary w-100 mb-2">< на главную</a>
-            <chat-users 
-                :chats="chatsList"
-                :is_admin="is_admin"
-                :loading="chats_loading"
-                :connected="connected"
-                :current_user="current_user"
-                @searching="searching"
-                @select_dialog="selectDialog"
-                >
-            </chat-users>
-        </div>
-        <div class="chat-content col ml-3 ml-md-o">
-            <div id="alert_placeholder"></div>
-            <chat-dialog
+    <div class="container-auto v-cloak" id="app">
+        <div class="row">
+            <div class="sidebar col-12 col-md-4 col-xl-3">
+                <a href="/" class="btn btn-sm btn-primary w-100 mb-2">< на главную</a>
+                <chat-users 
+                    :chats="chatsList"
+                    :is_admin="is_admin"
+                    :loading="chats_loading"
+                    :connected="connected"
+                    :current_user="current_user"
+                    @searching="searching"
+                    @select_dialog="selectDialog"
+                    >
+                </chat-users>
+            </div>
+            <div class="chat-content col hide-sm">
+                <div id="alert_placeholder"></div>
+                <chat-dialog
                 v-if="dialog"
                 :dialog="dialog"
                 :current_user="current_user"
@@ -45,8 +46,10 @@
                 :is_admin="is_admin"
                 @load_old="loadOldMessages"
                 >
-
-            </chat-dialog>
+                
+                </chat-dialog>
+                <div class="btn-back show-ms"><a class="btn btn-sm btn-primary" onclick="dialogHide()">&times;</a></div>
+            </div>
         </div>
     </div>
 {% endblock %}
