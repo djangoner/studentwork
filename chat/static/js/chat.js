@@ -22,6 +22,13 @@ const options = {
   const { loadModule } = window['vue3-sfc-loader'];
   // Sockets
   
+function showAlert(msg, cls='info', timeout=5000){
+    $('#alert_placeholder').append('<div id="alertdiv" class="alert alert-' +  cls + '"><a class="close" data-dismiss="alert">×</a><span>'+msg+'</span></div>')
+    setTimeout(function() { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+      $("#alertdiv").remove();
+    }, timeout);
+}
+
 function scrollLastMessage(){
     var last = $(".messages-container .message").last()[0]
     if (last){
@@ -93,6 +100,7 @@ function connect(){
             } else {
                 if (TOKEN != token){
                     console.log("Server restart detected! Reloading page!")
+                    showAlert('Сервер был перезапущен, обновление страницы', 'info')
                     location.reload(true)
                 }
             }
@@ -181,18 +189,59 @@ function sendMessage(e){
         e.preventDefault();
     }
     var input = $(e.target).find('textarea') // Find input
+    var file_input = $(e.target).find('input[type=file]')[0]
+    var file = null
+    var fileData = null
+    if (file_input){
+        if (file_input.files.length > 0){
+            file = file_input.files[0]
+        }
+    }
     //
-    var text = input.val() || e.target.val()
-    if (!text){
+    var text = input.val()
+    if (!text && !file){
         console.log("Text empty!")
         return
     }
     input.val('') // Clear input
-    socketSend({
+    var dt = {
         type: 'send_message',
         text: text,
         chat_id: app.dialog.id,
-    })
+    }
+    if (file){
+        var reader = new FileReader();
+        var rawData = new ArrayBuffer();
+
+        var formData = new FormData();
+        // add assoc key values, this will be posts values
+        formData.append("attachment", file, file.name);
+        formData.append("chat_id", app.dialog.id);
+        $.ajax({
+            type: "POST",
+            url: "/chat/send_file",
+            // xhr: function () {
+            //     var myXhr = $.ajaxSettings.xhr();
+            //     if (myXhr.upload) {
+            //         myXhr.upload.addEventListener('progress', progressHandling, false);
+            //     }
+            //     return myXhr;
+            // },
+            // async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+            timeout: 60000,
+        }).done((dt)=>{
+            showAlert('Файл успешно отправлен', 'success')
+        }).fail((dt)=>{
+            showAlert('Ошибка отправки файла', 'danger')
+        })
+        return;
+    };
+    socketSend(dt)
 }
 
 function requestChat(chat_id, offset=0, limit=25){

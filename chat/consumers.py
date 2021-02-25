@@ -1,4 +1,5 @@
 import json
+import os
 import logging
 # import asyncio
 # import datetime
@@ -7,7 +8,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer, AsyncJsonWebsocketConsumer
 # from channels.generic.http import AsyncHttpConsumer
 
-# import channels.layers
+import channels.layers
 # from django.db.models import Q, F
 # from django.utils import timezone
 
@@ -32,12 +33,21 @@ def chat2json(chat, is_admin):
     }
 
 def msg2json(msg):
+    attachment = {}
+    if msg.attachment:
+        attachment.update({
+            "url": msg.attachment.url,
+            "name": os.path.basename(msg.attachment.path),
+            })
+
     return {
         "text": msg.text,
         "author": msg.author,
         "id": msg.id,
         "chat_id": msg.chat.id,
         "created": msg.created.timestamp(),
+        'attachment': attachment,
+        "is_attachment": bool(attachment),
     }
 
 def chat_history(chat, offset=0, limit=25):
@@ -221,14 +231,17 @@ class ChatConsumer(WebsocketConsumer):
             dt = data
         self.send(text_data=json.dumps(dt))
 
-    def handle_new_message(self, msg):
+    @classmethod
+    def handle_new_message(cls, msg):
         dt = {
                 'type': 'new_message',
                 "message": msg2json(msg)
             }
-        async_to_sync(self.channel_layer.group_send)(self.group_name_f.format(msg.chat.id), dt)
+        channel_layer = channels.layers.get_channel_layer()
+        #
+        async_to_sync(channel_layer.group_send)(cls.group_name_f.format(msg.chat.id), dt)
         # if not self.is_admin:
-        async_to_sync(self.channel_layer.group_send)(self.group_admin, dt)
+        async_to_sync(channel_layer.group_send)(cls.group_admin, dt)
 
     def handle_new_chat(self, chat):
         dt = {

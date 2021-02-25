@@ -11,12 +11,26 @@
         <div :class="['message', 'from-'+message_from(message)]" v-for="(message, idx) in dialog.messages" :key="idx" :id="'msg-' + message.id">
           <!-- Message content -->
           <div class="message-author">{{ message_user(message).first_name }}</div>
-          <div class="message-content">{{ message.text }}</div>
+          <div class="message-content">
+            <div class="file-content" v-if="message.is_attachment">
+              Файл:
+              <a :href="message.attachment.url" download>{{message.attachment.name}}</a>
+            </div>
+            <span v-else>{{ message.text }}</span>
+            </div>
           <div class="message-meta small text-muted">{{ readableDate(message.created) }}</div>
         </div>
       </div>
+
+        <!-- Send message form -->
         <form action="" id="message-send-form" onsubmit="sendMessage(event);false" class="send-message">
           <div class="input-group">
+            <div class="input-group-prepend">
+              <input type="file" name="file" id="send_file_input" style="display:none!important" @change="sendFile">
+              <button class="btn btn-primary" type="button" @click="selectFile">
+                <i class="fa fa-paperclip"></i>
+              </button>
+            </div>
             <textarea type="text" name="message" placeholder="Сообщение..." class="form-control" style="resize:none;" rows="2"
                 ></textarea>
                 <!-- @keyup.ctrl.enter="sendMessage" -->
@@ -92,6 +106,28 @@ module.exports = {
     },
     sendMessage(event){
       sendMessage(event)
+    },
+
+    selectFile(event){
+      // console.log(event)
+      $("#send_file_input").trigger('click')
+      console.debug("Opened file select")
+    },
+
+    sendFile(event){
+      var file = event.target.files[0]
+      console.log("File selected:", file, event)
+      var size_mb = (file.size / (1024 * 1024)).toFixed(2)
+      var max_mb = 10
+      if (size_mb > max_mb){
+        showAlert(`Вы выбрали слишком большой файл! ${size_mb} МБ. (можно не больше ${max_mb} МБ.)`, 'danger', timeout=15000)
+        return
+      }
+      $('#message-send-form').submit() // Call sendMessage handler
+    },
+
+    mediaPath(path){
+      return '/media/' + path
     },
 
     readableDate(date){

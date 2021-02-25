@@ -25,6 +25,8 @@ class ChatMessage(models.Model):
     sended          = models.BooleanField('Отправлено', default=False, null=False)
     readed          = models.BooleanField('Прочитано', default=False, null=False)
     created         = models.DateTimeField('Создано', auto_now_add=True, null=True)
+    attachment      = models.FileField(upload_to='files/chat', null=True, blank=True, 
+                                    verbose_name="Файл")
 
 
 class Chat(models.Model):
