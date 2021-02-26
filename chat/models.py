@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
+from main.models import FILE_TYPES
 
 User = get_user_model()
 
@@ -37,7 +39,8 @@ class ChatMessage(models.Model):
     readed          = models.BooleanField('Прочитано', default=False, null=False)
     created         = models.DateTimeField('Создано', auto_now_add=True, null=True)
     attachment      = models.FileField(upload_to='files/chat', null=True, blank=True, 
-                                    verbose_name="Файл")
+                                    verbose_name="Файл",
+                                    validators=[FileExtensionValidator(allowed_extensions=[ext for ext, tx in FILE_TYPES])])
 
 
 class Chat(models.Model):

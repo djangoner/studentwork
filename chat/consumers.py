@@ -34,7 +34,7 @@ def chat2json(chat, is_admin):
     }
 
 def clear_from_uuid(tx):
-    return re.sub(r'_\w{4,8}', '', tx)
+    return re.sub(r'(_\w{4,8})(\.)', r'\2', tx)
 
 def msg2json(msg):
     attachment = {}

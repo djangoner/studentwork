@@ -134,16 +134,20 @@ module.exports = {
     selectFile(event){
       // console.log(event)
       $("#send_file_input").trigger('click')
+      $("#send_file_input").val('')
       console.debug("Opened file select")
     },
 
     sendFile(event){
       var file = event.target.files[0]
+      if (!file){
+        return
+      }
       console.log("File selected:", file, event)
       var size_mb = (file.size / (1024 * 1024)).toFixed(2)
       var max_mb = 10
       if (size_mb > max_mb){
-        showAlert(`Вы выбрали слишком большой файл! ${size_mb} МБ. (можно не больше ${max_mb} МБ.)`, 'danger', timeout=15000)
+        showAlert(`Вы выбрали слишком большой файл! ${size_mb} МБ. (можно не больше ${max_mb} МБ.)`, 'danger')
         return
       }
       console.log(this, this.attachment)

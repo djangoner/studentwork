@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from . import consumers, models, forms
@@ -43,5 +43,5 @@ def send_file(request):
         msg.save()
         consumers.ChatConsumer.handle_new_message(msg)
     else:
-        return HttpResponse('invalid_data', status=422)
+        return JsonResponse(dict(form.errors.get_json_data()), status=422)
     return HttpResponse('ok')

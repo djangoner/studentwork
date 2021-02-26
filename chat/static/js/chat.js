@@ -261,7 +261,18 @@ function sendMessage(e){
         }).done((dt)=>{
             showAlert('Файл успешно отправлен', 'success')
         }).fail((dt)=>{
-            showAlert('Ошибка отправки файла', 'danger')
+            console.log("File sending error: ", dt)
+            var json = dt.responseJSON
+            if (json){
+                for (key in json){
+                    var field = json[key]
+                    field.forEach((error) => {
+                        showAlert(error.message, 'danger', 10000)
+                    })
+                }
+            } else {
+                showAlert('Ошибка отправки файла', 'danger')
+            }
         }).always(() => {
             uploading_indicator.addClass('hide')
             console.debug("File sending finished")
