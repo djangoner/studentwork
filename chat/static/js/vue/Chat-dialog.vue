@@ -1,4 +1,4 @@
-<template v-id="dialog">
+<template>
   <div class="wrapper">
     <div class="dialog-container" v-if="dialog.user.id" @scroll="onScroll">
       <!-- <div>Dialog {{dialog}}</div> -->
@@ -16,7 +16,7 @@
               Файл:
               <a :href="message.attachment.url" download>{{message.attachment.name}}</a>
             </div>
-            <span v-else>{{ message.text }}</span>
+            <span>{{ message.text }}</span>
             </div>
           <div class="message-meta small text-muted">{{ readableDate(message.created) }}</div>
         </div>
@@ -24,6 +24,28 @@
 
         <!-- Send message form -->
         <form action="" id="message-send-form" onsubmit="sendMessage(event);false" class="send-message">
+
+          <!-- File sending indicator -->
+          <div class="uploading-indicator hide text-center mb-1 d-flex justify-content-center">
+            <div style="width: 150px;height:fit-content" class="align-self-center">
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+              </div>
+            </div>
+            <span class="ml-2">
+              Отправка файла...
+            </span>
+          </div>
+          
+          <!-- Attachment indicator -->
+          <div class="text-center d-inline" v-if="attachment">
+            <h6>
+              Прикрепленный файл: <span class="text-info">{{attachment}}</span>
+              <button type="button" @click="attachmentClear" class="btn btn-sm btn-outline-secondary ml-1" style="padding: 0.05rem 0.2rem;">&times;</button>
+            </h6>
+          </div>
+
+          <!-- New message input -->
           <div class="input-group">
             <div class="input-group-prepend">
               <input type="file" name="file" id="send_file_input" style="display:none!important" @change="sendFile">
@@ -64,6 +86,7 @@ module.exports = {
   data() {
     return {
       // dialog: {},
+      attachment: null,
     };
   },
   props: {
@@ -123,7 +146,15 @@ module.exports = {
         showAlert(`Вы выбрали слишком большой файл! ${size_mb} МБ. (можно не больше ${max_mb} МБ.)`, 'danger', timeout=15000)
         return
       }
-      $('#message-send-form').submit() // Call sendMessage handler
+      console.log(this, this.attachment)
+      this.attachment = file.name
+      // $('#message-send-form').submit() // Call sendMessage handler
+    },
+
+    attachmentClear(){
+      var inp = $('#message-send-form input[type=file]') // Find file input
+      inp.val('') // reset file input value
+      this.attachment = null //reset attachment file name
     },
 
     mediaPath(path){

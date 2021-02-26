@@ -12,6 +12,9 @@ FROM_WHO = [
 def is_admin(user):
     return user.is_superuser
 
+def filter_is_admin(qs, val=False):
+    return qs.filter(is_superuser=val)
+
 class ChatMessage(models.Model):
     class Meta:
         ordering = ['-created']

@@ -109,7 +109,7 @@ class ChatConsumer(WebsocketConsumer):
         #
         chats = []
         if is_admin:
-            chats = [chat2json(chat, is_admin) for chat in models.Chat.objects.all()[:25] if chat.user.id != self.user.id]
+            chats = [chat2json(chat, is_admin) for chat in models.Chat.objects.all()[:25] if chat.user.id != self.user.id and not models.is_admin(chat.user)]
         else:
             chats = [
                 {

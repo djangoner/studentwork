@@ -219,6 +219,7 @@ function sendMessage(e){
         chat_id: app.dialog.id,
     }
     if (file){
+        console.debug("Prepairing for file sending...")
         var reader = new FileReader();
         var rawData = new ArrayBuffer();
 
@@ -226,16 +227,30 @@ function sendMessage(e){
         // add assoc key values, this will be posts values
         formData.append("attachment", file, file.name);
         formData.append("chat_id", app.dialog.id);
+        // Show uploading indicator
+        var uploading_indicator = $('.dialog-container .uploading-indicator')
+        uploading_indicator.removeClass('hide') 
+
+        function progressHandling(evt){
+            var percentComplete = (evt.loaded / evt.total * 100).toFixed(2)
+            console.log("Uploading file... ", percentComplete, "%")
+            uploading_indicator.find(".progress-bar").css('width', percentComplete + "%")
+        }
+        formData.append("message", text);
+        try{
+            app.$refs.dialog.attachmentClear()
+        } catch (error){}
+
         $.ajax({
             type: "POST",
             url: "/chat/send_file",
-            // xhr: function () {
-            //     var myXhr = $.ajaxSettings.xhr();
-            //     if (myXhr.upload) {
-            //         myXhr.upload.addEventListener('progress', progressHandling, false);
-            //     }
-            //     return myXhr;
-            // },
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', progressHandling, false);
+                }
+                return myXhr;
+            },
             // async: true,
             data: formData,
             cache: false,
@@ -247,6 +262,9 @@ function sendMessage(e){
             showAlert('Файл успешно отправлен', 'success')
         }).fail((dt)=>{
             showAlert('Ошибка отправки файла', 'danger')
+        }).always(() => {
+            uploading_indicator.addClass('hide')
+            console.debug("File sending finished")
         })
         file.value = ""; // Reset selected file
         return;
@@ -280,6 +298,7 @@ var appConfig = {
             chats_loading: true,
             dialog_loading: false,
             dialog_loading_more: false,
+            dialog_attachment: "",
             connected: null,
             search_users: "",
             search_suggestions: [],
@@ -361,7 +380,7 @@ pre_app.component('loading-indicator', {
     <div class="ring mr-2">
             <div class="lds-dual-ring"></div>
     </div>
-    <h5 class="text-center" :style="{'line-height': size+'px'}">Загрузка...</h5>
+    <h5 class="text-center" :style="{'line-height': size+'px'}">{{text}}</h5>
 </div>`,
     props: {
         size: {
@@ -372,6 +391,10 @@ pre_app.component('loading-indicator', {
             type: String,
             default: '5',
         },
+        text: {
+            type: String,
+            default: 'Загрузка',
+        }
     }
 })
 const app = pre_app.mount('#app')
