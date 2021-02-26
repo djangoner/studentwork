@@ -12,8 +12,8 @@
           <!-- Message content -->
           <div class="message-author">{{ message_user(message).first_name }}</div>
           <div class="message-content">
-            <div class="file-content" v-if="message.is_attachment">
-              Файл:
+            <div class="file-content mb-1" v-if="message.is_attachment">
+              <b>Файл: </b>
               <a :href="message.attachment.url" download>{{message.attachment.name}}</a>
             </div>
             <span>{{ message.text }}</span>

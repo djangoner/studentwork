@@ -12,6 +12,7 @@
         <div class="card-title">
             <span class="username">{{ user.first_name }}: </span>
             <span class="last-message">
+              <span v-if="user.last_message.is_attachment">Файл: </span>
               <span v-if="user.last_message !== null">{{ short(user.last_message).text }}</span>
               <span v-else>Нет сообщений!</span>
               </span>

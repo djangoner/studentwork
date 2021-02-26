@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -21,6 +22,13 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"Сообщение #{self.pk}"
+    
+
+    def delete(self,*args,**kwargs):
+        if self.attachment and os.path.isfile(self.attachment.path):
+            os.remove(self.attachment.path)
+
+        super().delete(*args,**kwargs)
 
     chat            = models.ForeignKey('Chat', models.CASCADE, verbose_name="Чат", related_name="messages")
     author          = models.CharField('От кого', choices=FROM_WHO, max_length=10)
