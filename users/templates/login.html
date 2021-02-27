@@ -48,7 +48,6 @@ a.nav-link.active{
             <a class="nav-link" id="register-tab" data-toggle="pill" href="#register" role="tab"
                 aria-controls="register" aria-selected="false">Зарегистрироваться</a>
         </li>
-        <!-- TODO: pretty slider -->
         <hr>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -69,6 +68,7 @@ a.nav-link.active{
             <h2 class="text-center mt-2 mb-4">Войти</h2>
             <form action="" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="fingerprint" value="" id="set_visitor_id">
 
                 <div class="mb-3">
                     <label>Электронная почта</label>
@@ -134,6 +134,28 @@ a.nav-link.active{
 {% endblock %}
 
 {% block extrabody %}
+<script
+    async
+    src="//cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"
+    onload="initFingerprintJS()"
+></script>
+<script>
+function initFingerprintJS() {
+    console.debug("Fingerprint init")
+    window.visitorIdInit = true
+    FingerprintJS.load().then(fp => {
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      fp.get().then(result => {
+        // This is the visitor identifier:
+        const visitorId = result.visitorId;
+        console.debug(visitorId);
+        window.visitorId = visitorId
+        $('#set_visitor_id').val(visitorId)
+      });
+    });
+  }
+</script>
 <!-- Remember last tab -->
 
 <script>

@@ -10,7 +10,13 @@ from .tokens import account_activation_token, password_reset_generator
 
 User = get_user_model()
 
-
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 def logout_page(request):
     logout(request)
@@ -30,11 +36,18 @@ def login_page(request):
             form = forms.RegisterForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                any_email = User.objects.filter(email=data['email'])
+                fingerprint = data.get('fingerprint')
+                #
+                any_ip          = User.objects.filter(ip_address=get_client_ip(request))
+                any_fingerprint = User.objects.filter(fingerprint=fingerprint)
+                any_email       = User.objects.filter(email=data['email'])
+                #
                 if any_email.count() >= 1:
                     form.add_error('email', 'Пользователь с такой электронной почтой уже существует!')
                 elif data['password'] != data['password2']:
                     form.add_error('password', 'Пароли не совпадают!')
+                elif (fingerprint and any_fingerprint.count() > 0) or (any_ip.count() > 0):
+                    form.add_error('username', 'Похоже у вас уже есть учётная запись')
                 else:
                     try:
                         password_validation.validate_password(data['password'], form)
@@ -58,12 +71,21 @@ def login_page(request):
             form = forms.LoginForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
+                fingerprint = data.get('fingerprint')
+                #-- find user
                 user = authenticate(request, username=data['email'], password=data['password'])
+
                 if user:
                     if not user.email_confirmed:
                         request.session["email"] = data['email']
                         messages.add_message(request, messages.WARNING, "Ваш Email не подтвержден. <a href='{}'>Страница подтверждения Email</a>".format(reverse("users:email_confirm")))
                     else:
+                        #-- Update client info
+                        if fingerprint:
+                            user.fingerprint = fingerprint
+                        user.ip_address = get_client_ip(request)
+                        user.save()
+                        #-- Perform login
                         login(request, user)
                         return next_redirect()
                 else:

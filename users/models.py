@@ -57,3 +57,5 @@ class User(AbstractUser):
     buyed_documents = models.ManyToManyField('main.Document', related_name='users_buyed', 
                     verbose_name=_('Купленный документы'), help_text=_('Список купленных пользователем документов'))
     email_confirmed = models.BooleanField(_('Email подтвержден'), default=True, null=False, blank=False)
+    fingerprint     = models.CharField(_("Отпечаток браузера"), max_length=100, null=True, blank=True, editable=False)
+    ip_address      = models.GenericIPAddressField(_("IP"), null=True, blank=True)
