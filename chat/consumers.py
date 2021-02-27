@@ -1,6 +1,7 @@
 import json
 import os
 import logging
+import re
 # import asyncio
 # import datetime
 from asgiref.sync import async_to_sync
@@ -32,12 +33,15 @@ def chat2json(chat, is_admin):
         "id": chat.id,
     }
 
+def clear_from_uuid(tx):
+    return re.sub(r'(_\w{4,8})(\.)', r'\2', tx)
+
 def msg2json(msg):
     attachment = {}
     if msg.attachment:
         attachment.update({
             "url": msg.attachment.url,
-            "name": os.path.basename(msg.attachment.path),
+            "name":clear_from_uuid(os.path.basename(msg.attachment.path)),
             })
 
     return {
@@ -109,7 +113,7 @@ class ChatConsumer(WebsocketConsumer):
         #
         chats = []
         if is_admin:
-            chats = [chat2json(chat, is_admin) for chat in models.Chat.objects.all()[:25] if chat.user.id != self.user.id]
+            chats = [chat2json(chat, is_admin) for chat in models.Chat.objects.all()[:25] if chat.user.id != self.user.id and not models.is_admin(chat.user)]
         else:
             chats = [
                 {

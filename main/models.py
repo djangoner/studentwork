@@ -160,7 +160,8 @@ def document_approving_state(sender, instance, **kwargs):
     try:
         obj = sender.objects.get(pk=instance.pk)
     except sender.DoesNotExist:
-        print("Document created")
+        pass
+        # print("Document created")
     else:
         if not obj.approved == instance.approved: # Field has changed
             old = obj.approved

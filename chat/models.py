@@ -1,5 +1,8 @@
+import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
+from main.models import FILE_TYPES
 
 User = get_user_model()
 
@@ -12,12 +15,22 @@ FROM_WHO = [
 def is_admin(user):
     return user.is_superuser
 
+def filter_is_admin(qs, val=False):
+    return qs.filter(is_superuser=val)
+
 class ChatMessage(models.Model):
     class Meta:
         ordering = ['-created']
 
     def __str__(self):
         return f"Сообщение #{self.pk}"
+    
+
+    def delete(self,*args,**kwargs):
+        if self.attachment and os.path.isfile(self.attachment.path):
+            os.remove(self.attachment.path)
+
+        super().delete(*args,**kwargs)
 
     chat            = models.ForeignKey('Chat', models.CASCADE, verbose_name="Чат", related_name="messages")
     author          = models.CharField('От кого', choices=FROM_WHO, max_length=10)
@@ -26,7 +39,8 @@ class ChatMessage(models.Model):
     readed          = models.BooleanField('Прочитано', default=False, null=False)
     created         = models.DateTimeField('Создано', auto_now_add=True, null=True)
     attachment      = models.FileField(upload_to='files/chat', null=True, blank=True, 
-                                    verbose_name="Файл")
+                                    verbose_name="Файл",
+                                    validators=[FileExtensionValidator(allowed_extensions=[ext for ext, tx in FILE_TYPES])])
 
 
 class Chat(models.Model):
