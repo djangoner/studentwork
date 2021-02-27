@@ -47,6 +47,7 @@ def login_page(request):
                 elif data['password'] != data['password2']:
                     form.add_error('password', 'Пароли не совпадают!')
                 elif (fingerprint and any_fingerprint.count() > 0) or (any_ip.count() > 0):
+                    logging.info(f"Tryed register. FP match: {any_fingerprint.count()}, IP Match: {any_ip.count()}. FP: {fingerprint}, IP: {get_client_ip(request)}")
                     form.add_error('username', 'Похоже у вас уже есть учётная запись')
                 else:
                     try:
