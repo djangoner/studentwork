@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     'chat.apps.ChatConfig',
+    'blog.apps.BlogConfig',
     'channels',
     ##-- Built-in
     'django.contrib.admin',
@@ -74,6 +75,7 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_text_ckeditor',
     'treebeard',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

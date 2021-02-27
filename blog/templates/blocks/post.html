@@ -1,0 +1,15 @@
+<div class="card mb-3 document-item">
+    <div class="card-body">
+        <a href="{{post.get_absolute_url}}" class="no-underline">
+            <h4 class="card-title">
+                {{post.title}}
+            </h4>
+        </a>
+
+
+        <p class="card-text {%if post.annotation|length >= 200%}long{%endif%}">
+            {{post.get_annotation}}
+        </p>
+        <a href="{{post.get_absolute_url}}" class="btn btn-primary mt-1">Читать</a>
+    </div>
+</div>
