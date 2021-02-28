@@ -28,9 +28,9 @@ class OrderWorkForm(forms.Form):
                         label="Тип работы")
     pages_count = forms.IntegerField(max_value=100, min_value=1, required=True,
                         label="Количество страниц")
-    deadline    = forms.DateField(required=True,
+    deadline    = forms.CharField(required=True, max_length=30,
                         label="Срок")
     email       = forms.EmailField(required=True, max_length=60, widget=forms.TextInput(attrs={'placeholder': 'user@gmail.com'}),
-                        label="Ваш e-mail")
+                        label="Ваш e-mail (на него придет ответ)")
     comment     = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows":2, 'placeholder': 'Комментарий...'}), required=False,
                         label="Комментарий к работе")

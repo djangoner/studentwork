@@ -2,13 +2,15 @@ import logging
 import os
 import json
 from itertools import chain
+import jsonlines
+
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404, HttpResponseForbidden, \
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse, HttpResponseForbidden, \
             HttpResponseNotFound, JsonResponse
 from django.contrib import messages
 from django.forms.models import model_to_dict
-from django.core import serializers
+# from django.core import serializers
 from django.db.models import Q
 
 from . import models, forms, search_engine
@@ -195,6 +197,24 @@ def search_results(request):
         'search_query': query,
     }
     return render(request, "search_results.html", context=context)
+
+
+def order_work(request):
+    if request.POST:
+        form = forms.OrderWorkForm(request.POST)
+    else:
+        form = forms.OrderWorkForm()
+    #
+    if form.is_valid():
+        data = form.cleaned_data
+        logging.info(f"Order work form filled! Data: {data}")
+
+        with jsonlines.open("order_work.jl", "a") as writer:
+            writer.write(data)
+
+        return HttpResponse("ok", status=200)
+    else:
+        return JsonResponse(dict(form.errors.get_json_data()), status=422)
 
 #-- Cabinet and users
 

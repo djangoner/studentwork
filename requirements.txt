@@ -11,3 +11,4 @@ django-treebeard==4.4
 manticoresearch==1.0.1
 channels==3.0.3
 django-ckeditor==6.0.0
+jsonlines==2.0.0

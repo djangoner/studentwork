@@ -10,7 +10,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="/order_work" method="POST">
+        <form action="/order_work/" method="POST" onsubmit="sendOrderWork" id="send-order-work">
           {% csrf_token %}
 
           {% with form_order_work as form%}
@@ -24,11 +24,63 @@
               {% endfor %}
           {% endwith %}
           <!-- Submit btn -->
-          <div class="text-center mt-5">
-            <input type="submit" value="Отправить заявку" class="btn btn-success">
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">
+              <span class="spinner-border spinner-border-sm hide" role="status" aria-hidden="true"></span>
+              <span>Отправить заявку</span>
+            </button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function loadingOrderWork(val){
+    var btn = $('#order-work button')
+    if (val){
+      btn.find('.spinner-border').removeClass('hide')
+      btn.addClass('disabled')
+    } else {
+      btn.find('.spinner-border').addClass('hide')
+      btn.removeClass('disabled')
+    }
+  }
+  function sendOrderWork(e){
+    e.preventDefault()
+    
+    console.debug("Sending order work", e)
+    var form = $(e.target)
+    // Ajax
+    loadingOrderWork(1)
+    $.ajax({
+      type: "POST",
+      url: '/order_work',
+      data: form.serialize(),
+    }).done(dt => {
+      console.debug("Form sended!")
+      $('#order-work').modal('hide')
+      showAlert('Заявка успешно отправлена!', 'success', 15000)
+    }).fail(dt => {
+      console.debug("Form sending failed!")
+      console.debug(dt)
+      var json = dt.responseJSON
+      if (json){
+          for (key in json){
+              var field = json[key]
+              field.forEach((error) => {
+                  showAlert(error.message, 'danger', 10000)
+              })
+          }
+      } else {
+          showAlert('Ошибка отправки формы', 'danger')
+      }
+    }).always(() => {
+      loadingOrderWork(0)
+    })
+  }
+  window.addEventListener('load', e=> {
+    $('#send-order-work').on('submit', sendOrderWork)
+  })
+</script>
