@@ -193,3 +193,10 @@ footer.footer{
     rgba(255,255,255, 0) 80%
  );
 }
+
+.field-label.required::after{
+    content: '*';
+    color: red;
+    margin-left: 0.2rem;
+    font-style: 17px;
+}

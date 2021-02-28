@@ -1,0 +1,34 @@
+{% load custom_tags %}
+
+<div class="modal fade" id="order-work" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Заказать работу</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/order_work" method="POST">
+          {% csrf_token %}
+
+          {% with form_order_work as form%}
+            {% include 'blocks/form_errors.html'%}
+
+            {% for field in form %}
+              <div class="form-group mb-3">
+                <label class="font-weight-bold field-label {%if field.field.required%}required{%endif%}">{{ field.label }}</label>
+                {{ field }}
+              </div>
+              {% endfor %}
+          {% endwith %}
+          <!-- Submit btn -->
+          <div class="text-center mt-5">
+            <input type="submit" value="Отправить заявку" class="btn btn-success">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
