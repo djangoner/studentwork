@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.template.defaultfilters import slugify as django_slugify
 from ckeditor.fields import RichTextField
+from django.shortcuts import reverse
 from django.utils.html import strip_tags
 
 _ = lambda tx: tx
@@ -34,6 +35,10 @@ class Tag(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('blog:blog') + f"?tag={self.pk}"
+
+
     name        = models.CharField(_("Название"), max_length=50)
     slug        = models.SlugField(_("Префикс URL"), null=True, blank=True,
                         help_text="Если пустой, то генерируется автоматически.")
@@ -53,8 +58,11 @@ class Post(models.Model):
             self.publicated = timezone.now()
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('blog:blog_post', args=[self.pk])
+
     def get_annotation(self):
-        length  = 250
+        length  = 350
         text    = strip_tags(self.content)
         if len(text) > length:
             text = text[:length] + "..."
