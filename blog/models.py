@@ -4,8 +4,11 @@ from django.template.defaultfilters import slugify as django_slugify
 from ckeditor.fields import RichTextField
 from django.shortcuts import reverse
 from django.utils.html import strip_tags
+from django.contrib.auth import get_user_model
 
 _ = lambda tx: tx
+
+User = get_user_model()
 
 alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
             'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
@@ -78,3 +81,18 @@ class Post(models.Model):
     created     = models.DateTimeField(_("Создано"), auto_now_add=True)
     publicated  = models.DateTimeField(_("Опубликовано"), null=True, blank=True, 
                         help_text="Заполняется автоматически при публикации")
+
+
+
+class PostComment(models.Model):
+    class Meta:
+        verbose_name = _('Комментарий к посту')
+        verbose_name_plural = _('Комментарии к посту')
+
+    def __str__(self):
+        return f"{self.text}"
+
+    post        = models.ForeignKey('Post', models.CASCADE, verbose_name=_('Пост'), related_name="comments")
+    author      = models.ForeignKey(User, models.CASCADE, verbose_name=_('Автор поста'))
+    text        = models.TextField(_('Содержимое'), max_length=500)
+    created     = models.DateTimeField(_('Создан'), auto_now_add=True, editable=False)

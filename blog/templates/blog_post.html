@@ -41,6 +41,43 @@
     <div class="container mt-3 py-3 bg-white">
         <h1 class="comments__title text-center mb-4">Комментарии:</h1>
 
+        <!-- Write comment -->
+        <div class="comments__write mt-2 mb-4" id="comments">
+            {% include 'blocks/form_errors.html' with form=form%}
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <input type="hidden" name="action" value="send_comment">
+                <h3 class="text-center text-muted">Напишите комемнтарий:</h3>
+
+                <div class="input-group">
+                    <textarea name="text" cols="auto" rows="2" placeholder="Комментарий..." class="form-control"></textarea>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-send"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Comments list -->
+        <div class="comments__list py-4 px-5">
+            {% for comment in post.comments.all %}
+                <div class="comments__comment mb-3">
+                    <div class="comment__head">
+                        <span class="comment__author font-weight-bold">{{ comment.author }}: </span>
+                        <span class="text-muted small">{{ comment.created }}</span>
+                    </div>
+
+                    <div class="comment__content">
+                        <span class="comment__text">{{ comment.text }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 
