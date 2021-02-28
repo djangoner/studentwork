@@ -7,7 +7,7 @@
         </a>
 
 
-        <p class="card-text {%if post.get_annotation|length >= 200%}long{%endif%}">
+        <p class="card-text {%if post.get_annotation|length >= 400%}long{%endif%}">
             {{post.get_annotation}}
         </p>
         <a href="{{post.get_absolute_url}}" class="btn btn-primary mt-1">Читать</a>
