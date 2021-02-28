@@ -9,9 +9,18 @@
 
 {% block body %}
     <div class="container mt-3 py-3 bg-white">
-        <h1 class="text-center mb-5">Блог</h1>
+        <h1 class="text-center mb-3">
+            Блог
+        </h1>
+        <div class="text-center my-3">
+            {% if tag %}
+                <h5 class="text-muted">Поиск по тегу "{{tag}}" <a href="?">&times;</a></h5> 
+            {% endif %}
+        </div>
 
-        {% include 'blocks/posts.html' %}
+        <div class="posts-container mt-5">
+            {% include 'blocks/posts.html' %}
+        </div>
     </div>
 {% endblock %}
 

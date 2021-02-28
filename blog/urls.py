@@ -20,4 +20,5 @@ from . import views
 
 urlpatterns = [
     path('blog', views.blog_page, name='blog'),
+    path('blog/post/<int:pk>', views.view_post, name='blog_post'),
 ]
