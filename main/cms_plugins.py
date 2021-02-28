@@ -22,6 +22,13 @@ class TopMenuPlugin(CMSPluginBase):
     child_classes = ["LinkPlugin"]
 
     def render(self, context, instance, placeholder):
+        #
+        for child in instance.child_plugin_instances: # Patch links classes
+            attrs = child.attributes
+            if not 'class' in attrs:
+                attrs['class'] = ''
+            attrs['class'] += ' nav-link'
+        #
         context = super().render(
             context, instance, placeholder)
         return context

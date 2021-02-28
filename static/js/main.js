@@ -1,14 +1,6 @@
-function initFingerprintJS() {
-    console.debug("Fingerprint init")
-    window.visitorIdInit = true
-    FingerprintJS.load().then(fp => {
-      // The FingerprintJS agent is ready.
-      // Get a visitor identifier when you'd like to.
-      fp.get().then(result => {
-        // This is the visitor identifier:
-        const visitorId = result.visitorId;
-        console.debug(visitorId);
-        window.visitorId = visitorId
-      });
-    });
-  }
+function showAlert(msg, cls='info', timeout=5000){
+  $('.messages-container').append('<div id="alertdiv" class="alert alert-' +  cls + '"><a class="close" data-dismiss="alert">×</a><span>'+msg+'</span></div>')
+  setTimeout(function() { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+    $("#alertdiv").remove();
+  }, timeout);
+}

@@ -22,6 +22,17 @@ html, body, #main-content{
     min-height: 100vh;
 }
 
+.messages-wrapper{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99999999;
+}
+.messages-container{
+    width: 50%;
+    margin: 1rem auto;
+}
+
 footer.footer{
     font-family: Sans-serif;
     font-size: 13px;
@@ -192,4 +203,11 @@ footer.footer{
     rgba(255,255,255, 1) 20%, 
     rgba(255,255,255, 0) 80%
  );
+}
+
+.field-label.required::after{
+    content: '*';
+    color: red;
+    margin-left: 0.2rem;
+    font-style: 17px;
 }

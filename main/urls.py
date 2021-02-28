@@ -28,6 +28,8 @@ urlpatterns = [
     path("file/<int:id>", views.document_page, name="document"),
     path("file/<int:id>/download", views.document_download, name="document_download"),
 
+    path("order_work", views.order_work, name="order_work"),
+
     #-- Cabinet
     path("cabinet", views.cabinet, name="cabinet"),
     path("cabinet/document_upload", views.document_upload, name="document_upload"),

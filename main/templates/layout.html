@@ -100,8 +100,12 @@
     <!-- Main content -->
     <div id="main-content">
         {% include 'blocks/messages.html' %}
+        <div id="alert_placeholder"></div>
+
         {% block body %}{% endblock %}
     </div>
+
+    {% include 'blocks/order_work.html' %}
 
     <!-- Footer -->
 
@@ -131,6 +135,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="{% static '/js/main.js' %}"></script>
     <script src="//unpkg.com/jquery@3.5.1"></script>
     <script src="//unpkg.com/vue@3"></script>
     <!-- <script src="https://unpkg.com/http-vue-loader"></script> -->
