@@ -24,7 +24,7 @@ class OrderWorkForm(forms.Form):
                         label="Предмет")
     theme       = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'Например: анатомия человека'}),
                         label="Тема работы")
-    type        = forms.ChoiceField(choices=models.DOCUMENT_TYPES, required=True,
+    type        = forms.ChoiceField(choices=models.get_work_choices, required=True,
                         label="Тип работы")
     pages_count = forms.IntegerField(max_value=100, min_value=1, required=True,
                         label="Количество страниц")
@@ -34,3 +34,4 @@ class OrderWorkForm(forms.Form):
                         label="Ваш e-mail (на него придет ответ)")
     comment     = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows":2, 'placeholder': 'Комментарий...'}), required=False,
                         label="Комментарий к работе")
+    attachment  = forms.FileField(label="Прикрепить файл", required=False, validators=[models.FileExtensionValidator(models.ORDER_WORK_EXTENSIONS)])

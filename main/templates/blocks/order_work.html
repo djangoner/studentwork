@@ -52,15 +52,28 @@
     
     console.debug("Sending order work", e)
     var form = $(e.target)
+    var file_input = $("#order-work input[type=file]")[0]
+    if (file_input.files.length > 0){
+      var fileSize = file_input.files[0].size / 1024 / 1024;
+      if (fileSize > 1){
+        console.log("Interrupted by file size!")
+        showAlert("Размер файла не должен превышать 2 МБ.", "danger", 7500)
+        return
+      }
+    }
     // Ajax
     loadingOrderWork(1)
     $.ajax({
       type: "POST",
       url: '/order_work',
-      data: form.serialize(),
+      data: new FormData(this),
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
     }).done(dt => {
       console.debug("Form sended!")
       $('#order-work').modal('hide')
+      $("#order-work form").trigger('reset')
       showAlert('Заявка успешно отправлена!', 'success', 15000)
     }).fail(dt => {
       console.debug("Form sending failed!")

@@ -28,7 +28,7 @@ class DocumentAdmin(admin.ModelAdmin):
             obj.author = request.user
         super().save_model(request, obj, form, change)
     list_display = ('title', 'author', 'uploaded', 'approved')
-    list_filter = ('file_type', 'approved', 'language')
+    list_filter = ('approved', 'language')
     search_fields = ('title', 'annotation', 'file', 'author')
 
     readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved')
@@ -59,3 +59,12 @@ class DocumentAdmin(admin.ModelAdmin):
             self.message_user(request, "Вы отклонили документ, он будет удален.")
             return HttpResponseRedirect(".")
         return super().response_change(request, obj)
+
+
+@admin.register(models.WorkType)
+class WorkTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(models.DocumentType)
+class DocumentTypeAdmin(admin.ModelAdmin):
+    list_display = ('extension',)

@@ -1,0 +1,30 @@
+<table cellpadding="10">
+    <tr>
+        <th>Поле</th>
+        <th>Введеные данные</th>
+    </tr>
+    {% for key, val in data.items %}
+        <tr>
+            <td class="key">{{ key }}</td>
+            <td class="val">{{ val }}</td>
+        </tr>
+    {% endfor %}
+</table>
+<style>
+body{
+    font-family: sans-serif;
+}
+td.key{
+    font-weight: bold;
+    margin-right: 2rem;
+}
+th{
+    background: #bdb76b;
+    color:white;
+}
+td{
+    background: #FFFFE0;
+    border-right: 1px dotted #898989;
+    white-space: pre;
+}
+</style>

@@ -6,15 +6,16 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 <style>
-    .cms-toolbar{
-        display: none!important;
-    }
-    #alert_placeholder{
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-    }
+.cms-toolbar{
+    display: none!important;
+}
+#alert_placeholder{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
 </style>
 {% endblock %}
 

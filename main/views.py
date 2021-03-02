@@ -10,6 +10,10 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse, HttpRe
             HttpResponseNotFound, JsonResponse
 from django.contrib import messages
 from django.forms.models import model_to_dict
+from django.core.mail import EmailMessage, send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 # from django.core import serializers
 from django.db.models import Q
 
@@ -200,21 +204,53 @@ def search_results(request):
 
 
 def order_work(request):
+    def send_work(data):
+        message = render_to_string("emails/form_order_work.html", {
+            "data": data,
+        })
+        email = EmailMessage(
+            'Форма \"Заказать работу\"',
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.ORDER_WORK_EMAIL],
+            # html_message=message
+        )
+        if request.FILES:
+            attachment = request.FILES['attachment']
+            email.attach(attachment.name, attachment.read(), attachment.content_type)
+        email.content_subtype = "html"
+        email.send()
+    def form_label(form, name):
+        fields = form.fields
+        if name in fields:
+            f = fields[name]
+            if hasattr(f, 'label'):
+                return f.label
+        return name
+
     if request.POST:
-        form = forms.OrderWorkForm(request.POST)
+        form = forms.OrderWorkForm(request.POST, request.FILES)
     else:
         form = forms.OrderWorkForm()
     #
     if form.is_valid():
         data = form.cleaned_data
+        data_f = data.copy()
+        data_f.pop('attachment')
         logging.info(f"Order work form filled! Data: {data}")
 
         with jsonlines.open("order_work.jl", "a") as writer:
-            writer.write(data)
+            writer.write(data_f)
+        ##
+        try:
+            send_work({ form_label(form, k):v for k,v in data_f.items()})
+        except Exception as e:
+            logging.exception("Form request work sending failed", exc_info=e)
 
         return HttpResponse("ok", status=200)
     else:
-        return JsonResponse(dict(form.errors.get_json_data()), status=422)
+        print(form.errors)
+        return JsonResponse(dict(form.errors.as_json()), status=422)
 
 #-- Cabinet and users
 

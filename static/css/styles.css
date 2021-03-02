@@ -22,13 +22,13 @@ html, body, #main-content{
     min-height: 100vh;
 }
 
-.messages-wrapper{
+.alerts-wrapper{
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 99999999;
 }
-.messages-container{
+.alerts-container{
     width: 50%;
     margin: 1rem auto;
 }

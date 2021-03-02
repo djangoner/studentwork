@@ -356,11 +356,15 @@ if not DEBUG or PRODUCTION or "EMAIL_HOST" in os.environ:
     ##
     SERVER_EMAIL = EMAIL_HOST_USER
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    EMAIL_SUBJECT_PREFIX = '[1001Cyprus] ' if PRODUCTION and not DEBUG else '[1001Cyprus (Debug)] '
+    EMAIL_SUBJECT_PREFIX = '[EasySchool] ' if PRODUCTION and not DEBUG else '[EasySchool (Debug)] '
 
 ADMINS = [
         ('Programmer and site administrator', 'djpy@1001cyprus.com'),
     ]
+
+MANAGERS = []
+ORDER_WORK_EMAIL = os.environ.get("ORDER_WORK_EMAIL", "djpy@1001cyprus.com") #"easyschool@yandex.ru"
+
 
 LOGGING = {
     'version': 1,
