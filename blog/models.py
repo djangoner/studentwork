@@ -76,7 +76,7 @@ class Post(models.Model):
     title       = models.CharField(_("Заголовок"), max_length=100)
     content     = RichTextField(_("Содержание"), config_name='blog_post_content')
 
-    tags        = models.ManyToManyField('Tag', verbose_name=_("Теги"))
+    tags        = models.ManyToManyField('Tag', verbose_name=_("Теги"), blank=True)
     is_publicated= models.BooleanField(_("Опубликовано"), default=False)
     created     = models.DateTimeField(_("Создано"), auto_now_add=True)
     publicated  = models.DateTimeField(_("Опубликовано"), null=True, blank=True, 
