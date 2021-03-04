@@ -12,7 +12,7 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ('Содержание', {
-            'fields': ('title', 'content', 'tags'),
+            'fields': ('title', 'content', 'image', 'tags'),
         }),
         ('Публикация', {
             'fields': ('is_publicated', 'publicated', 'created'),

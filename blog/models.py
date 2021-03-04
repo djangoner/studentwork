@@ -16,7 +16,7 @@ alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', '�
             'я': 'ya'}
 def slugify(s):
     """
-    Overriding django slugify that allows to use russian words as well.
+    Slugify for russian
     """
     return django_slugify(''.join(alphabet.get(w, w) for w in s.lower()))
 
@@ -24,6 +24,11 @@ def slugify(s):
 
 
 class Tag(models.Model):
+    name        = models.CharField(_("Название"), max_length=50)
+    slug        = models.SlugField(_("Префикс URL"), null=True, blank=True,
+                        help_text="Если пустой, то генерируется автоматически.")
+
+
     class Meta:
         verbose_name = _('тег')
         verbose_name_plural = _('теги')
@@ -42,12 +47,18 @@ class Tag(models.Model):
         return reverse('blog:blog') + f"?tag={self.pk}"
 
 
-    name        = models.CharField(_("Название"), max_length=50)
-    slug        = models.SlugField(_("Префикс URL"), null=True, blank=True,
-                        help_text="Если пустой, то генерируется автоматически.")
-
 
 class Post(models.Model):
+    title       = models.CharField(_("Заголовок"), max_length=100)
+    content     = RichTextField(_("Содержание"), config_name='blog_post_content')
+    image       = models.ImageField(_("Изображение (обложка)"), upload_to="blog_images", null=True, blank=True)
+
+    tags        = models.ManyToManyField('Tag', verbose_name=_("Теги"), blank=True)
+    is_publicated= models.BooleanField(_("Опубликовано"), default=False)
+    created     = models.DateTimeField(_("Создано"), auto_now_add=True)
+    publicated  = models.DateTimeField(_("Опубликовано"), null=True, blank=True,
+                        help_text="Заполняется автоматически при публикации")
+
     class Meta:
         verbose_name = _('пост')
         verbose_name_plural = _('посты')
@@ -73,18 +84,15 @@ class Post(models.Model):
         return text
 
 
-    title       = models.CharField(_("Заголовок"), max_length=100)
-    content     = RichTextField(_("Содержание"), config_name='blog_post_content')
-
-    tags        = models.ManyToManyField('Tag', verbose_name=_("Теги"), blank=True)
-    is_publicated= models.BooleanField(_("Опубликовано"), default=False)
-    created     = models.DateTimeField(_("Создано"), auto_now_add=True)
-    publicated  = models.DateTimeField(_("Опубликовано"), null=True, blank=True, 
-                        help_text="Заполняется автоматически при публикации")
 
 
 
 class PostComment(models.Model):
+    post        = models.ForeignKey('Post', models.CASCADE, verbose_name=_('Пост'), related_name="comments")
+    author      = models.ForeignKey(User, models.CASCADE, verbose_name=_('Автор поста'))
+    text        = models.TextField(_('Содержимое'), max_length=500)
+    created     = models.DateTimeField(_('Создан'), auto_now_add=True, editable=False)
+
     class Meta:
         verbose_name = _('Комментарий к посту')
         verbose_name_plural = _('Комментарии к посту')
@@ -92,7 +100,3 @@ class PostComment(models.Model):
     def __str__(self):
         return f"{self.text}"
 
-    post        = models.ForeignKey('Post', models.CASCADE, verbose_name=_('Пост'), related_name="comments")
-    author      = models.ForeignKey(User, models.CASCADE, verbose_name=_('Автор поста'))
-    text        = models.TextField(_('Содержимое'), max_length=500)
-    created     = models.DateTimeField(_('Создан'), auto_now_add=True, editable=False)

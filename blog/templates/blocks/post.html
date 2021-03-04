@@ -6,10 +6,16 @@
             </h4>
         </a>
 
-
         <p class="card-text {%if post.get_annotation|length >= 400%}long{%endif%}">
             {{post.get_annotation}}
         </p>
+
+        {% if post.image %}
+            <div class="document-img my-2">
+                <img src="{{ post.image.url }}" alt="" class="img-fluid" style="height:200px;width:auto">
+            </div>
+        {% endif %}
+
         <a href="{{post.get_absolute_url}}" class="btn btn-primary mt-1">Читать</a>
     </div>
 </div>
