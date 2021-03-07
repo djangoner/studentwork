@@ -226,7 +226,7 @@ def document_analyze_file(sender, instance, **kwargs):
         #
         if result:
             instance.document_pages = result['pages']
-            instance.image          = result['jpg']
+            instance.image          = os.path.relpath(result['jpg'], settings.MEDIA_ROOT)
 
             #TODO: File preview saving
 
