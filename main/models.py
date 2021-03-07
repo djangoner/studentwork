@@ -218,7 +218,7 @@ def document_analys_file(sender, instance, **kwargs):
         ext = instance.file.path.split(".")[-1] # Split ext and remove dot
         ##-- Analyze page count & generate preview
         try:
-            result = doc_analyzer.doc_analyzer(insance.file.path)
+            result = doc_analyzer.doc_analyzer(instance.file.path)
         except Exception as err:
             logging.exception("Doc analyze failed!", exc_info=err)
             result = None
