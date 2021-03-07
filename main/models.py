@@ -206,7 +206,7 @@ class DocumentType(models.Model):
 ###--- SIGNALS
 
 @receiver(post_save, sender=Document)
-def document_analys_file(sender, instance, **kwargs):
+def document_analyze_file(sender, instance, **kwargs):
     "Analys document pages count & generate preview for it"
     try:
         old = sender.objects.get(pk=instance.pk)
@@ -225,7 +225,6 @@ def document_analys_file(sender, instance, **kwargs):
         #
         if result:
             instance.document_pages = result['pages']
-            instance.document_pages.save()
 
             #TODO: File preview saving
 
@@ -233,13 +232,15 @@ def document_analys_file(sender, instance, **kwargs):
         doc_type = find_document_type(ext)
         if doc_type:
             instance.file_type = doc_type
-            instance.file_type.save()
-
         try:
-            instance.file_size = os.path.getsize(instance.file.path) / (1024 ** 2) # In MB
-            instance.file_size.save()
+            instance.file_size = os.path.getsize(instance.file.path) / 1024 / 1024 # In MB
         except:
             instance.file_size = None
+
+        #-- Save
+        post_save.disconnect(document_analyze_file, sender=Document)
+        instance.save()
+        post_save.connect(document_analyze_file, sender=Document)
 
 @receiver(pre_save, sender=Document)
 def document_approving_state(sender, instance, **kwargs):
