@@ -10,7 +10,10 @@ from django.template.defaultfilters import slugify as django_slugify
 from django.shortcuts import reverse
 from django.dispatch import receiver
 
-from . import pages_count
+try:
+    from . import doc_analyzer
+except Exception as err:
+    logging.exception("Doc analazyer import error", exc_info=err)
 
 BASE_PRICE = 10
 
@@ -202,32 +205,41 @@ class DocumentType(models.Model):
 ##########################
 ###--- SIGNALS
 
-# @receiver(post_save, sender=Document)
-# def document_analys_file(sender, instance, **kwargs):
-#     "Analys document file properties"
-#     try:
-#         old = sender.objects.get(pk=instance.pk)
-#     except sender.DoesNotExist:
-#         pass
-#     #
-#     if instance.file:
-#         ext = instance.file.path.split(".")[-1] # Split ext and remove dot
-#         doc_type = find_document_type(ext)
-#         if doc_type:
-#             instance.file_type = doc_type
-#             instance.file_type.save()
-#         #
-#         try:
-#             instance.document_pages = pages_count.pages_count(instance.file.path)
-#             instance.document_pages.save()
-#         except Exception as err:
-#             logging.exception("Pages counting error of document %s" % instance.file.path, exc_info=err)
-#             instance.document_pages = None
-#         try:
-#             instance.file_size = os.path.getsize(instance.file.path) / (1024 ** 2) # In MB
-#             instance.file_size.save()
-#         except:
-#             instance.file_size = None
+@receiver(post_save, sender=Document)
+def document_analys_file(sender, instance, **kwargs):
+    "Analys document pages count & generate preview for it"
+    try:
+        old = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        old = None
+
+    #
+    if instance.file:
+        ext = instance.file.path.split(".")[-1] # Split ext and remove dot
+        ##-- Analyze page count & generate preview
+        try:
+            result = doc_analyzer.doc_analyzer(insance.file.path)
+        except Exception as err:
+            logging.exception("Doc analyze failed!", exc_info=err)
+            result = None
+        #
+        if result:
+            instance.document_pages = result['pages']
+            instance.document_pages.save()
+
+            #TODO: File preview saving
+
+        ##-- Other properties
+        doc_type = find_document_type(ext)
+        if doc_type:
+            instance.file_type = doc_type
+            instance.file_type.save()
+
+        try:
+            instance.file_size = os.path.getsize(instance.file.path) / (1024 ** 2) # In MB
+            instance.file_size.save()
+        except:
+            instance.file_size = None
 
 @receiver(pre_save, sender=Document)
 def document_approving_state(sender, instance, **kwargs):
