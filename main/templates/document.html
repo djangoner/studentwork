@@ -8,6 +8,11 @@
     .main-container .alert{
         display: inline-block;
     }
+    .doc__image{
+        max-height: 400px;
+        height: auto;
+        width: auto;
+    }
 </style>
 {% endblock %}
 
@@ -50,8 +55,8 @@
         {% endif%}
 
         <!-- Image and description -->
-        <div class="mx-auto my-3">
-            <img src="//via.placeholder.com/300x400" alt="" class="img-fluid d-block mx-auto">
+        <div class="mx-auto my-3 doc__image">
+            <img src="{{ doc.image.url | default:'//via.placeholder.com/300x400' }}" alt="" class="img-fluid d-block mx-auto">
         </div>
 
         

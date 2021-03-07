@@ -3,6 +3,12 @@ from django.http import HttpResponseRedirect
 
 from . import models
 
+
+def action_resave(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.save()
+action_resave.short_description = "Перепроверить"
+
 # class DisciplineInline(admin.TabularInline):
 #     model = models.Discipline
 #     extra = 0
@@ -31,16 +37,17 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ('approved', 'language')
     search_fields = ('title', 'annotation', 'file', 'author')
 
-    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved')
+    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved') # , 'image'
     fieldsets = (
         ('Общая информация', {
             'fields': ('title', 'annotation', 'type', 'discipline', 'language')
             }),
         ('Файл', {
-            'fields': ('file', 'file_type', 'file_size', 'document_pages', 'approved', 'uploaded', 'author')
+            'fields': ('file', 'image', 'file_type', 'file_size', 'document_pages', 'approved', 'uploaded', 'author')
             }),
     )
     change_form_template = "admin/change_document.html"
+    actions = [action_resave, ]
 
     def response_change(self, request, obj):
         if "_document_accept" in request.POST:

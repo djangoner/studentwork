@@ -13,7 +13,7 @@ from django.dispatch import receiver
 try:
     from . import doc_analyzer
 except Exception as err:
-    logging.exception("Doc analazyer import error", exc_info=err)
+    logging.exception("Doc analazyer import error") # , exc_info=err
 
 BASE_PRICE = 10
 
@@ -121,6 +121,7 @@ class Document(models.Model):
 
     # file_type       = models.CharField(_('Тип файла'), choices=FILE_TYPES,
     #                                  max_length=10, null=True, blank=True)
+    image           = models.ImageField(_("Предпросмотр документа"), null=True, blank=True, editable=True)
     file_type       = models.ForeignKey('DocumentType', models.DO_NOTHING, verbose_name=_('Тип файла'),
                                      max_length=10, null=True, blank=True)
 
@@ -225,6 +226,7 @@ def document_analyze_file(sender, instance, **kwargs):
         #
         if result:
             instance.document_pages = result['pages']
+            instance.image          = result['jpg']
 
             #TODO: File preview saving
 
