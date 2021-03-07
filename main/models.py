@@ -121,7 +121,7 @@ class Document(models.Model):
 
     # file_type       = models.CharField(_('Тип файла'), choices=FILE_TYPES,
     #                                  max_length=10, null=True, blank=True)
-    image           = models.ImageField(_("Предпросмотр документа"), null=True, blank=True, editable=True)
+    image           = models.ImageField(_("Предпросмотр документа"), null=True, blank=True, editable=False)
     file_type       = models.ForeignKey('DocumentType', models.DO_NOTHING, verbose_name=_('Тип файла'),
                                      max_length=10, null=True, blank=True)
 
@@ -172,7 +172,7 @@ class Document(models.Model):
     #     super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('main:document', args=[self.id])   
+        return reverse('main:document', args=[self.id]) 
 
 
 class WorkType(models.Model):

@@ -56,7 +56,7 @@
 
         <!-- Image and description -->
         <div class="mx-auto my-3 doc__image">
-            <img src="{{ doc.image.url | default:'//via.placeholder.com/300x400' }}" alt="" class="img-fluid d-block mx-auto">
+            <img src="{% if doc.image%}doc.image.url{%else%}//via.placeholder.com/300x400{%endif%}" alt="" class="img-fluid d-block mx-auto">
         </div>
 
         
