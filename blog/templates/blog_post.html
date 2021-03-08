@@ -20,7 +20,7 @@
 
         <h1 class="post__title text-center mb-2">{{ post.title }}</h1>
 
-        {% if post.tags %}
+        {% if post.tags.count > 0 %}
             <div class="post__tags mb-4 text-muted">
                 <span class="mr-2">Теги: </span>
                 {% for tag in post.tags.all %}

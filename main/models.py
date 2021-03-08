@@ -192,9 +192,10 @@ class DocumentType(models.Model):
     class Meta:
         verbose_name = "Расширение документа"
         verbose_name_plural = "Расширения документов"
-    
+
     def __str__(self):
-        return f"*.{self.extension}"
+        # return f"*.{self.extension}"
+        return self.extension
 
 #########################
 ###--- Plugins
@@ -227,8 +228,6 @@ def document_analyze_file(sender, instance, **kwargs):
         if result:
             instance.document_pages = result['pages']
             instance.image          = os.path.relpath(result['jpg'], settings.MEDIA_ROOT)
-
-            #TODO: File preview saving
 
         ##-- Other properties
         doc_type = find_document_type(ext)

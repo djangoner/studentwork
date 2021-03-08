@@ -35,14 +35,7 @@
 
         <!-- Title and info -->
         <h2 class="text-left mb-3">{{doc.title}}</h2>
-        <div class="infos">
-            <span class="text-muted small info-top">Размер: {{doc.get_file_size}}</span>
-            <span class="text-muted small info-top">Год создания {{doc.created_year}}</span>
-            {% if document.document_pages %}
-                <span class="text-muted small info-top">Страниц {{doc.document_pages}}</span>
-            {% endif %}
-            <span class="text-muted small info-top">Добавлен {{doc.uploaded}}</span>
-        </div>
+        {% include 'blocks/document_badges.html' %}
 
         <!-- If it's file owner and document on moderation -->
         {% if doc.approved == None and doc.author == user %}

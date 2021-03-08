@@ -24,14 +24,7 @@
             {{doc.annotation}}
             {% endif %}
         </p>
-        <div class="infos">
-            <span class="text-muted small info-bottom">Размер: {{doc.get_file_size}}</span>
-            <span class="text-muted small info-bottom">Год создания {{doc.created_year}}</span>
-            {% if document.document_pages %}
-                <span class="text-muted small info-bottom">Страниц {{doc.document_pages}}</span>
-            {% endif %}
-            <span class="text-muted small info-bottom">Добавлен {{doc.uploaded}}</span>
-        </div>
+        {% include 'blocks/document_badges.html' %}
         <a href="{{doc.get_absolute_url}}" class="btn btn-primary mt-1">Подробнее</a>
     </div>
 </div>
