@@ -13,30 +13,30 @@ from django.dispatch import receiver
 try:
     from . import doc_analyzer
 except Exception as err:
-    logging.exception("Doc analazyer import error") # , exc_info=err
+    logging.error("Doc analazyer import error") # , exc_info=err
 
 BASE_PRICE = 10
 
 
 _ = lambda tx: tx
 
-FILE_TYPES = [
-    ('pdf', 'PDF'),
-    ('doc', 'Doc'),
-    ('docx', 'Docx'),
-    ('fb2', 'fb2'),
-    ('djvu', 'Djvu'),
-]
+# FILE_TYPES = [
+#     ('pdf', 'PDF'),
+#     ('doc', 'Doc'),
+#     ('docx', 'Docx'),
+#     ('fb2', 'fb2'),
+#     ('djvu', 'Djvu'),
+# ]
 
-DOCUMENT_TYPES = [
-    ('essay', 'Реферат'),
-    ('coursework', 'Курсовая работа'),
-    ('thesis', 'Дипломная работа'),
-    ('summary', 'Конспект'),
-    ('lecture', 'Лекция'),
-    ('test', 'Тест'),
-    ('recomend', 'Методические рекомендации'),
-]
+# DOCUMENT_TYPES = [
+#     ('essay', 'Реферат'),
+#     ('coursework', 'Курсовая работа'),
+#     ('thesis', 'Дипломная работа'),
+#     ('summary', 'Конспект'),
+#     ('lecture', 'Лекция'),
+#     ('test', 'Тест'),
+#     ('recomend', 'Методические рекомендации'),
+# ]
 
 ORDER_WORK_EXTENSIONS = [
     'docx', 'rtf', 'pdf', 'jpeg', 'jpg', 'png', 'tif', 'gif',
@@ -107,7 +107,7 @@ class Discipline(models.Model):
 
 
 class Document(models.Model):
-    title           = models.CharField(_('Заголовок'), max_length=50)
+    title           = models.CharField(_('Заголовок'), max_length=150)
     # type            = models.CharField(_('Тип работы'), choices=DOCUMENT_TYPES, max_length=20)
     type            = models.ForeignKey('WorkType', models.SET_NULL, verbose_name=_('Тип работы'), null=True, blank=False)
     created_year    = models.IntegerField(_('Год создания'), choices=year_choices(), default=current_year)

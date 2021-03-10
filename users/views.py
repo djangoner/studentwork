@@ -32,7 +32,7 @@ def login_page(request):
     register = request.POST.get('register')
     #
     if request.POST:
-        if register:
+        if register: # Register mode
             form = forms.RegisterForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
@@ -64,7 +64,7 @@ def login_page(request):
                         user.save()
                         request.session['email'] = user.email
                         #
-                        return redirect("users:email_confirm")
+                        return redirect("users:email_confirm")+"#sended"
                         # return HttpResponseRedirect("?registered#login")
 
         else:

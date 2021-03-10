@@ -31,7 +31,7 @@ class User(AbstractUser):
         })
         to_email = self.email
         email = mail.send_mail(
-                    mail_subject, strip_tags(message), settings.DEFAULT_FROM_EMAIL, [to_email], html_message=message
+                    mail_subject, message, settings.DEFAULT_FROM_EMAIL, [to_email]
         )
         # email.send()
     
@@ -47,7 +47,7 @@ class User(AbstractUser):
         })
         to_email = self.email
         email = mail.send_mail(
-                    mail_subject, strip_tags(message), settings.DEFAULT_FROM_EMAIL, [to_email], html_message=message
+                    mail_subject, message, settings.DEFAULT_FROM_EMAIL, [to_email]
         )
 
 

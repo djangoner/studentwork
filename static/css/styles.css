@@ -59,8 +59,8 @@ footer.footer{
 }
 .bg-primary{background-color: var(--primary)!important;}
 
-#search-input{
-    width: auto!important;
+#search-form{
+    width: 30%!important;
 }
 
 @media (max-width: 800px) {
@@ -75,11 +75,11 @@ footer.footer{
     }
 }
 
-@media (min-width: 1100px){
+/* @media (min-width: 1100px){
     #search-input{
         width: 320px!important;
     }
-}
+} */
 .no-underline{
     text-decoration: none!important;
 }
