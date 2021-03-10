@@ -64,7 +64,7 @@ def login_page(request):
                         user.save()
                         request.session['email'] = user.email
                         #
-                        return redirect("users:email_confirm")+"#sended"
+                        return HttpResponseRedirect(reverse("users:email_confirm")+"#sended")
                         # return HttpResponseRedirect("?registered#login")
 
         else:
