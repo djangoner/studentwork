@@ -61,6 +61,9 @@ def login_page(request):
                         user.set_password(data['password'])
                         user.is_active       = True
                         user.email_confirmed = False
+                        user.ip_address      = get_client_ip(request)
+                        if fingerprint:
+                            user.fingerprint = fingerprint
                         user.save()
                         request.session['email'] = user.email
                         #
