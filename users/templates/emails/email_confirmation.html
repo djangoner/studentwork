@@ -1,3 +1,5 @@
 <h3>Здравствуйте, {{ user.username }}.</h3>
 <p>Перейдите по следующей ссылке для подтверждения вашего Email адреса:</p>
 <a href="http://{{ domain }}{% url 'users:activate' uidb64=uid token=token %}">Подтвердить Email</a>
+<h4>Если вы не видите ссылку, то вставьте этот адрес в строку браузера:</h4>
+<p>http://{{ domain }}{% url 'users:activate' uidb64=uid token=token %}</p>
