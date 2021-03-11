@@ -42,7 +42,7 @@
         <h1 class="comments__title text-center mb-4">Комментарии:</h1>
 
         <!-- Write comment -->
-        {% if user.is_authorized %}
+        {% if user.is_authenticated %}
             <div class="comments__write mt-2 mb-3 mb-4 px-5" id="comments">
                 {% include 'blocks/form_errors.html' with form=form%}
                 

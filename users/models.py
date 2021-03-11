@@ -31,10 +31,10 @@ class User(AbstractUser):
         })
         to_email = self.email
         email = mail.send_mail(
-                    mail_subject, message, settings.DEFAULT_FROM_EMAIL, [to_email]
+                    mail_subject, '', settings.DEFAULT_FROM_EMAIL, [to_email], html_message=message
         )
         # email.send()
-    
+
     def send_password_reset_email(self, request = None):
         user = self
         current_site = get_current_site(request) if request else Site.objects.get(pk=settings.SITE_ID)
@@ -47,7 +47,7 @@ class User(AbstractUser):
         })
         to_email = self.email
         email = mail.send_mail(
-                    mail_subject, message, settings.DEFAULT_FROM_EMAIL, [to_email]
+                    mail_subject, '', settings.DEFAULT_FROM_EMAIL, [to_email], html_message=message
         )
 
 

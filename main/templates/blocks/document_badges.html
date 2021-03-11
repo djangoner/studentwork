@@ -3,7 +3,7 @@
         <span class="text-muted small info-bottom">Размер: {{ doc.get_file_size }}</span>
     {% endif %}
     <span class="text-muted small info-bottom">Год создания {{ doc.created_year }}</span>
-    {% if document.document_pages %}
+    {% if doc.document_pages %}
         <span class="text-muted small info-bottom">Страниц: {{ doc.document_pages }}</span>
     {% endif %}
     <span class="text-muted small info-bottom">Добавлен {{ doc.uploaded }}</span>

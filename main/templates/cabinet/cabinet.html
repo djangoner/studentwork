@@ -50,8 +50,14 @@
 
             <div class="btns mt-5">
                 <div class="my-5">
-                    <a href="#" class="btn btn-success">Пополнить баланс</a>
-                    <a href="/faq#topup" class="mr-2"><i class="fa fa-question"></i> Как пополнить баланс бесплатно</a>
+                    <div class="block__topup my-3">
+                        <h5 class="">Пополнение баланса:</h5>
+                        <div class="btns ml-4 my-2">
+                            <a href="#" class="btn btn-sm btn-success">Деньгами</a>
+                            <a href="{% url 'main:document_upload' %}" class="btn btn-sm btn-primary">Файлами</a>
+                            <a href="/faq#topup" class="mr-2"><i class="fa fa-question"></i>Пополнение баланса файлами</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="my-4">
                     <a href="{% url 'users:logout'%}" class="btn btn-danger">Выйти из аккаунта</a>

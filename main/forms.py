@@ -6,13 +6,14 @@ class DocumentUploadForm(forms.ModelForm):
     class Meta:
         model = models.Document
         fields = [
-            'file', 'title', 'annotation', 'type', 'discipline', 'created_year', 'language',
+            'file', 'type',
         ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.required = True
+        #
+        self.fields['file'].required = True
+        self.fields['file'].required = False
 
 class OrderWorkForm(forms.Form):
     def __init__(self, *args, **kwargs):
