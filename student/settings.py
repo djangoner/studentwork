@@ -234,10 +234,31 @@ DJANGOCMS_SNIPPET_CACHE = False # default value is True
 DJANGOCMS_SNIPPET_THEME = 'github'
 DJANGOCMS_SNIPPET_MODE = 'html'
 
-CKEDITOR_SETTINGS = {
+CKEDITOR_SETTINGS = { # For CMS
     'language': '{{ language }}',
     'toolbar': 'CMS',
     'skin': 'moono-lisa',
+}
+
+CKEDITOR_CONFIGS = { # For admin pages
+    'default': {
+        'toolbar_custom': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+            'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'tools', 'items': ['ShowBlocks']}, # 'Maximize', 
+        ],
+        'toolbar': 'custom',
+        # 'toolbarGroups': [{'name': 'document', 'groups': ['basicstyles', 'paragraph', 'tools']}],
+        # 'width': '100%',
+    }
 }
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
@@ -396,7 +417,7 @@ LOGGING = {
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins'] if PRODUCTION else [],
             'level': 'ERROR',
             'propagate': True,
         },

@@ -46,7 +46,7 @@ def paginate(request, objects):
 
 def index_page(request):
     slice_rows = 3
-    disciplines   = models.Discipline.objects.all()
+    disciplines   = models.Discipline.objects.all().order_by('title')
     rows = []
     ##-- Slice to rows
     for i in range(0, slice_rows):
@@ -152,13 +152,15 @@ def secure_document(request, path):
     file      = os.path.join(base_path, path)
     relpath   = os.path.relpath(file, "media")
     logging.info("Secure document handling %s" % file)
+    print(file, relpath)
     if not os.path.exists(file):
         return HttpResponseNotFound("not_exists")
     ## If exists
-    doc = get_object_or_404(models.Document, file=relpath) # If no doc found return 404
+    doc = get_object_or_404(models.Document, file=relpath.replace("\\", "/")) # If no doc found return 404
+    ext = doc.file.path.split(".")[-1]
     #
     if request.user.is_superuser or (request.user.is_authenticated and doc in request.user.buyed_documents.all()):
-        return FileResponse(open(file, "rb"), as_attachment=True)
+        return FileResponse(open(file, "rb"), filename=f"{doc.title}.{ext}", as_attachment=True)
     #
     return HttpResponseForbidden("access_denied")
 

@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os.path
+import uuid
 from django.db import models
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.conf import settings
@@ -9,6 +10,7 @@ from django.core.exceptions import ValidationError
 from django.template.defaultfilters import slugify as django_slugify
 from django.shortcuts import reverse
 from django.dispatch import receiver
+from ckeditor.fields import RichTextField
 
 try:
     from . import doc_analyzer
@@ -90,6 +92,7 @@ class Discipline(models.Model):
     class Meta:
         verbose_name         = _('Дисциплина')
         verbose_name_plural  = _('Дисциплины')
+        ordering             = ['title']
 
     def __str__(self):
         return self.title
@@ -105,18 +108,23 @@ class Discipline(models.Model):
     def visible_documents(self):
         return self.documents.filter(approved=True)
 
+def upload_document(instance, filename):
+    ext = filename.split(".")[-1]
+    uid = str(uuid.uuid4())
+    return f'secure/documents/{uid}.{ext}'
+
 
 class Document(models.Model):
     title           = models.CharField(_('Заголовок'), max_length=150)
     # type            = models.CharField(_('Тип работы'), choices=DOCUMENT_TYPES, max_length=20)
     type            = models.ForeignKey('WorkType', models.SET_NULL, verbose_name=_('Тип работы'), null=True, blank=True)
     created_year    = models.IntegerField(_('Год создания'), choices=year_choices(), default=current_year, null=True, blank=True)
-    annotation      = models.TextField(_('Аннотация'), blank=True, null=True)
+    annotation      = RichTextField(_('Аннотация'), blank=True, null=True)
     language        = models.CharField(_('Язык'), choices=settings.LANGUAGES, default=settings.LANGUAGES[0], max_length=5)
     discipline      = models.ForeignKey('Discipline', on_delete=models.SET_NULL, null=True, blank=True, related_name="documents",
                                     verbose_name=_('Дисциплина'))
 
-    file            = models.FileField(upload_to='secure/documents', verbose_name=_('Файл'), null=True, blank=True,
+    file            = models.FileField(upload_to=upload_document, verbose_name=_('Файл'), null=True, blank=True,
                                     validators=[document_extension_validator])
 
     # file_type       = models.CharField(_('Тип файла'), choices=FILE_TYPES,

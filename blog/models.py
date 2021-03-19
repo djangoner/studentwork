@@ -50,7 +50,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title       = models.CharField(_("Заголовок"), max_length=100)
-    content     = RichTextField(_("Содержание"), config_name='blog_post_content')
+    content     = RichTextField(_("Содержание")) # , config_name='blog_post_content'
     image       = models.ImageField(_("Изображение (обложка)"), upload_to="blog_images", null=True, blank=True)
 
     tags        = models.ManyToManyField('Tag', verbose_name=_("Теги"), blank=True)

@@ -34,7 +34,12 @@
 
 
         <!-- Title and info -->
-        <h2 class="text-left mb-3">{{doc.title}}</h2>
+        <h2 class="text-left mb-3">
+            <span class="mr-2"> {{doc.title}} </span>
+            <div class="d-inline align-top" style="font-size:initial">
+                {% include 'blocks/document_badges_title.html'%}
+            </div>
+        </h2>
         {% include 'blocks/document_badges.html' %}
 
         <!-- If it's file owner and document on moderation -->
@@ -55,7 +60,7 @@
         
         <div class="text-desc mt-3">
             <hr>
-            <p class="py-4 pl-2">{{doc.annotation | default:"Нет аннотации!"}}</p>
+            <p class="py-4 pl-2">{{doc.annotation | safe | default:"Нет аннотации!"}}</p>
         </div>
 
         <hr>

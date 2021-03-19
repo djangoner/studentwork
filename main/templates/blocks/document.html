@@ -3,15 +3,7 @@
         <a href="{{doc.get_absolute_url}}" class="no-underline">
             <h4 class="card-title">
                 <span class="mr-2">{{doc.title}}</span>
-                {%if doc.file_type%}<span class="h6 badge badge-primary">{{doc.file_type|default:'doc'|upper}}</span>{%endif%}
-                {% if doc in request.user.buyed_documents.all %}<span class="h6 badge badge-primary">Сохранено</span>{%endif%}
-                {% if doc.author == request.user %}<span class="h6 badge badge-success">Ваш файл</span>
-                    <!-- Approving state -->
-                    {% if doc.approved == None %}<span class="h6 badge badge-warning">На модерации</span>
-                    {% elif doc.approved == True %}<span class="h6 badge badge-success">Проверен модератором</span>
-                    {% elif doc.approved == False %}<span class="h6 badge badge-danger">Отклонен модератором</span>
-                    {%endif%}
-                {%endif%}
+                {% include 'blocks/document_badges_title.html'%}
             </h4>
         </a>
 
@@ -21,7 +13,7 @@
 
         <p class="card-text {%if doc.annotation|length >= 300%}long{%endif%}">
             {% if doc.annotation %}
-            {{doc.annotation}}
+            {{ doc.annotation | safe }}
             {% endif %}
         </p>
         {% include 'blocks/document_badges.html' %}
