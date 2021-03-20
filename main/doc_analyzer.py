@@ -14,7 +14,7 @@ previews_path = 'media/previews'
 manager_tmp     = PreviewManager(tmp_path, create_folder= True)
 manager_preview = PreviewManager(previews_path, create_folder=True)
 
-def doc_analyzer(file_path):
+def doc_analyzer(file_path, keep_pdf=False):
     ext = file_path.split(".")[-1]
     print("Ext: ", ext)
     if ext in ['djvu']:
@@ -34,5 +34,10 @@ def doc_analyzer(file_path):
 
     jpg_preview   = manager_preview.get_jpeg_preview(pdf_converted, width=1000, height=1000, page=0) # Generate JPG preview for document
 
-    os.remove(pdf_converted) # Remove temp pdf file
-    return {"jpg": jpg_preview, "pages": pages_count}
+    if not keep_pdf:
+        os.remove(pdf_converted) # Remove temp pdf file
+    return {
+        "jpg": jpg_preview,
+        "pages": pages_count,
+        "pdf": pdf_converted if keep_pdf else None,
+    }

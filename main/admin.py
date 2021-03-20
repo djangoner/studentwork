@@ -34,7 +34,7 @@ class DocumentAdmin(admin.ModelAdmin):
             obj.author = request.user
         super().save_model(request, obj, form, change)
     list_display = ('title', 'author', 'uploaded', 'approved')
-    list_filter = ('approved', 'language')
+    list_filter = ('approved', 'language', 'file_type')
     search_fields = ('title', 'annotation', 'file', 'author')
 
     readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved', 'image') # 
