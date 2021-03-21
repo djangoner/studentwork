@@ -6,5 +6,8 @@
     {% if doc.document_pages %}
         <span class="text-muted small info-bottom">Страниц: {{ doc.document_pages }}</span>
     {% endif %}
+    {% if doc.type %}
+        <span class="text-muted small info-bottom">Тип документа: {{ doc.type.name }}</span>
+    {% endif %}
     <!-- <span class="text-muted small info-bottom">Добавлен {# doc.uploaded #}</span> -->
 </div>
