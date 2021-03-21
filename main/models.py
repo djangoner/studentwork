@@ -118,7 +118,7 @@ class Document(models.Model):
     title           = models.CharField(_('Заголовок'), max_length=150)
     # type            = models.CharField(_('Тип работы'), choices=DOCUMENT_TYPES, max_length=20)
     type            = models.ForeignKey('WorkType', models.SET_NULL, verbose_name=_('Тип работы'), null=True, blank=True)
-    created_year    = models.IntegerField(_('Год создания'), choices=year_choices(), default=current_year, null=True, blank=True)
+    created_year    = models.IntegerField(_('Год создания'), default=current_year, null=True, blank=True)
     annotation      = RichTextField(_('Аннотация'), blank=True, null=True)
     language        = models.CharField(_('Язык'), choices=settings.LANGUAGES, default=settings.LANGUAGES[0], max_length=5)
     discipline      = models.ForeignKey('Discipline', on_delete=models.SET_NULL, null=True, blank=True, related_name="documents",

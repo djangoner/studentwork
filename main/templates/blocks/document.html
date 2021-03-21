@@ -7,9 +7,9 @@
             </h4>
         </a>
 
-        <a href="{{doc.get_absolute_url}}"><span class="text-muted small info-top">
+        <!-- <a href="{{doc.get_absolute_url}}"><span class="text-muted small info-top">
             Дисциплина: {{doc.discipline}}
-        </span></a>
+        </span></a> -->
 
         <p class="card-text {%if doc.annotation|length >= 300%}long{%endif%}">
             {% if doc.annotation %}
@@ -17,6 +17,6 @@
             {% endif %}
         </p>
         {% include 'blocks/document_badges.html' %}
-        <a href="{{doc.get_absolute_url}}" class="btn btn-primary mt-1">Подробнее</a>
+        <!-- <a href="{{doc.get_absolute_url}}" class="btn btn-primary mt-1">Подробнее</a> -->
     </div>
 </div>
