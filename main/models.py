@@ -120,7 +120,8 @@ class Document(models.Model):
     type            = models.ForeignKey('WorkType', models.SET_NULL, verbose_name=_('Тип работы'), null=True, blank=True)
     created_year    = models.IntegerField(_('Год создания'), default=current_year, null=True, blank=True)
     annotation      = RichTextField(_('Аннотация'), blank=True, null=True)
-    language        = models.CharField(_('Язык'), choices=settings.LANGUAGES, default=settings.LANGUAGES[0], max_length=5)
+    # language        = models.CharField(_('Язык'), choices=settings.LANGUAGES, default=settings.LANGUAGES[0], max_length=5, null=True)
+    language        = models.ForeignKey('DocumentLanguage', models.SET_NULL, null=True, blank=True, verbose_name=_('Язык'))
     discipline      = models.ForeignKey('Discipline', on_delete=models.SET_NULL, null=True, blank=True, related_name="documents",
                                     verbose_name=_('Дисциплина'))
 
@@ -204,6 +205,20 @@ class DocumentType(models.Model):
     def __str__(self):
         # return f"*.{self.extension}"
         return self.extension
+
+
+class DocumentLanguage(models.Model):
+
+    name           = models.CharField(_("Язык"), null=False, blank=False, max_length=30)
+    # code           = 
+
+    class Meta:
+        verbose_name    = "Язык документа"
+        verbose_name_plural= "Языки документов"
+
+    def __str__(self):
+        return self.name
+
 
 #########################
 ###--- Plugins

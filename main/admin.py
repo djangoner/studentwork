@@ -75,3 +75,7 @@ class WorkTypeAdmin(admin.ModelAdmin):
 @admin.register(models.DocumentType)
 class DocumentTypeAdmin(admin.ModelAdmin):
     list_display = ('extension',)
+
+@admin.register(models.DocumentLanguage)
+class DocumentLanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', )
