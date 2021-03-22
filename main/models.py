@@ -83,8 +83,8 @@ def find_document_type(ext):
 
 
 class Discipline(models.Model):
-    title = models.CharField(_('Название'), max_length=50)
-    slug  = models.SlugField(_('Slug'), max_length=20, blank=True, null=True,
+    title = models.CharField(_('Название'), max_length=70)
+    slug  = models.SlugField(_('Slug'), max_length=70, blank=True, null=True,
                     help_text=_("Это id который будет в URL страцы дисциплины. Должен быть на английском, без спецсимволов и пробелов."))
     # parent  = models.ForeignKey('Discipline', models.SET_NULL, null=True, blank=True, related_name='subdisciplines',
     #                 verbose_name=_('Главная дисциплина'), help_text="Дисциплина будет под-дисциплиной по отношению к выбранной")
@@ -184,7 +184,7 @@ class Document(models.Model):
 
 
 class WorkType(models.Model):
-    name            = models.CharField(_('Тип работы'), max_length=30)
+    name            = models.CharField(_('Тип работы'), max_length=50)
 
     class Meta:
         verbose_name = "Тип работы"
