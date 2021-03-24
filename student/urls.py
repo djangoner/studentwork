@@ -18,14 +18,19 @@ from django.urls import path, re_path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+import main.views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     ##
-    path('', include(('main.urls', 'main'), namespace="main")),
     path('', include(('users.urls', 'users'), namespace="users")),
+    path('', include(('main.urls', 'main'), namespace="main")),
     # path('', include(('chat.urls', 'chat'), namespace="chat")),
     path('', include(('blog.urls', 'blog'), namespace="blog")),
     ## CMS After custom urls
     re_path(r'^', include('cms.urls')),
+    #
+    path("<str:discipline>", main.views.catalog_page, name="discipline"),
+
 ]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

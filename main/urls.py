@@ -38,6 +38,6 @@ urlpatterns = [
     path("media/secure/documents/<path:path>", views.secure_document, name="secure_document2"),
 
     #
-    path("<str:discipline>", views.catalog_page, name="discipline"),
+    # path("<str:discipline>", views.catalog_page, name="discipline"),
     # path("api/search", views.api_search, name="api_search"),
 ]

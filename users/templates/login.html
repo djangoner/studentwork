@@ -84,6 +84,12 @@ a.nav-link.active{
                     <input type="submit" value="Войти" class="btn btn-success mt-3 mb-2 px-3 py-2">
                 </div>
             </form>
+
+            <hr>
+        
+            <div class="text-center mb-2">
+                <a href="{% url 'users:password_reset_page' %}">Забыли пароль?</a>
+            </div>
         </div>
 
         <!-- Register -->
@@ -123,12 +129,6 @@ a.nav-link.active{
                 </div>
             </form>
         </div>
-    </div>
-
-    <hr>
-
-    <div class="text-center mb-2">
-        <a href="{% url 'users:password_reset_page' %}">Забыли пароль?</a>
     </div>
 </div>
 {% endblock %}

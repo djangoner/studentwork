@@ -108,7 +108,7 @@ class Discipline(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('main:discipline', args=[self.slug])
+        return reverse('discipline', args=[self.slug])
 
     @property
     def visible_documents(self):
