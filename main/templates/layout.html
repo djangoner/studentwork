@@ -77,11 +77,13 @@
 
             <div class="right-links">
                 {% if user.is_authenticated %}
-                    {# if unread_messages #}
-                        <span class="badge badge-light bg-warning mr-1" title="Открыть чат">
-                            <a href="{% url 'chat:chat' %}"><i class="fa fa-envelope mr-1"></i>{{unread_messages}}</a>
-                        </span>
-                    {# endif #}
+                    {% comment%}
+                        {# if unread_messages #}
+                            <span class="badge badge-light bg-warning mr-1" title="Открыть чат">
+                                <a href="{% url 'chat:chat' %}"><i class="fa fa-envelope mr-1"></i>{{unread_messages}}</a>
+                            </span>
+                        {# endif #}
+                    {% endcomment %}
                     <a href="{% url 'main:cabinet' %}" class="btn btn-primary btn-shadow"><i class="fa fa-user mr-1"></i>
                         Кабинет
                     </a>

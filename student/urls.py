@@ -23,7 +23,7 @@ urlpatterns = [
     ##
     path('', include(('main.urls', 'main'), namespace="main")),
     path('', include(('users.urls', 'users'), namespace="users")),
-    path('', include(('chat.urls', 'chat'), namespace="chat")),
+    # path('', include(('chat.urls', 'chat'), namespace="chat")),
     path('', include(('blog.urls', 'blog'), namespace="blog")),
     ## CMS After custom urls
     re_path(r'^', include('cms.urls')),

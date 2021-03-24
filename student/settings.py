@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     ##-- Custom apps
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
-    'chat.apps.ChatConfig',
+    # 'chat.apps.ChatConfig',
     'blog.apps.BlogConfig',
     'channels',
     ##-- Built-in
