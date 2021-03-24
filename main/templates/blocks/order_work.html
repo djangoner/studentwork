@@ -79,7 +79,7 @@
     var file_input = $("#order-work input[type=file]")[0]
     if (file_input.files.length > 0){
       var fileSize = file_input.files[0].size / 1024 / 1024;
-      if (fileSize > 1){
+      if (fileSize > 2){
         console.log("Interrupted by file size!")
         showAlert("Размер файла не должен превышать 2 МБ.", "danger", 7500)
         return
