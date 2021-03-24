@@ -3,7 +3,9 @@
 
 {% block title %} {{discipline.title}} {% endblock %}
 
-{% block head %}
+{% block extrahead %}
+  <meta name="description" content="{{ discipline.meta_description }}">
+  <meta name="keywords" content="{{ discipline.meta_keywords }}">
 {% endblock %}
 
 {% block body_class %}bg-white{% endblock %}

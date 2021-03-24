@@ -17,10 +17,13 @@ action_resave.short_description = "Перепроверить"
 class DisciplineAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title', )
-    readonly_fields = ('slug', )
+    # readonly_fields = ('slug', )
     fieldsets = (
         ('Общая информация', {
-            'fields': (('title', 'slug'))
+            'fields': ('title', 'title_long', 'slug')
+            }),
+        ('SEO', {
+            'fields': ('meta_description', 'meta_keywords')
             }),
     )
     # inlines = [
@@ -35,7 +38,7 @@ class DocumentAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
     list_display = ('title', 'author', 'uploaded', 'approved')
     list_filter = ('approved', 'language', 'file_type')
-    search_fields = ('title', 'annotation', 'file', 'author')
+    search_fields = ('id', 'title', 'annotation')
 
     readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved', 'image') # 
     fieldsets = (

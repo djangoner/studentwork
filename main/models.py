@@ -83,9 +83,14 @@ def find_document_type(ext):
 
 
 class Discipline(models.Model):
-    title = models.CharField(_('Название'), max_length=70)
-    slug  = models.SlugField(_('Slug'), max_length=70, blank=True, null=True,
-                    help_text=_("Это id который будет в URL страцы дисциплины. Должен быть на английском, без спецсимволов и пробелов."))
+    title               = models.CharField(_('Название'), max_length=70)
+    title_long          = models.CharField(_('Заголовок (расшир. название)'), max_length=200, blank=True)
+    slug                = models.SlugField(_('Алиас'), max_length=70, blank=True, null=True,
+                                        help_text=_("Это id который будет в URL страцы дисциплины. Должен быть на английском, без спецсимволов и пробелов."))
+    
+    meta_description     = models.CharField(_("Meta: описание"), max_length=200, null=True, blank=True)
+    meta_keywords        = models.CharField(_("Meta: ключевые слова"), max_length=200, null=True, blank=True,
+                                            help_text=_("Должны быть разделены запятой с пробелом"))
     # parent  = models.ForeignKey('Discipline', models.SET_NULL, null=True, blank=True, related_name='subdisciplines',
     #                 verbose_name=_('Главная дисциплина'), help_text="Дисциплина будет под-дисциплиной по отношению к выбранной")
 
@@ -98,7 +103,8 @@ class Discipline(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
