@@ -73,7 +73,7 @@
                 </div>
             {% elif not user.is_authenticated%}
                 <div class="alert alert-warning">
-                    <h4 class="alert-heading">Войдите в аккаунт для загрузки</h4>
+                    <h4 class="alert-heading">Для скачивания файла, вам нужно Войти или зарегистрироваться</h4>
                     <a href="{% url 'users:login' %}?next={{request.path}}#buy" class="btn btn-success mt-3">Войти</a>
                 </div>
             <!-- {# elif doc in user.buyed_documents.all #}
@@ -84,7 +84,7 @@
                 </div> -->
             {% else %}
                 <div class="alert alert-success text-center">
-                    <h4 class="alert-heading">Вы можете скачать файл</h4>
+                    <h5 class="alert-heading">За скачивание файла с вашего счета спишется 10 рублей.<br>За последующие скачивания деньги списываться не будут</h4>
                     <!-- <p>Файл уже был куплен.</p> -->
                     <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3">Скачать</a>
                 </div>
