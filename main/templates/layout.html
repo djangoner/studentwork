@@ -26,7 +26,10 @@
 </head>
 
 <body class="{%block body_class%}bg-light{%endblock%}">
+    <!-- Body start -->
     {% cms_toolbar %}
+    {% static_placeholder "head" %}
+    <!-- Content -->
     
     <!-- Menu -->
 
@@ -109,6 +112,7 @@
     </div>
 
     {% include 'blocks/order_work.html' %}
+
 
     <!-- Footer -->
 

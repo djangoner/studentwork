@@ -264,6 +264,10 @@ CKEDITOR_CONFIGS = { # For admin pages
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
 
 CMS_PLACEHOLDER_CONF = {
+    'head': {
+        'name': _('Тег head'),
+        'plugins': ['TextPlugin'],
+    },
     'top_menu': {
         'name': _('Верхнее меню'),
         'plugins': ['TopMenuPlugin'],
