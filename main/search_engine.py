@@ -67,5 +67,5 @@ def search_queryset(query, *args, **kwargs):
     #
     id_list = [int(i['_id']) for i in results.hits.hits]
     # print(id_list)
-    qs = models.Document.objects.filter(pk__in=id_list)
+    qs = models.Document.objects.filter(pk__in=id_list).order_by()
     return qs
