@@ -4,7 +4,7 @@ function search(query){
     $('.main-container .results').html('')
 
     $.ajax({
-        url: "/catalog/search/results",
+        url: "/search/results",
         data: {
             search: search_query,
         }
