@@ -21,11 +21,11 @@ class OrderWorkForm(forms.Form):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
-    subject     = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'Например: Биология'}),
-                        label="Предмет")
     theme       = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'Например: анатомия человека'}),
                         label="Тема работы")
-    type        = forms.ChoiceField(choices=models.get_work_choices, required=True,
+    subject     = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'Например: Биология'}),
+                        label="Предмет")
+    type        = forms.CharField(max_length=100, required=True,
                         label="Тип работы")
     pages_count = forms.IntegerField(max_value=100, min_value=1, required=True,
                         label="Количество страниц")
