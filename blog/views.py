@@ -9,7 +9,7 @@ def blog_page(request):
     q_tag = request.GET.get('tag')
     tag   = None
     #
-    posts = models.Post.objects.filter(is_publicated=True)
+    posts = models.Post.get_available()
     if q_tag:
         try:
             tag = models.Tag.objects.get(pk=q_tag)

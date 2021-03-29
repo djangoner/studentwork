@@ -72,6 +72,10 @@ class Post(models.Model):
             self.publicated = timezone.now()
         super().save(*args, **kwargs)
 
+    @classmethod
+    def get_available(cls):
+        return cls.objects.filter(is_publicated=True)
+
     def get_absolute_url(self):
         return reverse('blog:blog_post', args=[self.pk])
 

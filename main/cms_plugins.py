@@ -2,7 +2,9 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from cms.models.pluginmodel import CMSPlugin
 from django.utils.translation import ugettext_lazy as _
+
 from . import models
+import blog.models
 
 PAGE_ITEMS = _("Настриваемые элементы")
 
@@ -56,5 +58,18 @@ class DisciplinesListPlugin(CMSPluginBase):
             'disciplines': disciplines,
             'discipline_rows':rows,
         })
-        
+        return context
+
+@plugin_pool.register_plugin
+class BlogPostsPlugin(CMSPluginBase):
+    """
+    Plugin for several last blog posts
+    """
+    module = PAGE_ITEMS
+    name = _("Последние посты блога")
+    render_template = "plugins/blog_posts.html"
+    cache = True
+
+    def render(self, context, instance, placeholder):
+        context['blog_posts'] = blog.models.Post.get_available()[:3]
         return context
