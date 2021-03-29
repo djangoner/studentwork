@@ -38,7 +38,7 @@ class User(AbstractUser):
     def send_password_reset_email(self, request = None):
         user = self
         current_site = get_current_site(request) if request else Site.objects.get(pk=settings.SITE_ID)
-        mail_subject = f'{current_site.domain}: Сброс пароля'
+        mail_subject = f'{current_site.domain}: Восстановление пароля'
         message = render_to_string('emails/password_reset.html', {
             'user': user,
             'domain': current_site.domain,
