@@ -271,3 +271,8 @@ def cabinet(request):
         "can_download_files": can_download_files,
     }
     return render(request, "cabinet/cabinet.html", context=context)
+
+def handler_404(request, exception):
+    if request.path == '/404':
+        return HttpResponse('404 page')
+    return HttpResponseRedirect('/404')
