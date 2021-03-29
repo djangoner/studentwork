@@ -44,19 +44,19 @@ def paginate(request, objects):
     return page
 
 
-def index_page(request):
-    slice_rows = 3
-    disciplines   = models.Discipline.objects.all().order_by('title')
-    rows = []
-    ##-- Slice to rows
-    for i in range(0, slice_rows):
-        rows.append(disciplines[i::slice_rows]) # Append sliced
+# def index_page(request):
+#     slice_rows = 3
+#     disciplines   = models.Discipline.objects.all().order_by('title')
+#     rows = []
+#     ##-- Slice to rows
+#     for i in range(0, slice_rows):
+#         rows.append(disciplines[i::slice_rows]) # Append sliced
 
-    context = {
-        'disciplines': disciplines,
-        'discipline_rows':rows,
-    }
-    return render(request, 'index.html', context=context)
+#     context = {
+#         'disciplines': disciplines,
+#         'discipline_rows':rows,
+#     }
+#     return render(request, 'index.html', context=context)
 
 def catalog_page(request, discipline= None):
     if discipline:

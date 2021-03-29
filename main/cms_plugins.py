@@ -17,7 +17,7 @@ class TopMenuPlugin(CMSPluginBase):
     # name of the plugin in the interface
     name = _("Верхнее меню")
     render_template = "plugins/top_menu.html"
-    cache = False
+    cache = True
     allow_children = True
     child_classes = ["LinkPlugin"]
 
@@ -31,4 +31,30 @@ class TopMenuPlugin(CMSPluginBase):
         #
         context = super().render(
             context, instance, placeholder)
+        return context
+
+@plugin_pool.register_plugin
+class DisciplinesListPlugin(CMSPluginBase):
+    """
+    Plugin for disciplines list
+    """
+    module = PAGE_ITEMS
+    name   = _('Список дисциплин')
+    render_template = "plugins/disciplines_list.html"
+    cache = False
+    allow_children = False
+
+    def render(self, context, instance, placeholder):
+        slice_rows = 3
+        disciplines   = models.Discipline.objects.all().order_by('title')
+        rows = []
+        ##-- Slice to rows
+        for i in range(0, slice_rows):
+            rows.append(disciplines[i::slice_rows]) # Append sliced
+
+        context.update({
+            'disciplines': disciplines,
+            'discipline_rows':rows,
+        })
+        
         return context
