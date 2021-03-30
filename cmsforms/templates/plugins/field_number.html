@@ -1,0 +1,7 @@
+{% extends 'plugins/field.html' %}
+{% load cms_tags %}
+
+{% block field %}
+    <input type="number" name="{{ instance.name }}" id="id_{{ instance.name }}" min="0"
+        class="form-control" placeholder="{{ instance.placeholder_text }}" {% if instance.required%}required{%endif%}>
+{% endblock %}

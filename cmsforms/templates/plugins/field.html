@@ -1,0 +1,5 @@
+{% load cms_tags %}
+<div class="form-group">
+    <label class="field-label font-weight-bold {% if instance.required%}required{%endif%}">{{ instance.label }}</label>
+    {% block field %} Unknown field {% endblock %}
+</div>

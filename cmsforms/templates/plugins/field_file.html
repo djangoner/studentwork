@@ -1,0 +1,7 @@
+{% extends 'plugins/field.html' %}
+{% load cms_tags %}
+
+{% block field %}
+    <input type="file" name="{{ instance.name }}" id="id_{{ instance.name }}"
+        class="form-control-file" placeholder="{{ instance.placeholder_text }}" {% if instance.required%}required{%endif%}>
+{% endblock %}

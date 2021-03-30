@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     ##-- Custom apps
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
+    'cmsforms.apps.CmsformsConfig',
     # 'chat.apps.ChatConfig',
     'blog.apps.BlogConfig',
     'channels',
@@ -375,6 +376,26 @@ CMS_PLACEHOLDER_CONF = {
             }
         ]
     },
+    'order_work_form': {
+        'name': _('Форма заказать работу'),
+        'plugins': ['CMSForm', 'TextPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'CMSForm',
+                'values': {},
+                'children': [
+                    {
+                        'plugin_type': 'FormTextField',
+                        'values': {
+                            'name': 'text_field',
+                            'label': 'Название поля',
+                            'placeholder_text': 'Замещающий текст',
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 }
 
 # Static files (CSS, JavaScript, Images)

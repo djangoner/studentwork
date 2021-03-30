@@ -17,6 +17,7 @@ from django.conf import settings
 # from django.core import serializers
 from django.db.models import Q
 
+from cmsforms.cms_plugins import CMSForm
 from . import models, forms, search_engine
 
 BASE_PRICE = models.BASE_PRICE
@@ -217,42 +218,58 @@ def order_work(request):
             [settings.ORDER_WORK_EMAIL],
             # html_message=message
         )
-        if request.FILES:
-            attachment = request.FILES['attachment']
+        for name, attachment in request.FILES.items():
+            attachment = attachment#request.FILES['attachment']
             email.attach(attachment.name, attachment.read(), attachment.content_type)
         email.content_subtype = "html"
         email.send()
     def form_label(form, name):
-        fields = form.fields
-        if name in fields:
-            f = fields[name]
-            if hasattr(f, 'label'):
-                return f.label
-        return name
+        try:
+            return field_labels.get(name, name)
+        except:
+            return name
 
-    if request.POST:
-        form = forms.OrderWorkForm(request.POST, request.FILES)
-    else:
-        form = forms.OrderWorkForm()
+    def get_childrens(plugin):
+        def _gen():
+            for child in plugin.get_children():
+                try:
+                    pl = child.get_bound_plugin()
+                    if pl:
+                        yield pl
+                except:
+                    continue
+        return list(_gen())
+
+    form = get_object_or_404(CMSForm.model, id=request.POST.get('cms_form_id'))
+    # print(dir(form.get_children()[0]))
+    field_labels = {child.name:child.label for child in get_childrens(form)}
+    # print(form, field_labels)
     #
-    if form.is_valid():
-        data = form.cleaned_data
+    if True : # form.is_valid()
+        data = dict(request.POST)
         data_f = data.copy()
-        data_f.pop('attachment')
+        data_f.pop('cms_form_id')
+        data_f.pop('csrfmiddlewaretoken')
+        # data_f.pop('attachment')
         logging.info(f"Order work form filled! Data: {data}")
 
-        with jsonlines.open("order_work.jl", "a") as writer:
-            writer.write(data_f)
-        ##
         try:
-            send_work({ form_label(form, k):v for k,v in data_f.items()})
+            with jsonlines.open("order_work.jl", "a") as writer:
+                writer.write(data_f)
+        except:
+            pass
+        ##
+        json_data = { form_label(form, k):''.join(v) for k,v in data_f.items()}
+        try:
+            send_work(json_data)
         except Exception as e:
             logging.exception("Form request work sending failed", exc_info=e)
 
         return HttpResponse("ok", status=200)
     else:
-        print(form.errors)
-        return JsonResponse(dict(form.errors.as_json()), status=422)
+        # print(form.errors)
+        return HttpResponse("err")
+        # return JsonResponse(dict(form.errors.as_json()), status=422)
 
 #-- Cabinet and users
 
