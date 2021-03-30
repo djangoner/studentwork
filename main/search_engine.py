@@ -68,4 +68,16 @@ def search_queryset(query, *args, **kwargs):
     id_list = [int(i['_id']) for i in results.hits.hits]
     # print(id_list)
     qs = models.Document.objects.filter(pk__in=id_list).order_by()
-    return qs
+    docs_ids = {doc.id: doc for doc in qs}
+    results = []
+    print(id_list, docs_ids, qs.count())
+    for id in id_list:
+        doc = docs_ids.get(id)
+        if not doc:
+            continue
+        results.append(doc)
+    #-- Add not sorted
+    for doc in qs:
+        if not doc in results:
+            results.append(doc)
+    return results
