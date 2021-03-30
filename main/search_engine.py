@@ -70,7 +70,7 @@ def search_queryset(query, *args, **kwargs):
     qs = models.Document.objects.filter(pk__in=id_list).order_by()
     docs_ids = {doc.id: doc for doc in qs}
     results = []
-    print(id_list, docs_ids, qs.count())
+    # print(id_list, docs_ids, qs.count())
     for id in id_list:
         doc = docs_ids.get(id)
         if not doc:

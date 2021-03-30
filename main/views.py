@@ -185,7 +185,7 @@ def search_results(request):
         # return HttpResponse("invalid_page_number", status=422)
     #-- Call search engine
     try:
-        search = search_engine.search_queryset(query, per_page=per_page, page=page, max_pages = max_pages).filter(approved=True)
+        search = search_engine.search_queryset(query, per_page=per_page, page=page, max_pages = max_pages)#.filter(approved=True)
     except Exception as e:
         logging.exception("SearchEngine search exception ", exc_info=e)
         search = False
