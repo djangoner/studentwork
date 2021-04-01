@@ -2,7 +2,7 @@
     {% include 'blocks/document.html' %}
 {% endfor %}
 
-{% if page %}
+{% if page and not request.GET.inline %}
 <ul class="pagination justify-content-center mt-5">
     <li class="page-item {%if not page.has_previous%}disabled{%endif%}"><a class="page-link" href="{{page_link_before}}?page={{page.number|add:'-1'}}{{page_link_after}}"> < </a></li>
 

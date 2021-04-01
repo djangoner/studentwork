@@ -9,9 +9,11 @@ import manticoresearch
 from manticoresearch.rest import ApiException
 from pprint import pprint
 
+from django.conf import settings
 from . import models
 
 dotenv.load_dotenv()
+DEBUG = settings.DEBUG
 
 logger = logging.getLogger("SearchEngine")
 
@@ -30,6 +32,8 @@ configuration = manticoresearch.Configuration(
 def search(query, per_page=10, page=1, max_pages=10):
     """"Search in Manticora"""
     # # Enter a context with an instance of the API client
+    logging.info(f"Searching '{query}'...")
+
     with manticoresearch.ApiClient(configuration) as api_client:
         # Create an instance of the API class
         api_instance = manticoresearch.SearchApi(api_client)
@@ -80,4 +84,7 @@ def search_queryset(query, *args, **kwargs):
     for doc in qs:
         if not doc in results:
             results.append(doc)
+    #
+    if DEBUG:
+        print(query, results, qs)
     return results
