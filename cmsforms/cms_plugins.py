@@ -16,7 +16,11 @@ class CMSForm(CMSPluginBase):
     render_template = "plugins/cms_form.html"
     cache = False
     allow_children = True
-    child_classes = ['FormTextField', 'FormTextAreaField', 'FormNumberField', 'FormFileField']
+    child_classes = [
+        'FormTextField', 'FormTextAreaField', 
+        'FormNumberField', 'FormFileField',
+        'FormEmailField',
+    ]
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
@@ -41,6 +45,12 @@ class CMSFormField(CMSPluginBase):
 class FormTextField(CMSFormField):
     name = _("Текстовое поле")
     render_template = "plugins/field_text.html"
+    model = models.TextField
+
+@plugin_pool.register_plugin
+class FormEmailField(FormTextField):
+    name = _("Email поле")
+    render_template = "plugins/field_email.html"
     model = models.TextField
 
 @plugin_pool.register_plugin

@@ -2,6 +2,7 @@
 {% load cms_tags %}
 
 {% block field %}
-    <input type="file" name="{{ instance.name }}" id="id_{{ instance.name }}"
-        class="form-control-file" placeholder="{{ instance.placeholder_text }}" {% if instance.required%}required{%endif%}>
+    {% with input="file" bs4_cls="form-control-file"%}
+        {{ block.super }}
+    {% endwith %}
 {% endblock %}

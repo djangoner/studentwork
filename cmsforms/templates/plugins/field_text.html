@@ -2,6 +2,7 @@
 {% load cms_tags %}
 
 {% block field %}
-    <input type="text" name="{{ instance.name }}" id="id_{{ instance.name }}"
-        class="form-control" placeholder="{{ instance.placeholder_text }}" {% if instance.required%}required{%endif%}>
+    {% with input="text"%}
+        {{ block.super }}
+    {% endwith %}
 {% endblock %}
