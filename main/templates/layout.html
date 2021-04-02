@@ -104,7 +104,7 @@
 
     
     <!-- Main content -->
-    <div id="main-content {% if request.GET.inline%}inline{% endif %}">
+    <div id="main-content" class="{% if request.GET.inline%}inline{% endif %}">
         {% include 'blocks/messages.html' %}
         <div id="alert_placeholder"></div>
 
@@ -144,9 +144,6 @@
     <!-- Scripts -->
     <script src="{% static '/js/main.js' %}"></script>
     <script src="//unpkg.com/jquery@3.5.1"></script>
-    <script src="//unpkg.com/vue@3"></script>
-    <!-- <script src="https://unpkg.com/http-vue-loader"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
     <script src="//unpkg.com/bootstrap@4.6.0"></script>
     <!-- Extra body -->
     {% render_block "js" %}
