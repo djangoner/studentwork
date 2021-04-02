@@ -176,7 +176,7 @@ def search_results(request):
     query = request.GET.get("search")
     inline = request.GET.get("inline")
     # if query is None:
-        # return redirect("main:index")
+        # return redirect("/")
         # return HttpResponse("no_query", status=422)
 
     try:

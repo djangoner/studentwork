@@ -20,11 +20,11 @@ def get_client_ip(request):
 
 def logout_page(request):
     logout(request)
-    return redirect('main:index')
+    return redirect('/')
 
 def login_page(request):
     def next_redirect():
-        return redirect(next_url if next_url else "main:index") # Redirect to next if have
+        return redirect(next_url if next_url else "/") # Redirect to next if have
     #
     next_url = request.GET.get("next")
     if request.user.is_authenticated:
