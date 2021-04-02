@@ -78,6 +78,9 @@
                     <div class="comment__head">
                         <span class="comment__author font-weight-bold">{{ comment.author }}: </span>
                         <span class="text-muted small">{{ comment.created }}</span>
+                        {% if user.is_superuser %}
+                            <a href="?delcomm={{ comment.id }}" class="ml-2 text-danger" onclick="delComment(event)"><i class="fa fa-trash"></i></a>
+                        {% endif %}
                     </div>
 
                     <div class="comment__content">
@@ -91,4 +94,13 @@
 
 
 {% block extrabody %}
+<script>
+    function delComment(e){
+        console.log(e)
+        if (!confirm("Вы уверены что хотите удалить комментарий?")){
+            e.preventDefault()
+            return false
+        }
+    }
+</script>
 {% endblock %}

@@ -30,6 +30,15 @@ def blog_page(request):
 def view_post(request, pk):
     post = get_object_or_404(models.Post, pk=pk)
     #
+    delcomment = request.GET.get("delcomm")
+    if delcomment and request.user.is_superuser:
+        try:
+            com = models.PostComment.objects.get(id=delcomment)
+            com.delete()
+        except:
+            pass
+        return HttpResponseRedirect("?#comments")
+    #
     if request.POST:
         form = forms.CommentForm(request.POST)
         if form.is_valid():
