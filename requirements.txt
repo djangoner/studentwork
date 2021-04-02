@@ -14,3 +14,4 @@ django-ckeditor==6.0.0
 jsonlines==2.0.0
 djangocms-bootstrap4==2.0.0
 djangocms-icon==2.0.0
+djangocms-rawhtml==1.2

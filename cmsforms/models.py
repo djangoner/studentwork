@@ -31,18 +31,21 @@ class BaseField(CMSPlugin):
 
 #     field_tag           = models.CharField("Тег поля", max_length=50,
 #                         help_text="<tag type=\"...\" >")
-    
-    
+class BaseMetrikaModel(CMSPlugin):
+
+    counter_id          = models.CharField("ID Счётчика", max_length=50)
+
+    class Meta:
+        abstract = True
+        verbose_name         = "Метрика"
+        verbose_name_plural  = "Метрики"
+
+    def __str__(self):
+        return self.counter_id
 
 
-# class TextField(BaseField):
-#     pass
+class YandexMetrikaModel(BaseMetrikaModel):
+    pass
 
-# class TextAreaField(BaseField):
-#     pass
-
-# class NumberField(BaseField):
-#     pass
-
-# class FileField(BaseField):
-#     pass
+class GoogleMetrikaModel(BaseMetrikaModel):
+    pass

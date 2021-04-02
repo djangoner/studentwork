@@ -72,3 +72,18 @@ class FormNumberField(CMSFormField):
 class FormFileField(CMSFormField):
     name = _("Файловое поле")
     render_template = "plugins/field_file.html"
+
+
+#--- Additional - Metrics
+
+@plugin_pool.register_plugin
+class YandexMetrika(CMSPluginBase):
+    name = _("Яндекс метрика")
+    render_template = "plugins/metrika_yandex.html"
+    model = models.YandexMetrikaModel
+
+@plugin_pool.register_plugin
+class GoogleMetrika(CMSPluginBase):
+    name = _("Google метрика")
+    render_template = "plugins/metrika_google.html"
+    model = models.GoogleMetrikaModel

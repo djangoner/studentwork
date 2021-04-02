@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'ckeditor',
     #
     'djangocms_icon',
+    'djangocms_rawhtml',
     # 'djangocms_link',
     # 'djangocms_picture',
     # 'djangocms_bootstrap4',
@@ -260,6 +261,9 @@ CKEDITOR_SETTINGS = { # For CMS
     'language': '{{ language }}',
     'toolbar': 'CMS',
     'skin': 'moono-lisa',
+    'allowedContent': True,
+    'basicEntities': False,
+    'entities': False,
 }
 
 CKEDITOR_CONFIGS = { # For admin pages
@@ -278,6 +282,7 @@ CKEDITOR_CONFIGS = { # For admin pages
             {'name': 'tools', 'items': ['ShowBlocks']}, # 'Maximize', 
         ],
         'toolbar': 'custom',
+        'allowedContent': True,
         # 'toolbarGroups': [{'name': 'document', 'groups': ['basicstyles', 'paragraph', 'tools']}],
         # 'width': '100%',
     }
@@ -288,7 +293,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
 CMS_PLACEHOLDER_CONF = {
     'head': {
         'name': _('Тег head'),
-        'plugins': ['TextPlugin'],
+        'plugins': ['TextPlugin', 'RawHTMLPluginPublisher', 'YandexMetrika', 'GoogleMetrika'],
     },
     'top_menu': {
         'name': _('Верхнее меню'),
@@ -366,7 +371,7 @@ CMS_PLACEHOLDER_CONF = {
     },
     'footer_text':{
         'name': _('Текст футера'),
-        'plugins': ['TextPlugin', 'LinkPlugin'],
+        'plugins': ['TextPlugin', 'LinkPlugin', 'RawHTMLPluginPublisher'],
         'default_plugins': [
             {
                 'plugin_type': 'TextPlugin',

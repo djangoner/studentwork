@@ -73,3 +73,10 @@ class BlogPostsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['blog_posts'] = blog.models.Post.get_available()[:3]
         return context
+
+
+# @plugin_pool.register_plugin
+# class RawHTML(CMSPluginBase):
+#     "Raw HTML Code"
+
+
