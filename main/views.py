@@ -174,6 +174,7 @@ def search_results(request):
     per_page  = 10
     #-- Args check
     query = request.GET.get("search")
+    inline = request.GET.get("inline")
     # if query is None:
         # return redirect("main:index")
         # return HttpResponse("no_query", status=422)
@@ -194,6 +195,9 @@ def search_results(request):
     if search == False:
         search = models.Document.objects.filter(Q(title__icontains=query) | Q(annotation__icontains=query)).filter(approved=True)[per_page * (page-1):per_page * page]
         light_search = True
+    #
+    if inline:
+        search = list(filter(lambda d: d.title!=query, search))
     ##
     print("Search results:", search)
     context = {
@@ -203,7 +207,8 @@ def search_results(request):
         'light_search': light_search,
         'search_query': query,
     }
-    return render(request, "search_results.html", context=context)
+    template = "search_results.html" if not inline else "search_similar.html"
+    return render(request, template, context=context)
 
 
 def order_work(request):

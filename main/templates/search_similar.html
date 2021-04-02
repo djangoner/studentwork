@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} Результаты поиска {% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+{% block body %}
+    {% if page %}
+            {% include "blocks/documents_list.html" with page=page %}
+    {% else %}
+        <h4 class="text-center my-5">Не найдено!</h4>
+    {% endif %}
+{% endblock %}
+
+
+{% block extrabody %}
+{% endblock %}

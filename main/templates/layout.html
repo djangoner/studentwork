@@ -104,7 +104,7 @@
 
     
     <!-- Main content -->
-    <div id="main-content">
+    <div id="main-content {% if request.GET.inline%}inline{% endif %}">
         {% include 'blocks/messages.html' %}
         <div id="alert_placeholder"></div>
 
