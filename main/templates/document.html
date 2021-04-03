@@ -32,7 +32,7 @@
                 {% if doc.discipline %}
                     <li class="breadcrumb-item"><a href="{{doc.discipline.get_absolute_url}}">Дисциплина "{{doc.discipline}}"</a> </li>
                 {% endif %}
-                <li class="breadcrumb-item active" aria-current="page">Документ "{{doc}}"</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ doc }}</li>
             </ol>
           </nav>
 

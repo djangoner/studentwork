@@ -230,3 +230,13 @@ footer.footer{
     font-style: 17px;
 }
 
+/* ----- Blog ------ */
+
+.post__tags .tag:after{
+    content: ',';
+    display: inline;
+    margin-right: 0.5rem;
+}
+.post__tags .tag:last-child:after{
+    display:none;
+}
