@@ -295,6 +295,6 @@ def cabinet(request):
     return render(request, "cabinet/cabinet.html", context=context)
 
 def handler_404(request, exception):
-    if request.path == '/404':
+    if request.path.startswith('/404'):
         return HttpResponse('404 page')
-    return HttpResponseRedirect('/404')
+    return HttpResponseRedirect('/404/')
