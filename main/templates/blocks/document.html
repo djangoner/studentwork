@@ -2,7 +2,7 @@
     <div class="card-body">
         <a href="{{doc.get_absolute_url}}" class="no-underline">
             <h4 class="card-title">
-                <span class="mr-2">{{doc.title}}</span>
+                <span class="mr-2">{{ doc.title | default:'Файл требует проверки' }}</span>
                 {% include 'blocks/document_badges_title.html'%}
             </h4>
         </a>

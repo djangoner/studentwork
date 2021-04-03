@@ -36,7 +36,8 @@ class DocumentAdmin(admin.ModelAdmin):
         if not obj.author: # Set author if not set
             obj.author = request.user
         super().save_model(request, obj, form, change)
-    list_display = ('title', 'author', 'uploaded', 'approved')
+    list_display = ('id', 'title', 'author', 'uploaded', 'approved')
+    list_display_links = ('id', 'title')
     list_filter = ('approved', 'language', 'file_type')
     search_fields = ('id', 'title', 'annotation')
 
