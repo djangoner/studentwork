@@ -22,6 +22,9 @@ nav.navbar .navbar-brand {
 html, body, #main-content:not(.inline){
     min-height: 100vh;
 }
+#main-content{
+    margin-top: 70px;
+}
 
 .alerts-wrapper{
     position: fixed;

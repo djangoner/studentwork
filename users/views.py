@@ -221,7 +221,7 @@ def password_reset_form(request, uidb64, token):
         user = None
     ##
     if not user:
-        messages.add_message(request, messages.INFO, 'Ссылка сброса пароля была недействительна')
+        messages.add_message(request, messages.INFO, 'Ссылка восстановления пароля была недействительна')
         return redirect('users:main')
     if request.POST:
         form = forms.ChangePasswordForm(request.POST)

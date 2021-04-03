@@ -9,5 +9,8 @@
     {% if doc.type %}
         <span class="text-muted small info-bottom">Тип документа: {{ doc.type.name }}</span>
     {% endif %}
+    {% if doc.language %}
+        <span class="text-muted small info-bottom">Язык: {{ doc.language }}</span>
+    {% endif %}
     <!-- <span class="text-muted small info-bottom">Добавлен {# doc.uploaded #}</span> -->
 </div>
