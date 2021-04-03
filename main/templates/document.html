@@ -89,7 +89,13 @@
                 </div> -->
             {% else %}
                 <div class="alert alert-success text-center">
-                    <h5 class="alert-heading">За скачивание файла с вашего счета спишется 10 рублей.<br>За последующие скачивания деньги списываться не будут</h4>
+                    <h5 class="alert-heading">
+                        {% if doc.author == request.user %}
+                            Это ваш файл, вы можете скачать его
+                        {% else %}
+                            За скачивание файла с вашего счета спишется 10 рублей.<br>За последующие скачивания деньги списываться не будут
+                        {% endif %}
+                    </h4>
                     <!-- <p>Файл уже был куплен.</p> -->
                     <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3">Скачать</a>
                 </div>
