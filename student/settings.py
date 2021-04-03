@@ -295,6 +295,10 @@ CMS_PLACEHOLDER_CONF = {
         'name': _('Тег head'),
         'plugins': ['TextPlugin', 'RawHTMLPluginPublisher', 'YandexMetrika', 'GoogleMetrika'],
     },
+    'footer': {
+        'name': _('Футер (конец страницы)'),
+        'plugins': ['TextPlugin', 'RawHTMLPluginPublisher', 'YandexMetrika', 'GoogleMetrika'],
+    },
     'top_menu': {
         'name': _('Верхнее меню'),
         'plugins': ['TopMenuPlugin'],
