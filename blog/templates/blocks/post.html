@@ -6,23 +6,23 @@
             </h4>
         </a>
 
-        <div class="document-content my-2 d-flex flex-wrap">
+        <div class="document-content d-flex flex-wrap my-4">
             {% if post.image %}
-                <div class="col-12 col-md-auto document-img my-2 d-inline-block mr-2 text-center">
+                <div class="col-12 col-md-auto document-img d-inline-block mr-2 text-center">
                     <a href="{{post.get_absolute_url}}" class="no-underline">
                         <img src="{{ post.image.url }}" alt="" class="img-fluid" style="height:200px;width:auto">
                     </a>
                 </div>
             {% endif %}
-            <div class="col">
-                <p class="card-text {%if post.get_annotation|length >= 400%}long{%endif%} ml-2">
+            <div class="col card-text long">
+                <p class="ml-2">
                     {{post.get_annotation}}
                 </p>
             </div>
         </div>
 
-        <div>
+        <!-- <div>
             <a href="{{post.get_absolute_url}}" class="btn btn-primary mt-1">Читать</a>
-        </div>
+        </div> -->
     </div>
 </div>

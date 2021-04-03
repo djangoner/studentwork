@@ -80,7 +80,7 @@ class Post(models.Model):
         return reverse('blog:blog_post', args=[self.pk])
 
     def get_annotation(self):
-        length  = 450
+        length  = 950
         text    = strip_tags(self.content)
         if len(text) > length:
             text = text[:length] + "..."

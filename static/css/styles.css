@@ -207,6 +207,8 @@ footer.footer{
 }
 .document-item .card-text{
     position: relative;
+    max-height: 200px;
+    overflow-y: hidden;
 }
 .document-item .card-text.long:after{
     content: '';
@@ -216,7 +218,7 @@ footer.footer{
     bottom: 0;
     left: 0;
     background: linear-gradient(to top,
-    rgba(255,255,255, 1) 20%, 
+    rgba(255,255,255, 1) 0%, 
     rgba(255,255,255, 0) 80%
  );
 }
@@ -227,3 +229,4 @@ footer.footer{
     margin-left: 0.2rem;
     font-style: 17px;
 }
+
