@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% load static i18n %}
+{% load static i18n cms_tags %}
 
 {% block title %} Главная {% endblock %}
 
@@ -9,29 +9,30 @@
 
 {% block body %}
     <div class="container mt-3 py-3 bg-white">
-        <h1 class="title text-center">Дисциплины</h1>
+        <!-- <h1 class="title text-center">Дисциплины</h1> -->
 
         <div class="row block__disciplines my-3">
-            {% for group in disciplines_groups %}
-                {% with group=group %}
-                    {% include './blocks/discipline_group.html' %}
-                {% endwith %}
-            {% endfor %}
+            {% for row in discipline_rows %}
             <div class="col col-12 col-md-6 col-lg-4 discipline-group">
-                <div class="line d-flex">
+                <!-- <div class="line d-flex">
                     <span class="items-count align-self-center text-center">
                         <span class="d-block mx-auto">-</span>
                     </span>
                     <span class="discipline-name">Без группы</span>
-                </div>               
-                {% for sub in disciplines_nogroups.all %}
+                </div>                -->
+                <!-- {{discipline_rows}} -->
+                {% for disc in row %}
                 <div class="discipline-item">
-                    {% with discipline=sub%}
-                        {% include './blocks/discipline.html' %}
-                    {% endwith %}
+                    <div class="line d-flex">
+                        <span class="items-count align-self-center text-center">
+                            <span class="d-block mx-auto">{{disc.visible_documents.count}}</span>
+                        </span>
+                        <a href="{{disc.get_absolute_url}}"><span class="discipline-name">{{disc.title}}</span></a>
+                    </div>
                 </div>
                 {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

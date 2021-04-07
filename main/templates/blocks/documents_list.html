@@ -1,0 +1,15 @@
+{% for doc in page.object_list %}
+    {% include 'blocks/document.html' %}
+{% endfor %}
+
+{% if page and not request.GET.inline %}
+<ul class="pagination justify-content-center mt-5">
+    <li class="page-item {%if not page.has_previous%}disabled{%endif%}"><a class="page-link" href="{{page_link_before}}?page={{page.number|add:'-1'}}{{page_link_after}}"> < </a></li>
+
+    {% for i in page.paginator.page_range %}
+        <li class="page-item {%if page.number == i%}active{%endif%}"><a href="{{page_link_before}}?page={{i}}{{page_link_after}}" class="page-link">{{i}}</a></li>
+    {% endfor %}
+
+    <li class="page-item {%if not page.has_next%}disabled{%endif%}"><a class="page-link" href="{{page_link_before}}?page={{page.number|add:'1'}}{{page_link_after}}"> > </a></li>
+</ul>
+{% endif %}

@@ -7,3 +7,5 @@ migrations
 media
 *.env
 *.log
+*.jl
+*.jsonl

@@ -1,0 +1,8 @@
+{% extends 'plugins/field.html' %}
+{% load cms_tags %}
+
+{% block field %}
+    {% with input="file" bs4_cls="form-control-file"%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}

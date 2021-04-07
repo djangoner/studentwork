@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} Чат {% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+<style>
+.cms-toolbar{
+    display: none!important;
+}
+#alert_placeholder{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+</style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container-auto v-cloak" id="app">
+        <div class="row no-gutters">
+            <div class="sidebar col-12 col-md-4 col-xl-3">
+                <a href="/" class="btn btn-sm btn-primary w-100 mb-2">< на главную</a>
+                <chat-users 
+                    :chats="chatsList"
+                    :is_admin="is_admin"
+                    :loading="chats_loading"
+                    :connected="connected"
+                    :current_user="current_user"
+                    @searching="searching"
+                    @select_dialog="selectDialog"
+                    >
+                </chat-users>
+            </div>
+            <div class="chat-content col hide-sm">
+                <div id="alert_placeholder"></div>
+                <chat-dialog
+                v-if="dialog"
+                :dialog="dialog"
+                :current_user="current_user"
+                :loading="dialog_loading"
+                :loading_more="dialog_loading_more"
+                :is_admin="is_admin"
+                @load_old="loadOldMessages"
+                ref="dialog"
+                >
+                
+                </chat-dialog>
+                <div class="btn-back show-ms"><a class="btn btn m-1 btn-primary" onclick="dialogHide()">&times;</a></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+    <script src="//unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+    <!-- <script src="https://unpkg.com/http-vue-loader"></script> -->
+    <script src="{% static 'js/chat.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'plugins/field.html' %}
+{% load cms_tags %}
+
+{% block field %}
+    {% with input="text"%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}

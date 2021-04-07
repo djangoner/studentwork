@@ -1,0 +1,2 @@
+name="{{ instance.name }}" id="id_{{ instance.name }}" min="0"
+class="{{ bs4_cls|default:'form-control' }}" placeholder="{{ instance.placeholder_text|default:'' }}" {% if instance.required%}required{%endif%}

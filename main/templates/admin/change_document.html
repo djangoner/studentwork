@@ -1,0 +1,16 @@
+{% extends "admin/change_form.html" %}
+
+{% block submit_buttons_bottom %}
+{{ block.super }}
+<div class="submit-row">
+    {% if original.author %}
+        <a href="{% url 'admin:users_user_change' original.author.id %}">Просмотр автора</a>
+    {% endif %}
+    <input type="submit" value="Принять документ" name="_document_accept" class="btn-success"
+        title="Статус проверки будет 'принят', будет начислен бонус автору" {% if original.approved == True %}disabled{% endif %}>
+    <input type="submit" value="Пересмотреть документ" name="_document_recheck" class="btn-success"
+        title="Статус проверки будет 'не проверен'" {% if original.approved == None %}disabled{% endif %}>
+    <input type="submit" value="Отклонить документ" name="_document_decline" class="deletelink btn-danger"
+        title="Статус проверки будет 'отклонен', файл будет удален" {% if original.approved == False %}disabled{% endif %}>
+</div>
+{% endblock %}

@@ -48,7 +48,6 @@ a.nav-link.active{
             <a class="nav-link" id="register-tab" data-toggle="pill" href="#register" role="tab"
                 aria-controls="register" aria-selected="false">Зарегистрироваться</a>
         </li>
-        <!-- TODO: pretty slider -->
         <hr>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -69,6 +68,7 @@ a.nav-link.active{
             <h2 class="text-center mt-2 mb-4">Войти</h2>
             <form action="" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="fingerprint" value="" id="set_visitor_id">
 
                 <div class="mb-3">
                     <label>Электронная почта</label>
@@ -84,6 +84,12 @@ a.nav-link.active{
                     <input type="submit" value="Войти" class="btn btn-success mt-3 mb-2 px-3 py-2">
                 </div>
             </form>
+
+            <hr>
+        
+            <div class="text-center mb-2">
+                <a href="{% url 'users:password_reset_page' %}">Забыли пароль?</a>
+            </div>
         </div>
 
         <!-- Register -->
@@ -100,46 +106,75 @@ a.nav-link.active{
 
                 <div class="mb-3">
                     <label>Имя пользователя</label>
-                    <input type="text" name="username" class="form-control" value="{% firstof form.username.value '' %}" placeholder="john" required>
+                    <input type="text" name="username" class="form-control" value="{% firstof form.username.value '' %}" placeholder="johnuser123" required>
                 </div>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label>Ваше имя</label>
-                    <input type="text" name="first_name" class="form-control" value="{% firstof form.first_name.value '' %}" placeholder="john@gmail.com" required>
-                </div>
+                    <input type="text" name="first_name" class="form-control" value="{% firstof form.first_name.value '' %}" placeholder="John" required>
+                </div> -->
 
                 <div class="mb-3">
                     <label>Пароль</label>
                     <input type="password" name="password" class="form-control" placeholder="********" required>
                 </div>
 
+                <div class="mb-3">
+                    <label>Повторите пароль</label>
+                    <input type="password" name="password2" class="form-control" placeholder="********" required>
+                </div>
+
                 <div class="text-center">
-                    <input type="submit" value="Войти" class="btn btn-success mt-3 mb-2 px-3 py-2">
+                    <input type="submit" value="Зарегистрироваться" class="btn btn-success mt-3 mb-2 px-3 py-2">
                 </div>
             </form>
         </div>
     </div>
-
-    <hr>
-
-    <div class="text-center mb-2">
-        <a href="">Забыли пароль?</a>
-    </div>
-    <script>
-        document.querySelector('#pills-tab').style.visibility="none"
-        window.addEventListener('load', ()=>{
-            var pills = $('a[data-toggle="pill"]')
-
-            pills.on('show.bs.tab', function (e) {
-                location.hash = $(e.target).attr('href')
-            });
-            var activeTab = location.hash
-            if (activeTab) {
-                console.debug("Active tab:", activeTab)
-                tab = $('#pills-tab a[href="' + activeTab + '"]')
-                tab.tab('show');
-            }
-        })
-    </script>
 </div>
+{% endblock %}
+
+{% block extrabody %}
+<script
+    async
+    src="//cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"
+    onload="initFingerprintJS()"
+></script>
+<script>
+function initFingerprintJS() {
+    console.debug("Fingerprint init")
+    window.visitorIdInit = true
+    FingerprintJS.load().then(fp => {
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      fp.get().then(result => {
+        // This is the visitor identifier:
+        const visitorId = result.visitorId;
+        console.debug(visitorId);
+        window.visitorId = visitorId
+        $('#set_visitor_id').val(visitorId)
+      });
+    });
+  }
+</script>
+<!-- Remember last tab -->
+
+<script>
+    function activePill(e) {
+        var activeTab = location.hash
+        if (activeTab) {
+            console.debug("Active tab:", activeTab)
+            tab = $('#pills-tab a[href="' + activeTab + '"]')
+            tab.tab('show');
+        }
+    }
+    window.onhashchange = activePill
+    activePill()
+    $(document).ready(()=>{
+        var pills = $('a[data-toggle="pill"]')
+
+        pills.on('show.bs.tab', function (e) {
+            location.hash = $(e.target).attr('href')
+        });
+    })
+</script>
 {% endblock %}

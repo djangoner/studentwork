@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+{% load static i18n  %}
+
+{% block title %} {{doc.title}} {% endblock %}
+
+{% block extrahead %}
+<style>
+    .main-container .alert{
+        display: inline-block;
+    }
+    .doc__image image{
+        max-height: 400px;
+        height: auto;
+        width: auto;
+    }
+    #similarDocuments .cms{
+        display: none!important;
+        visibility: hidden!important;
+    }
+</style>
+<meta id="documentTitle" value="{{doc.title}}">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container main-container mt-3 py-3 bg-white document-item">
+
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                {% if doc.discipline %}
+                    <li class="breadcrumb-item"><a href="{{doc.discipline.get_absolute_url}}">Дисциплина "{{doc.discipline}}"</a> </li>
+                {% endif %}
+                <li class="breadcrumb-item active" aria-current="page">{{ doc }}</li>
+            </ol>
+          </nav>
+
+
+        <!-- Title and info -->
+        <h2 class="text-left mb-3">
+            <span class="mr-2"> {{doc.title}} </span>
+            <div class="d-inline align-top" style="font-size:initial">
+                {% include 'blocks/document_badges_title.html'%}
+            </div>
+        </h2>
+        {% include 'blocks/document_badges.html' %}
+
+        <!-- If it's file owner and document on moderation -->
+        {% if doc.approved == None and doc.author == user %}
+            <div class="text-center my-4">
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Этот документ на модерации!</h4>
+                    <p>Другие пользователи не видят его.</p>
+                </div>
+            </div>
+        {% endif%}
+
+        <!-- Image and description -->
+        <div class="mx-auto my-3 doc__image">
+            <img src="{%if doc.image%}{{doc.image.url}}{%else%}//via.placeholder.com/300x400{%endif%}" alt="" class="img-fluid d-block mx-auto">
+        </div>
+
+        
+        <div class="text-desc mt-3">
+            <hr>
+            <p class="py-4 pl-2">{{doc.annotation | safe | default:"Нет аннотации!"}}</p>
+        </div>
+
+        <hr>
+
+        <!-- Buy -->
+
+        <div class="buy-container text-center mt-5">
+            {% if not doc.file %}
+                <div class="alert alert-danger">
+                    <h4 class="alert-heading">Нет файла для загрузки</h4>
+                </div>
+            {% elif not user.is_authenticated%}
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Для скачивания файла, вам нужно Войти или зарегистрироваться</h4>
+                    <a href="{% url 'users:login' %}?next={{request.path}}#buy" class="btn btn-success mt-3">Войти</a>
+                </div>
+            <!-- {# elif doc in user.buyed_documents.all #}
+                <div class="alert alert-success">
+                    <h4 class="alert-heading">Вы можете скачать файл</h4>
+                    <p>Файл уже был куплен.</p>
+                    <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3" download>Скачать</a>
+                </div> -->
+            {% else %}
+                <div class="alert alert-success text-center">
+                    <h5 class="alert-heading">
+                        {% if doc.author == request.user %}
+                            Это ваш файл, вы можете скачать его
+                        {% else %}
+                            За скачивание файла с вашего счета спишется 10 рублей.<br>За последующие скачивания деньги списываться не будут
+                        {% endif %}
+                    </h4>
+                    <!-- <p>Файл уже был куплен.</p> -->
+                    <a href="{{file_link}}" class="btn btn-success btn-shadow mt-3">Скачать</a>
+                </div>
+                <!-- <div class="alert alert-success" id="buy">
+                    <h4 class="alert-heading">
+                        Вы можете купить эту работу
+                    </h4>
+                    <p>Ваш баланс: {{user.balance}}</p>
+                    <p>Стоимость работы: {{price}}</p>
+                    <div class="btns">
+                        <a href="?buy_confirm" class="btn btn-success btn-shadow mt-3">Купить!</a>
+                    </div>
+                </div> -->
+            {% endif %}
+        </div>
+        <div class="mt-5">
+            <h3 class="text-center my-5">Похожие работы</h4>
+            <div class="loading-indicator d-flex w-fit-content mx-auto align-items-center my-5 hide">
+                <div class="ring mr-2">
+                        <div class="lds-dual-ring"></div>
+                </div>
+                <h5 class="text-center">Загрузка...</h5>
+            </div>
+            <div class="err-container text-center hide">
+                <h4 class="text-center my-4">Ошибка!</h4>
+                <p class="text-center err-desc"></p>
+                <h4 class="text-center"><a href="" class="btn btn-warning">Перезагрузить страницу</a></h4>
+            </div>
+           <div id="similarDocuments" class="mt-3"></div>
+        </div>   
+    </div>
+{% endblock %}
+
+{% block extrabody %}
+    <script src="{% static 'js/search_similar.js' %}"></script>
+{% endblock %}

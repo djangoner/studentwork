@@ -1,0 +1,23 @@
+<div class="row block__disciplines my-3">
+    {% for row in discipline_rows %}
+    <div class="col col-12 col-md-6 col-lg-4 discipline-group">
+        <!-- <div class="line d-flex">
+            <span class="items-count align-self-center text-center">
+                <span class="d-block mx-auto">-</span>
+            </span>
+            <span class="discipline-name">Без группы</span>
+        </div>                -->
+        <!-- {{discipline_rows}} -->
+        {% for disc in row %}
+        <div class="discipline-item">
+            <div class="line d-flex">
+                <span class="items-count align-self-center text-center">
+                    <span class="d-block mx-auto">{{disc.visible_documents.count}}</span>
+                </span>
+                <a href="{{disc.get_absolute_url}}"><span class="discipline-name">{{disc.title}}</span></a>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+</div>

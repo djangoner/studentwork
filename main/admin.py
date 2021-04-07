@@ -1,37 +1,85 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 
 from . import models
 
-class DisciplineInline(admin.TabularInline):
-    model = models.Discipline
-    extra = 0
+
+def action_resave(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.save()
+action_resave.short_description = "Перепроверить"
+
+# class DisciplineInline(admin.TabularInline):
+#     model = models.Discipline
+#     extra = 0
 
 @admin.register(models.Discipline)
 class DisciplineAdmin(admin.ModelAdmin):
-    list_display = ('title', 'parent')
+    list_display = ('title', 'slug')
     search_fields = ('title', )
-    readonly_fields = ('slug', )
+    # readonly_fields = ('slug', )
     fieldsets = (
         ('Общая информация', {
-            'fields': (('title', 'slug'), 'parent')
+            'fields': ('title', 'title_long', 'slug')
+            }),
+        ('SEO', {
+            'fields': ('meta_description', 'meta_keywords')
             }),
     )
-    inlines = [
-        DisciplineInline
-    ]
+    # inlines = [
+    #     DisciplineInline
+    # ]
 
 @admin.register(models.Document)
 class DocumentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'uploaded', 'approved')
-    list_filter = ('file_type', 'approved', 'language')
-    search_fields = ('title', 'annotation', 'file', 'author')
+    def save_model(self, request, obj, form, change):
+        if not obj.author: # Set author if not set
+            obj.author = request.user
+        super().save_model(request, obj, form, change)
+    list_display = ('id', 'title', 'author', 'uploaded', 'approved')
+    list_display_links = ('id', 'title')
+    list_filter = ('approved', 'language', 'file_type')
+    search_fields = ('id', 'title', 'annotation')
 
-    readonly_fields = ('file_type', 'document_pages', 'uploaded', 'author')
+    readonly_fields = ('file_type', 'file_size', 'document_pages', 'uploaded', 'author', 'approved', 'image') # 
     fieldsets = (
         ('Общая информация', {
-            'fields': ('title', 'annotation', 'type', 'discipline', 'language')
+            'fields': ('title', 'annotation', 'type', 'discipline', 'language', 'created_year')
             }),
         ('Файл', {
-            'fields': ('file', 'file_type', 'document_pages', 'approved', 'uploaded', 'author')
+            'fields': ('file', 'image', 'file_type', 'file_size', 'document_pages', 'approved', 'uploaded', 'author')
             }),
     )
+    change_form_template = "admin/change_document.html"
+    actions = [action_resave, ]
+
+    def response_change(self, request, obj):
+        if "_document_accept" in request.POST:
+            obj.approved = True
+            obj.save()
+            self.message_user(request, "Вы проверили документ, бонус автору будет отправлен,")
+            return HttpResponseRedirect(".")
+        elif "_document_recheck" in request.POST:
+            obj.approved = None
+            obj.save()
+            self.message_user(request, "Вы пометили документ для модерации.")
+            return HttpResponseRedirect(".")
+        elif "_document_decline" in request.POST:
+            obj.approved = False
+            obj.save()
+            self.message_user(request, "Вы отклонили документ, он будет удален.")
+            return HttpResponseRedirect(".")
+        return super().response_change(request, obj)
+
+
+@admin.register(models.WorkType)
+class WorkTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(models.DocumentType)
+class DocumentTypeAdmin(admin.ModelAdmin):
+    list_display = ('extension',)
+
+@admin.register(models.DocumentLanguage)
+class DocumentLanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', )

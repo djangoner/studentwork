@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% load static i18n cms_tags custom_tags %}
+
+{% block title %} Пополнение баланса за файлы {% endblock %}
+
+{% block extrahead %}
+<style>
+    form span.required{
+        color: red;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container main-container mt-3 py-3">
+        <h2 class="text-center mb-3 mt-3">Пополнение баланса за файлы</h2>
+        {% if can_upload %}
+            <div class="mb-5 mt-5">
+                <ul class="alert alert-info p-4 d-block-inline w-fit-content ml-2">
+                    <h4 class="alert-heading mt-2 mb-4">Информация:</h4>
+
+                    <li class="m-0">Здесь вы можете загрузить собственные учебные файлы в формате doc, docx, rtf и pdf.</li>
+                    <li class="m-0">Файлы должны быть не из Интернета.</li>
+                    <li class="m-0">Мы проверим их, и если все в порядке, то за каждый файл начислим вам 10 рублей на баланс.</li>
+                    <li class="m-0">Проверка занимает 1-2 дня.</li>
+                    <li class="m-0">Одобренные файлы вы найдете во вкладке «Мои файлы» в личном кабинете.</li>
+                    <li class="m-0">Помните, что максимальный размер файла - 10 МБ.</li>
+                </ul>
+                {% placeholder "info" %}
+            </div>
+            {% if form.errors %}
+                <div class="errors-container">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{field.label}}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Form -->
+            <form action="" method="post" class="mb-5" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label class="label font-weight-bold">{{field.label}} {% if field.field.required %} <span class="required">*</span>{% endif %}</label>
+                        {% if field.field.widget.input_type == "file" %}
+                            {{field|add_classes:'form-control-file'}}
+                        {% else %}
+                            {{field|add_classes:'form-control'}}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <div class="text-center my-5">
+                    <input type="submit" value="Отправить" class="btn btn-success">
+                </div>
+            </form>
+        {% else %}
+            <div class="text-center my-5">
+                <div class="alert alert-warning d-inline-block">
+                    <h4 class="alert-heading">У вас много документов на модерации!</h4>
+                    <p>Пожалуйста, подождите пока они будут проверены.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block extrabody %}
+{% endblock %}

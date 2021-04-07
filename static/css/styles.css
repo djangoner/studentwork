@@ -1,3 +1,5 @@
+/* Main styles */
+
 html, body{
     margin: 0;
     padding: 0;
@@ -14,10 +16,30 @@ nav.navbar .navbar-brand {
 }
 .navbar-collapse{
     padding: 1rem;
-    z-index: 99
+    z-index: 99;
+    height: fit-content!important;
 }
-html, body, #main-content{
+html, body, #main-content:not(.inline){
     min-height: 100vh;
+}
+#main-content{
+    margin-top: 70px;
+}
+
+.alerts-wrapper{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99999999;
+}
+@media (min-width: 768px) {
+    .alerts-container{
+        width: 50%;
+    }
+}
+.alerts-container{
+    /* width: 50%; */
+    margin: 1rem auto;
 }
 
 footer.footer{
@@ -34,6 +56,9 @@ footer.footer{
     white-space: nowrap;
     display: inline-block;
 }
+.footer__links a:nth-child(1){
+    padding-left: 0;
+}
 .footer hr{
     background-color: #e3f2fd;
     margin: 0.6rem 0;
@@ -43,9 +68,6 @@ footer.footer{
 }
 .bg-primary{background-color: var(--primary)!important;}
 
-#search-input{
-    width: auto!important;
-}
 
 @media (max-width: 800px) {
     .footer__links a{
@@ -59,17 +81,73 @@ footer.footer{
     }
 }
 
-@media (min-width: 1100px){
-    #search-input{
-        width: 320px!important;
+@media (min-width: 1200px){
+    #search-form{
+        width: 30%!important;
     }
+    /* #search-input{
+        width: 320px!important;
+    } */
+}
+.no-underline{
+    text-decoration: none!important;
+}
+
+.btn-shadow{
+    box-shadow: 0px 0px 5px 1px rgb(0, 0, 0, 0.1);
+}
+.btn-shadow:hover{
+    box-shadow: 0px 0px 17px 0px rgb(0, 0, 0, 0.2);
+}
+
+.main-container, #main-content > .container{
+    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.15);
+}
+.w-fit-content{
+    width: fit-content!important;
+}
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #007bff transparent #007bff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+@keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+[v-cloak] { display: none; }
+.hide{display:none!important}
+
+.h-100{
+    height: 100%!important;
+}
+.w-100{
+    width: 100%!important;
 }
 
 /* Disciplines */
 
+
+
 .block__disciplines .items-count{
     color: #6c757d;
-    margin-right: 2rem;
+    margin-right: 0.5rem;
     padding: 2px;
     min-width: 2rem;
     width: auto;
@@ -82,7 +160,9 @@ footer.footer{
 .discipline-group{
     margin: 1rem 0;
 }
-
+.block__disciplines .discipline-name{
+    vertical-align: middle;
+}
 .block__disciplines .discipline-group > .line .discipline-name{
     font-size: 26px;
     font-weight: bold;
@@ -96,4 +176,67 @@ footer.footer{
 
 .stats .col:first-child{
     font-weight: bold;
+}
+
+/* Documents */
+
+.document-item{
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    transition: .3s ease;
+    cursor: default;
+    /* background: #f1fbff!important; */
+    /* background: #fcfcfc!important; */
+}
+.document-item:hover{
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+}
+.document-item .card-title{
+    margin-bottom: 0;
+    color: var(--dark)!important;
+    text-decoration: none!important;
+}
+.document-item .info-top, .document-item .info-bottom{
+    margin-bottom: 0.2rem;
+}
+.document-item .infos span{
+    margin-right: 0.6rem;
+}
+.document-item h4 > .badge{
+    font-size: 12px;
+}
+.document-item .card-text{
+    position: relative;
+    max-height: 200px;
+    overflow-y: hidden;
+}
+.document-item .card-text.long:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top,
+    rgba(255,255,255, 1) 0%, 
+    rgba(255,255,255, 0) 80%
+ );
+}
+
+.field-label.required::after{
+    content: '*';
+    color: red;
+    margin-left: 0.2rem;
+    font-style: 17px;
+}
+
+/* ----- Blog ------ */
+
+.post__tags .tag:after{
+    content: ',';
+    display: inline;
+    margin-right: 0.5rem;
+}
+.post__tags .tag:last-child:after{
+    display:none;
 }

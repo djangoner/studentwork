@@ -1,0 +1,28 @@
+<div class="card mb-3 document-item">
+    <div class="card-body">
+        <a href="{{post.get_absolute_url}}" class="no-underline">
+            <h4 class="card-title">
+                {{post.title}}
+            </h4>
+        </a>
+
+        <div class="document-content d-flex flex-wrap my-4">
+            {% if post.image %}
+                <div class="col-12 col-md-auto document-img d-inline-block mr-2 text-center">
+                    <a href="{{post.get_absolute_url}}" class="no-underline">
+                        <img src="{{ post.image.url }}" alt="" class="img-fluid" style="height:200px;width:auto">
+                    </a>
+                </div>
+            {% endif %}
+            <div class="col card-text long">
+                <p class="ml-2">
+                    {{post.get_annotation}}
+                </p>
+            </div>
+        </div>
+
+        <!-- <div>
+            <a href="{{post.get_absolute_url}}" class="btn btn-primary mt-1">Читать</a>
+        </div> -->
+    </div>
+</div>

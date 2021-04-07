@@ -1,0 +1,29 @@
+<div class="alerts-wrapper">
+    <div class="alerts-container">
+        {% if messages %}
+            <div class="container">
+                
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message | safe }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<style>
+.alerts-container{
+    font-size: 140%;
+}
+</style>
+<!-- <style>
+.messages-container{
+    /* position: fixed; */
+    /* top: 100px; */
+    /* position: fixed; */
+}
+</style> -->

@@ -1,0 +1,16 @@
+<div class="infos">
+    {% if doc.file_size %}
+        <span class="text-muted small info-bottom">Размер: {{ doc.get_file_size }}</span>
+    {% endif %}
+    <span class="text-muted small info-bottom">Год создания {{ doc.created_year }}</span>
+    {% if doc.document_pages %}
+        <span class="text-muted small info-bottom">Страниц: {{ doc.document_pages }}</span>
+    {% endif %}
+    {% if doc.type %}
+        <span class="text-muted small info-bottom">Тип документа: {{ doc.type.name }}</span>
+    {% endif %}
+    {% if doc.language %}
+        <span class="text-muted small info-bottom">Язык: {{ doc.language }}</span>
+    {% endif %}
+    <!-- <span class="text-muted small info-bottom">Добавлен {# doc.uploaded #}</span> -->
+</div>

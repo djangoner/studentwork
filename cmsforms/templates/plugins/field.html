@@ -1,0 +1,12 @@
+{% load cms_tags %}
+<div class="form-group">
+    <label class="field-label font-weight-bold {% if instance.required%}required{%endif%}">{{ instance.label }}</label>
+
+    {% block field %}
+        <input type="{{input|default:'text'}}" {% include 'plugins/field_tags.html'%}>
+    {% endblock %}
+
+    {% if instance.hint %}
+        <small class="text-muted">{{ instance.hint }}</small>
+    {% endif %}
+</div>

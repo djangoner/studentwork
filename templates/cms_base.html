@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% load static i18n cms_tags sekizai_tags %}
+
+{% block title %} {% page_attribute "page_title" %} {% endblock %}
+
+{% block extrahead %}
+    {# placeholder "extrahead" #}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container bg-white mt-3 py-3 main-container">
+        {% placeholder "content" %}
+    </div>
+{% endblock %}
+
+{% block extrabody %}
+    {% placeholder "extrabody" %}
+{% endblock %}

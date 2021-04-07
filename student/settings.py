@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import ugettext_lazy as _
 import os
 import dotenv
 
@@ -45,52 +46,110 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    ##-- Admin
+    'djangocms_admin_style',
+    ##-- Custom apps
+    'main.apps.MainConfig',
+    'users.apps.UsersConfig',
+    'cmsforms.apps.CmsformsConfig',
+    # 'chat.apps.ChatConfig',
+    'blog.apps.BlogConfig',
+    'channels',
+    ##-- Built-in
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ##-- Third-party
+    'django.contrib.sitemaps',
+    ##-- CMS + Third-party
     # 'django_filters',
-    ##-- Custom apps
-    'main.apps.MainConfig',
-    'users.apps.UsersConfig',
+    'sekizai',
+    'django.contrib.sites',
+    'cms',
+    'menus',
+    'filer',
+    'easy_thumbnails',
+    'mptt',
+    'djangocms_link',
+    'djangocms_picture',
+    'djangocms_snippet',
+    'djangocms_text_ckeditor',
+    'treebeard',
+    'ckeditor',
+    #
+    'djangocms_icon',
+    'djangocms_rawhtml',
+    # 'djangocms_link',
+    # 'djangocms_picture',
+    # 'djangocms_bootstrap4',
+    'djangocms_bootstrap4',
+    'djangocms_bootstrap4.contrib.bootstrap4_alerts',
+    'djangocms_bootstrap4.contrib.bootstrap4_badge',
+    'djangocms_bootstrap4.contrib.bootstrap4_card',
+    'djangocms_bootstrap4.contrib.bootstrap4_carousel',
+    'djangocms_bootstrap4.contrib.bootstrap4_collapse',
+    'djangocms_bootstrap4.contrib.bootstrap4_content',
+    'djangocms_bootstrap4.contrib.bootstrap4_grid',
+    'djangocms_bootstrap4.contrib.bootstrap4_jumbotron',
+    # 'djangocms_bootstrap4.contrib.bootstrap4_link',
+    'djangocms_bootstrap4.contrib.bootstrap4_listgroup',
+    'djangocms_bootstrap4.contrib.bootstrap4_media',
+    'djangocms_bootstrap4.contrib.bootstrap4_picture',
+    'djangocms_bootstrap4.contrib.bootstrap4_tabs',
+    'djangocms_bootstrap4.contrib.bootstrap4_utilities',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    #-- For CMS
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+    'cms.middleware.utils.ApphookReloadMiddleware',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['*', "easyschool.1001cyprus.com"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDINTIALS = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 ROOT_URLCONF = 'student.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai', # For CMS
+                'cms.context_processors.cms_settings',
+                # Custom
+                # 'chat.context_processors.unread_messages',
+                'main.context_processors.form_order_work',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'student.wsgi.application'
+ASGI_APPLICATION = "student.asgi.application"
 
 
 # Database
@@ -119,6 +178,12 @@ if PRODUCTION:
         }
     }
     CONN_MAX_AGE = 60
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -149,7 +214,7 @@ INTERNAL_IPS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
 
 LANGUAGES = [
     ('ru', 'Русский'),
@@ -171,6 +236,177 @@ USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+SITE_ID = int(os.environ.get('SITE_ID', "1"))
+
+THUMBNAIL_HIGH_RESOLUTION = True
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters'
+)
+
+CMS_TEMPLATES = (
+    ('cms_base.html', 'Base'),
+)
+
+DJANGOCMS_SNIPPET_SEARCH = True
+DJANGOCMS_SNIPPET_CACHE = False # default value is True
+
+DJANGOCMS_SNIPPET_THEME = 'github'
+DJANGOCMS_SNIPPET_MODE = 'html'
+
+CKEDITOR_SETTINGS = { # For CMS
+    'language': '{{ language }}',
+    'toolbar': 'CMS',
+    'skin': 'moono-lisa',
+    'allowedContent': True,
+    'basicEntities': False,
+    'entities': False,
+}
+
+CKEDITOR_CONFIGS = { # For admin pages
+    'default': {
+        'toolbar_custom': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+            'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'tools', 'items': ['ShowBlocks']}, # 'Maximize', 
+        ],
+        'toolbar': 'custom',
+        'allowedContent': True,
+        # 'toolbarGroups': [{'name': 'document', 'groups': ['basicstyles', 'paragraph', 'tools']}],
+        # 'width': '100%',
+    }
+}
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50*1024*1024 #30MB
+
+CMS_PLACEHOLDER_CONF = {
+    'head': {
+        'name': _('Тег head'),
+        'plugins': ['TextPlugin', 'RawHTMLPluginPublisher', 'YandexMetrika', 'GoogleMetrika'],
+    },
+    'footer': {
+        'name': _('Футер (конец страницы)'),
+        'plugins': ['TextPlugin', 'RawHTMLPluginPublisher', 'YandexMetrika', 'GoogleMetrika'],
+    },
+    'top_menu': {
+        'name': _('Верхнее меню'),
+        'plugins': ['TopMenuPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'TopMenuPlugin',
+                'values': {},
+                'children': [
+                    {
+                        'plugin_type': 'LinkPlugin',
+                        'values': {
+                            'name': 'Как это работает',
+                            'external_link': '/faq#how-works'
+                        }
+                    },
+                    {
+                        'plugin_type': 'LinkPlugin',
+                        'values': {
+                            'name': 'Заказать работу',
+                            'external_link': '#order-work'
+                        }
+                    },
+                ]
+            }
+        ]
+    },
+    'footer_links': {
+        'name': _('Ссылки футера'),
+        'plugins': ['LinkPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Условия использования',
+                    'external_link': '/use-terms'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'FAQ',
+                    'external_link': '/faq'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Поддержка',
+                    'external_link': '#support'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Для правообладателей',
+                    'external_link': '/for-copyright-holders'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Карта сайта',
+                    'external_link': '/sitemap'
+                }
+            },
+            {
+                'plugin_type': 'LinkPlugin',
+                'values': {
+                    'name': 'Заказать работу',
+                    'external_link': '#order-work'
+                }
+            },
+        ]
+    },
+    'footer_text':{
+        'name': _('Текст футера'),
+        'plugins': ['TextPlugin', 'LinkPlugin', 'RawHTMLPluginPublisher'],
+        'default_plugins': [
+            {
+                'plugin_type': 'TextPlugin',
+                'values': {
+                    'body': 'Copyright &copy; 2021'
+                }
+            }
+        ]
+    },
+    'order_work_form': {
+        'name': _('Форма заказать работу'),
+        'plugins': ['CMSForm', 'TextPlugin'],
+        'default_plugins': [
+            {
+                'plugin_type': 'CMSForm',
+                'values': {},
+                'children': [
+                    {
+                        'plugin_type': 'FormTextField',
+                        'values': {
+                            'name': 'text_field',
+                            'label': 'Название поля',
+                            'placeholder_text': 'Замещающий текст',
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -180,10 +416,11 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-if not DEBUG or PRODUCTION:
+if not DEBUG or PRODUCTION or "EMAIL_HOST" in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     # EMAIL_SERVER = os.environ.get("EMAIL_SERVER")
     EMAIL_HOST = os.environ.get("EMAIL_HOST")
@@ -195,11 +432,15 @@ if not DEBUG or PRODUCTION:
     ##
     SERVER_EMAIL = EMAIL_HOST_USER
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    EMAIL_SUBJECT_PREFIX = '[1001Cyprus] ' if PRODUCTION and not DEBUG else '[1001Cyprus (Debug)] '
+    EMAIL_SUBJECT_PREFIX = '[EasySchool] ' if PRODUCTION and not DEBUG else '[EasySchool (Debug)] '
 
 ADMINS = [
         ('Programmer and site administrator', 'djpy@1001cyprus.com'),
     ]
+
+MANAGERS = []
+ORDER_WORK_EMAIL = os.environ.get("ORDER_WORK_EMAIL", "djpy@1001cyprus.com") #"easyschool@yandex.ru"
+
 
 LOGGING = {
     'version': 1,
@@ -215,7 +456,8 @@ LOGGING = {
         },
         # Log to a text file that can be rotated by logrotate
         'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024,  # 3 MB
             'level': 'DEBUG',
             'filename': os.path.join(BASE_DIR, 'django.log'),
             # 'maxBytes': '1024*5', #5kb
@@ -230,7 +472,7 @@ LOGGING = {
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins'] if PRODUCTION else [],
             'level': 'ERROR',
             'propagate': True,
         },

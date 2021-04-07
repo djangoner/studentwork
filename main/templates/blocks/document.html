@@ -1,0 +1,22 @@
+<div class="card mb-3 document-item {%if doc.is_owned%}owned{%endif%}">
+    <div class="card-body">
+        <a href="{{doc.get_absolute_url}}" class="no-underline">
+            <h4 class="card-title">
+                <span class="mr-2">{{ doc.title | default:'Файл требует проверки' }}</span>
+                {% include 'blocks/document_badges_title.html'%}
+            </h4>
+        </a>
+
+        <!-- <a href="{{doc.get_absolute_url}}"><span class="text-muted small info-top">
+            Дисциплина: {{doc.discipline}}
+        </span></a> -->
+
+        <p class="card-text {%if doc.annotation|length >= 300%}long{%endif%}">
+            {% if doc.annotation %}
+            {{ doc.annotation | safe }}
+            {% endif %}
+        </p>
+        {% include 'blocks/document_badges.html' %}
+        <!-- <a href="{{doc.get_absolute_url}}" class="btn btn-primary mt-1">Подробнее</a> -->
+    </div>
+</div>
