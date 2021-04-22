@@ -100,7 +100,7 @@ def document_download(request, id):
     # If not owning buy
     if not owning:
         if request.user.balance < price:
-            messages.add_message(request, messages.WARNING, "Недостаточно баллов для загрузки файла! <a href='/faq'>Как пополнить баланс</a>")
+            messages.add_message(request, messages.WARNING, "Недостаточно баллов для загрузки файла! <a href='/faq/#topup'>Как пополнить баланс</a>")
             return HttpResponseRedirect(document.get_absolute_url())
         logging.info(f"Processing payment: user ({user}), price ({price}), balance({user.balance} => {user.balance - price})")
         user.balance = user.balance - price

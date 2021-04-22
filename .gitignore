@@ -9,3 +9,13 @@ media
 *.log
 *.jl
 *.jsonl
+static_all
+static_all/*
+*data*
+*docker*
+*Docker*
+*test*
+*tmp*
+*.conf
+*.json*
+*.sh

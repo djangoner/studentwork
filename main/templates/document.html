@@ -30,7 +30,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Главная</a></li>
                 {% if doc.discipline %}
-                    <li class="breadcrumb-item"><a href="{{doc.discipline.get_absolute_url}}">Дисциплина "{{doc.discipline}}"</a> </li>
+                    <li class="breadcrumb-item"><a href="{{doc.discipline.get_absolute_url}}">{{doc.discipline}}</a> </li>
                 {% endif %}
                 <li class="breadcrumb-item active" aria-current="page">{{ doc }}</li>
             </ol>

@@ -21,7 +21,7 @@
           </nav>
 
         <!-- Content -->
-        <h2 class="text-center mb-4">Дисциплина "{{discipline}}" <span class="h6 text-muted">{{discipline.visible_documents.count}}</span></h2>
+        <h2 class="text-center mb-4">{{discipline}} <span class="h6 text-muted">{{discipline.visible_documents.count}}</span></h2>
 
         {% include 'blocks/documents_list.html' with docs=page%}
     </div>
