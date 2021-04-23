@@ -2,6 +2,8 @@
 *{
     box-shadow: none!important;
 }
+
+
 #cms-top~.navbar {
     top: 46px;
 }
@@ -10,6 +12,8 @@ html, body{
     padding: 0;
     width: 100vw;
     height: 100vh;
+    max-height: 100vh;
+    overflow-x: hidden;
 }
 
 nav.navbar {
@@ -87,8 +91,11 @@ footer.footer{
 }
 
 @media (min-width: 1200px){
-    #search-form{
+    /* #search-form{
         width: 30%!important;
+    } */
+    #search-form input{
+        min-width: 305px;
     }
     /* #search-input{
         width: 320px!important;
