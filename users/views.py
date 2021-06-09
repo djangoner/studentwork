@@ -46,7 +46,7 @@ def login_page(request):
                     form.add_error('email', 'Пользователь с такой электронной почтой уже существует!')
                 elif data['password'] != data['password2']:
                     form.add_error('password', 'Пароли не совпадают!')
-                elif (fingerprint and any_fingerprint.count() > 0) or (any_ip.count() > 0):
+                elif (fingerprint and any_fingerprint.count() > 0): # or (any_ip.count() > 0):
                     logging.info(f"Tryed register. FP match: {any_fingerprint.count()}, IP Match: {any_ip.count()}. FP: {fingerprint}, IP: {get_client_ip(request)}")
                     form.add_error('username', 'Похоже у вас уже есть учётная запись')
                 else:
@@ -67,6 +67,10 @@ def login_page(request):
                         user.save()
                         request.session['email'] = user.email
                         #
+                        try:
+                            user.send_confirmation_email()
+                        except:
+                            pass
                         return HttpResponseRedirect(reverse("users:email_confirm")+"#sended")
                         # return HttpResponseRedirect("?registered#login")
 
