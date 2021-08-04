@@ -86,7 +86,7 @@ def document_page(request, id):
     }
     return render(request, "document.html", context=context)
 
-
+@login_required
 def document_download(request, id):
     document = get_object_or_404(models.Document, pk=id)
     price = BASE_PRICE
